@@ -1,5 +1,3 @@
 venv
-data/images
-data/words.cvs
-data/words.txt
+data
 .idea
