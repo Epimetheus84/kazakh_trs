@@ -50,7 +50,7 @@ opencv-python==4.0.0.21
 parso==0.6.1
 pexpect==4.2.1
 pickleshare==0.7.5
-Pillow==4.2.1
+Pillow==6.2.0
 plumbum==1.6.2
 prompt-toolkit==1.0.18
 protobuf==3.6.1
