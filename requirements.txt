@@ -13,7 +13,7 @@ decorator==4.4.1
 defer==1.0.6
 docker==4.0.2
 docker-registry-client==0.5.2
-ecdsa==0.13.2
+ecdsa==0.13.3
 editdistance==0.5.2
 Flask==1.1.1
 Flask-Cors==3.0.8
