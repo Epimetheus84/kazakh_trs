@@ -1,0 +1,164 @@
+{
+	"variables": [],
+	"info": {
+		"name": "TRS",
+		"_postman_id": "d283864a-82c5-aa33-909d-5d9052c05775",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "REST",
+			"description": "",
+			"item": [
+				{
+					"name": "users",
+					"description": "",
+					"item": [
+						{
+							"name": "create user",
+							"request": {
+								"url": "http://127.0.0.1:4444/users/create",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"login\": \"admin\",\n\t\"email\": \"eduardeliseev.m@gmail.com\",\n\t\"password\": \"admin\",\n\t\"first_name\": \"Eduard\",\n\t\"last_name\": \"Yelisseyev\"\n}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"request": {
+								"url": "http://127.0.0.1:4444/users/list",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Token",
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"request": {
+								"url": "http://127.0.0.1:4444/users/show/admin2",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"url": "http://127.0.0.1:4444/users/update/<login>",
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
+										"description": ""
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"role\": 10,\n\t\"password\": \"admin\"\n}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"url": "http://127.0.0.1:4444/users/delete/<login>",
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "cabinet",
+					"description": "",
+					"item": [
+						{
+							"name": "login",
+							"request": {
+								"url": "http://127.0.0.1:4444/cabinet/login",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"description": ""
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"login\": \"god3\",\n\t\"password\": \"admin\"\n}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "me",
+							"request": {
+								"url": "http://127.0.0.1:4444/cabinet/me",
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
+										"description": ""
+									}
+								],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}
