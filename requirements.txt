@@ -1,3 +1,4 @@
+bcrypt
 passlib
 absl-py==0.7.0
 asn1crypto==0.24.0

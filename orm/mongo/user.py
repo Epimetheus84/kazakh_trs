@@ -1,7 +1,8 @@
 import datetime
+import random
 import string
+import json
 
-from random import random
 from mongoengine import *
 from orm.mongo.connection import Connection
 from rest.helpers.password import Password
@@ -19,7 +20,7 @@ Connection.connect()
 class User(Document):
     login = StringField(max_length=64, required=True, unique=True)
     email = StringField(max_length=64, required=True, unique=True)
-    password = StringField(max_length=64, required=True)
+    password = StringField(max_length=256, required=True)
     first_name = StringField(max_length=64, required=True)
     last_name = StringField(max_length=64, required=True)
     token = StringField(max_length=TOKEN_LENGTH, required=True)
@@ -34,37 +35,38 @@ class User(Document):
         self.token = token
 
     def generate_password(self, password):
-        self.password = Password.encrypt_password(password)
+        self.password = str(Password.encrypt_password(password))
+        print(str(Password.encrypt_password(password)))
 
     def check_password(self, password):
         return Password.check_encrypted_password(self.password, password)
 
     def insert_data(self, data):
         if 'login' in data:
-            self.login = data.login
+            self.login = data['login']
 
         if 'email' in data:
-            self.email = data.email
+            self.email = data['email']
 
         if 'password' in data:
-            self.generate_password(data.password)
+            self.generate_password(data['password'])
 
         if 'first_name' in data:
-            self.first_name = data.first_name
+            self.first_name = data['first_name']
 
         if 'last_name' in data:
-            self.last_name = data.last_name
+            self.last_name = data['last_name']
 
         if 'middle_name' in data:
-            self.middle_name = data.middle_name
+            self.middle_name = data['middle_name']
 
         if 'active' in data:
-            self.active = data.active
+            self.active = data['active']
 
         if 'role' in data:
-            self.role = data.role
+            self.role = data['role']
 
-        self.date_modified = datetime.datetime.utcnow
+        self.date_modified = datetime.datetime.utcnow()
 
     def has_access_to_users_list(self):
         return True
@@ -95,3 +97,19 @@ class User(Document):
 
     def has_access_to_delete_image(self):
         return self.role == ROLE_ADMIN or self.role == ROLE_DEVELOPER
+
+    def prepare_to_response(self):
+        return {
+            'login': self.login,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'middle_name': self.middle_name,
+            'date_created': int(self.date_created.timestamp()),
+            'date_modified': int(self.date_modified.timestamp()),
+            'role': self.role,
+        }
+
+    def to_json(self):
+        return json.dumps(self.prepare_to_response())
+

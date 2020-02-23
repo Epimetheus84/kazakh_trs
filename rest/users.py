@@ -1,15 +1,18 @@
+import datetime
+
+import mongoengine
 from flask import Blueprint, request, abort, jsonify, g
-from flask_httpauth import HTTPTokenAuth
-auth = HTTPTokenAuth(scheme='Token')
+from rest.helpers.auth import auth
 
 from orm.mongo.user import User
 
 users = Blueprint('users', __name__)
 
 
-@users.route('/list/',  methods=['GET'])
+@users.route('/list/', methods=['GET'])
 @auth.login_required
 def list_users():
+    print(g.current_user)
     if not g.current_user.has_access_to_users_list():
         abort(403)
 
@@ -18,36 +21,44 @@ def list_users():
 
     offset = (page - 1) * items_per_page
 
-    list_users = User.objects.skip(offset).limit(items_per_page).get()
+    list_users = User.objects.skip(offset).limit(items_per_page)
+    result_list = []
+    for user in list_users:
+        user_data = user.prepare_to_response()
+        result_list.append(user_data)
 
-    return list_users.to_json()
+    return jsonify(result_list)
 
 
-@users.route('/show/<id>',  methods=['GET'])
+@users.route('/show/<login>', methods=['GET'])
 @auth.login_required
-def show_user(id):
+def show_user(login):
     if not g.current_user.has_access_to_see_user():
         abort(403)
 
-    user = User.objects.get({'_id': id})
+    user = User.objects(login=login)
 
-    if not user:
+    if not user.__len__():
         abort(404)
+
+    user = user.get()
 
     return user.to_json()
 
 
-@users.route('/update/<id>',  methods=['PUT'])
+@users.route('/update/<login>', methods=['PUT'])
 @auth.login_required
-def update_user(id):
+def update_user(login):
     if not g.current_user.has_access_to_update_user():
         abort(403)
 
-    user = User.objects.get({'_id': id})
-    data = request.form
+    user = User.objects(login=login)
+    data = request.json
 
-    if not user:
+    if not user.__len__():
         abort(404)
+
+    user = user.get()
 
     user.insert_data(data)
     user.save()
@@ -55,30 +66,38 @@ def update_user(id):
     return user.to_json()
 
 
-@users.route('/create/',  methods=['POST'])
+@users.route('/create/', methods=['POST'])
 @auth.login_required
 def create_user():
     if not g.current_user.has_access_to_create_user():
         abort(403)
 
-    data = request.form
+    data = request.json
 
     user = User()
     user.insert_data(data)
-    user.save()
+    user.generate_token()
+    try:
+        user.save()
+    except mongoengine.errors.NotUniqueError as exc:
+        for field in user._fields_ordered:
+            if field in str(exc):
+                return jsonify({'error': 'field {} is not unique'.format(field)}), 400
 
     return user.to_json()
 
 
-@users.route('/delete/<id>',  methods=['DELETE'])
+@users.route('/delete/<login>', methods=['DELETE'])
 @auth.login_required
-def delete_user(id):
+def delete_user(login):
     if not g.current_user.has_access_to_delete_user():
         abort(403)
 
-    user = User.objects.get({'_id': id})
+    user = User.objects(login=login)
 
-    if not user:
+    if not user.__len__():
         abort(404)
 
-    return jsonify(success=True)
+    user.delete()
+    print(datetime.datetime.utcnow())
+    return jsonify({'success': True})
