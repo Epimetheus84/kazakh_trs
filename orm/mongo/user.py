@@ -4,6 +4,8 @@ import string
 import json
 
 from mongoengine import *
+
+from orm.mongo.company import Company
 from orm.mongo.connection import Connection
 from rest.helpers.password import Password
 
@@ -23,6 +25,7 @@ class User(Document):
     password = StringField(max_length=256, required=True)
     first_name = StringField(max_length=64, required=True)
     last_name = StringField(max_length=64, required=True)
+    company = StringField(max_length=256, required=True)
     token = StringField(max_length=TOKEN_LENGTH, required=True)
     middle_name = StringField(max_length=64)
     date_created = DateTimeField(default=datetime.datetime.utcnow)
@@ -41,7 +44,7 @@ class User(Document):
     def check_password(self, password):
         return Password.check_encrypted_password(self.password, password)
 
-    def insert_data(self, data):
+    def update_data(self, data):
         if 'login' in data:
             self.login = data['login']
 
@@ -66,7 +69,13 @@ class User(Document):
         if 'role' in data:
             self.role = data['role']
 
+        if 'company' in data:
+            self.company = data['company']
+
         self.date_modified = datetime.datetime.utcnow()
+
+    def insert_data(self, data):
+        self.update_data(data)
 
     def has_access_to_users_list(self):
         return True
@@ -107,9 +116,30 @@ class User(Document):
             'middle_name': self.middle_name,
             'date_created': int(self.date_created.timestamp()),
             'date_modified': int(self.date_modified.timestamp()),
+            'company': Company.objects(id=self.company).get() if Company.objects(id=self.company) else {},
             'role': self.role,
         }
 
     def to_json(self):
         return json.dumps(self.prepare_to_response())
 
+    def has_access_to_companies_list(self):
+        return self.role == ROLE_DEVELOPER
+
+    def has_access_to_see_company(self, company_id):
+        return self.company == company_id
+
+    def has_access_to_update_company(self, company_id):
+        if self.role != ROLE_ADMIN and self.role != ROLE_DEVELOPER:
+            return False
+
+        return self.company == company_id
+
+    def has_access_to_create_company(self):
+        return self.role == ROLE_DEVELOPER
+
+    def has_access_to_delete_company(self, company_id):
+        if self.role != ROLE_ADMIN and self.role != ROLE_DEVELOPER:
+            return False
+
+        return self.company == company_id

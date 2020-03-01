@@ -1,6 +1,10 @@
-import os, sys
-import numpy as np
+import os
 import cv2
+
+from orm.mongo.image import Image
+from flask import Flask, request, abort, jsonify
+
+app = Flask(__name__)
 
 
 def text_detect(img, ele_size=(8, 2)):  #
@@ -34,5 +38,24 @@ def main(inputFile):
     cv2.imwrite(outputFile, img)
 
 
+@app.route('/')
+def hello():
+    return 'Service available'
+
+
+@app.route('/mark/<file_path>')
+def mark(file_path):
+    image = Image.objects(file_path=file_path)
+
+    if not image:
+        abort(404)
+
+    image = image.get()
+    input_file = image.file_path
+    img = cv2.imread(input_file)
+    rect = text_detect(img)
+    return jsonify(rect)
+
+
 if __name__ == '__main__':
-    main(sys.argv[1])
+    app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 4441)))

@@ -1,27 +1,26 @@
 from flask import Blueprint, request, abort, jsonify, g
-from flask_httpauth import HTTPTokenAuth
-
-auth = HTTPTokenAuth(scheme='Token')
+from rest.helpers.auth import auth
 
 from orm.mongo.image import Image
 
 images = Blueprint('images', __name__)
 
-@images.route('/mark/<id>', methods=['GET'])
+
+@images.route('/mark/<file_path>', methods=['GET'])
 @auth.login_required
-def mark_image():
+def mark_image(file_path):
     if not g.current_user.has_access_to_mark_image():
         abort(403)
 
-    image = Image.objects.get({'_id': id})
+    image = Image.objects(file_path=file_path)
 
     if not image:
         abort(404)
 
+    image = image.get()
+
     if not image.can_be_marked():
         abort(405)
-
-
 
 
 # CRUD
@@ -41,33 +40,37 @@ def list_images():
     return list_images.to_json()
 
 
-@images.route('/show/<id>', methods=['GET'])
+@images.route('/show/<file_path>', methods=['GET'])
 @auth.login_required
-def show_image(id):
+def show_image(file_path):
     if not g.current_user.has_access_to_see_image():
         abort(403)
 
-    image = Image.objects.get({'_id': id})
+    image = Image.objects(file_path=file_path)
 
     if not image:
         abort(404)
 
+    image = image.get()
+
     return image.to_json()
 
 
-@images.route('/update/<id>', methods=['PUT'])
+@images.route('/update/<file_path>', methods=['PUT'])
 @auth.login_required
-def update_image(id):
+def update_image(file_path):
     if not g.current_user.has_access_to_update_image():
         abort(403)
 
-    image = Image.objects.get({'_id': id})
+    image = Image.objects(file_path=file_path)
     data = request.form
 
     if not image:
         abort(404)
 
-    image.insert_data(data)
+    image = image.get()
+
+    image.update_data(data)
     image.save()
 
     return image.to_json()
@@ -88,15 +91,18 @@ def create_image():
     return image.to_json()
 
 
-@images.route('/delete/<id>', methods=['DELETE'])
+@images.route('/delete/<file_path>', methods=['DELETE'])
 @auth.login_required
-def delete_image(id):
+def delete_image(file_path):
     if not g.current_user.has_access_to_delete_image():
         abort(403)
 
-    image = Image.objects.get({'_id': id})
+    image = Image.objects(file_path=file_path)
 
     if not image:
         abort(404)
+
+    image = image.get()
+    image.delete()
 
     return jsonify(success=True)
