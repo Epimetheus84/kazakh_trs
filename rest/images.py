@@ -86,6 +86,22 @@ def create_image():
 
     image = Image()
     image.insert_data(data)
+
+    if 'file' not in request.files:
+        return jsonify({'error': 'File not uploaded.'}), 400
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return jsonify({'error': 'File not uploaded.'}), 400
+
+    image.original_filename = file.filename
+    image.uploaded_by = g.current_user.login
+    image.file_extension = image.get_uploaded_file_ext()
+
+    if not image.upload(file):
+        return jsonify({'error': 'This file cannot be uploaded.'}), 400
+
     image.save()
 
     return image.to_json()
@@ -103,6 +119,7 @@ def delete_image(file_path):
         abort(404)
 
     image = image.get()
+    image.delete_file()
     image.delete()
 
     return jsonify(success=True)
