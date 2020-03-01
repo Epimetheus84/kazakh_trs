@@ -1,10 +1,13 @@
 import os
 import cv2
+import threading
 
 from orm.mongo.image import Image
 from flask import Flask, request, abort, jsonify
 
 app = Flask(__name__)
+
+THREADS_MAX_COUNT = 10
 
 
 def text_detect(img, ele_size=(8, 2)):  #
@@ -26,16 +29,14 @@ def text_detect(img, ele_size=(8, 2)):  #
     return RectP
 
 
-def main(inputFile):
-    outputFile = inputFile.split('.')[0] + '-rect.' + '.'.join(inputFile.split('.')[1:])
-    print(outputFile)
-    img = cv2.imread(inputFile)
+def thread_function(image):
+    input_file = image.file_path
+    img = cv2.imread(input_file)
     rect = text_detect(img)
-    for i in rect:
-        print(i[:2])
-        print(i[2:])
-        cv2.rectangle(img, i[:2], i[2:], (0, 0, 255))
-    cv2.imwrite(outputFile, img)
+    image.coordinates = rect
+    image.status = Image.IMAGE_STATUS_TEXT_DETECTED
+    image.save()
+    return True
 
 
 @app.route('/')
@@ -51,10 +52,13 @@ def mark(file_path):
         abort(404)
 
     image = image.get()
-    input_file = image.file_path
-    img = cv2.imread(input_file)
-    rect = text_detect(img)
-    return jsonify(rect)
+    if threading.active_count() >= THREADS_MAX_COUNT:
+        raise Exception('Threads limit reached')
+
+    x = threading.Thread(target=thread_function, args=(image,))
+    x.start()
+
+    return jsonify({'started': True})
 
 
 if __name__ == '__main__':

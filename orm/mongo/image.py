@@ -9,17 +9,17 @@ import datetime
 
 from orm.mongo.user import User
 
-IMAGE_STATUS_NEW = 0
-IMAGE_STATUS_TEXT_DETECTED = 1
-IMAGE_STATUS_DIVIDED = 2
-IMAGE_STATUS_TEXT_RECOGNIZED = 3
-
-FILE_PATH_LENGTH = 16
-
 Connection.connect()
 
 
 class Image(Document):
+    IMAGE_STATUS_NEW = 0
+    IMAGE_STATUS_TEXT_DETECTED = 1
+    IMAGE_STATUS_DIVIDED = 2
+    IMAGE_STATUS_TEXT_RECOGNIZED = 3
+
+    FILE_PATH_LENGTH = 16
+
     file_path = StringField(max_length=FILE_PATH_LENGTH, required=True)
     filename = StringField(max_length=64)
     uploaded_by = StringField(max_length=64, required=True)
