@@ -12,7 +12,7 @@ export default class App extends Component {
           <Switch>
             <Route exact path={"/"} component={Home} />
             <Route exact path={"/users"} component={Users} />
-            <Route exact path={"/cabinet"} component={Users} />
+            <Route exact path={"/cabinet"} component={Cabinet} />
           </Switch>
         </BrowserRouter>
       </div>
