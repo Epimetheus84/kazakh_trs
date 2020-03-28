@@ -3,16 +3,14 @@ import axios from 'axios';
 import {WrapPaper, Input, Button} from './styles';
 // import {db} from '../../config';
 
-class Registration extends Component {
+class Login extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            name: "",
             email: "",
             password: "",
-            password_confirmation:"",
-            registrationErrors: ""
+            loginErrors: ""
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,19 +24,15 @@ class Registration extends Component {
 
     handleSubmit(event){
         const {
-            name,
             email,
-            password,
-            password_confirmation
+            password
         } = this.state;
         
         // Firebase connection through config.js/////////////////////////////////////////////////////////
         // db.ref('/user').push({
         //     user:{
-        //         name: name,
         //         email: email,
         //         password: password,
-        //         password_confirmation: password_confirmation,
         //     }
         //   });
         //   console.log('Action!', 'A new To-do item was created');
@@ -46,20 +40,18 @@ class Registration extends Component {
         // Firebase connection through AXIOS///////////////////////////////////////////////////////////////////
         axios.post('https://registration-3c6c4.firebaseio.com/user', {
             user:{
-                name: name,
                 email: email,
                 password: password,
-                password_confirmation: password_confirmation,
             },
         },
         {withCredentials: true}
         ).then(response => {
-            if(response.data.status === "created"){
+            if(response.data.logged_in){
                 this.props.handleSuccesfulAuth(response.data);
             }
         }).catch(error=>{
             this.props.handleSuccesfulAuth();
-            console.log("registration error", error);
+            console.log("login error", error);
             
         });
 
@@ -78,14 +70,6 @@ class Registration extends Component {
             <WrapPaper>
                 <form onSubmit={this.handleSubmit} className="regForm">
                     <Input 
-                        type="text" 
-                        name="name" 
-                        placeholder="Name" 
-                        value={this.state.name} 
-                        onChange={this.handleChange} 
-                        required 
-                    />
-                    <Input 
                         type="email" 
                         name="email" 
                         placeholder="Email" 
@@ -101,25 +85,16 @@ class Registration extends Component {
                         onChange={this.handleChange} 
                         required 
                     />
-                    <Input 
-                        type="password" 
-                        name="password_confirmation" 
-                        placeholder="Password confirmation" 
-                        value={this.state.password_confirmation} 
-                        onChange={this.handleChange} 
-                        required 
-                    />
 
                     <Button 
                         type='submit'
-                        onMouseOver ={()=>this.onHover()}
+                        // onMouseOver ={()=>this.onHover()}
                     >
-                        Register
+                        Login
                     </Button>
                 </form> 
             </WrapPaper>
         );
     }
 }
-
-export default Registration;
+export default Login;
