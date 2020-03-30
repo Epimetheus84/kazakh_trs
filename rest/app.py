@@ -18,4 +18,4 @@ def hello():
 
 
 if __name__ == '__main__':
-    app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('REST_PORT', 4444)))
+    app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('FLASK_RUN_PORT', 4444)))
