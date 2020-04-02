@@ -4,6 +4,7 @@ import Home from "./Home";
 import Users from "./Users";
 import Cabinet from "./Cabinet";
 import axios from 'axios';
+import NavbarReact from "./navigation/navigationPanel";
 
 export default class App extends Component {
 
@@ -62,33 +63,36 @@ export default class App extends Component {
     return (
       <div className='app'>
         <BrowserRouter>
-          <Switch>
-            <Route 
-              exact 
-              path={"/"} 
-              render={props => (
-                <Home {...props} 
-                  handleLogout= {this.handleLogout} 
-                  handleLoggin= {this.handleLoggin} 
-                  loggedInStatus={this.state.loggedInStatus} 
-                />
-              )} 
-            />
-            <Route 
-              exact 
-              path={"/users"} 
-              render={props => (
-                <Users {...props} loggedInStatus={this.state.loggedInStatus} />
-              )} 
-            />
-            <Route 
-              exact 
-              path={"/cabinet"} 
-              render={props => (
-                <Cabinet {...props} loggedInStatus={this.state.loggedInStatus} />
-              )} 
-            />
-          </Switch>
+          <React.Fragment>
+          <NavbarReact/>
+            <Switch>
+              <Route 
+                exact 
+                path={"/"} 
+                render={props => (
+                  <Home {...props} 
+                    handleLogout= {this.handleLogout} 
+                    handleLoggin= {this.handleLoggin} 
+                    loggedInStatus={this.state.loggedInStatus} 
+                  />
+                )} 
+              />
+              <Route 
+                exact 
+                path={"/users/:first_name/:second_name"} 
+                render={props => (
+                  <Users {...props} loggedInStatus={this.state.loggedInStatus} />
+                )} 
+              />
+              <Route 
+                exact 
+                path={"/cabinet"} 
+                render={props => (
+                  <Cabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                )} 
+              />
+            </Switch>
+          </React.Fragment>
         </BrowserRouter>
       </div>
     );
