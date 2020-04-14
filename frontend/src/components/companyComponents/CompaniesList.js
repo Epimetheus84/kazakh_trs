@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import {WrapUserList, UserIcon, Details, UsersListWrap} from './styles';
-import Registration from '../auth/Registration';
 
-const showUsers =(variable) => {
+const showCompanies =(variable) => {
     if(sessionStorage.tokenData){
-        fetch("http://26.140.14.182:4444/users/list", {
+        fetch("http://26.140.14.182:4444/companies/list", {
             headers: {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
@@ -22,8 +21,6 @@ const showUsers =(variable) => {
 }
 
 const UsersList = () => {
-    const [showRegister, setShowRegister] = useState(false);
-
     let variable;
     let show;
     showUsers.bind(variable);
@@ -34,17 +31,12 @@ const UsersList = () => {
     return (
         <WrapUserList>
             <Details>
-                Пользователи:      
+                Компании:      
             </Details>
             <UsersListWrap>
-                <UserIcon onClick={()=>setShowRegister(true)}>+</UserIcon>
-                {
-                    show
-                }
+                <UserIcon>+</UserIcon>
+                {show}
             </UsersListWrap>
-            {
-                showRegister && <Registration setShowRegister={setShowRegister}/>
-            }
         </WrapUserList>
     )
 }

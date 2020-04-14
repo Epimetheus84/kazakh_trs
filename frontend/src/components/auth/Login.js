@@ -8,7 +8,7 @@ class Login extends Component {
         super(props);
 
         this.state = {
-            email: "",
+            login: "",
             password: "",
             loginErrors: ""
         }
@@ -24,42 +24,29 @@ class Login extends Component {
 
     handleSubmit(event){
         const {
-            email,
+            login,
             password
         } = this.state;
         
-        // Firebase connection through config.js/////////////////////////////////////////////////////////
-        // db.ref('/user').push({
-        //     user:{
-        //         email: email,
-        //         password: password,
-        //     }
-        //   });
-        //   console.log('Action!', 'A new To-do item was created');
-
-        // Firebase connection through AXIOS///////////////////////////////////////////////////////////////////
-        axios.post('https://registration-3c6c4.firebaseio.com/user', {
-            user:{
-                email: email,
-                password: password,
-            },
+        axios.post('http://26.140.14.182:4444/cabinet/login', {
+            login: login,
+            password: password,
         },
         {withCredentials: true}
         ).then(response => {
-            if(response.data.logged_in){
-                this.props.handleSuccesfulAuth(response.data);
+            this.props.saveToken(response.data.token);
+            if(response.data.token){
+                this.props.handleSuccesfulAuth(response.data.token, response.config.data);
             }
         }).catch(error=>{
             this.props.handleSuccesfulAuth();
             console.log("login error", error);
-            
         });
 
         console.log("form submitted");
         event.preventDefault();
     }
     handleChange(event){
-        console.log("handle change", event);
         this.setState({
             [event.target.name]: event.target.value
         });
@@ -70,10 +57,10 @@ class Login extends Component {
             <WrapPaper>
                 <form onSubmit={this.handleSubmit} className="regForm">
                     <Input 
-                        type="email" 
-                        name="email" 
-                        placeholder="Email" 
-                        value={this.state.email} 
+                        type="text" 
+                        name="login" 
+                        placeholder="Login" 
+                        value={this.state.login} 
                         onChange={this.handleChange} 
                         required 
                     />

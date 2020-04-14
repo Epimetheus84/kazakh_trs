@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Home from "./Home";
 import Users from "./Users";
-import Cabinet from "./Cabinet";
+import ModeratorCabinet from "./ModeratorCabinet";
+import DeveloperCabinet from "./DeveloperCabinet";
+import AdminCabinet from "./AdminCabinet";
+import CommonCabinet from "./CommonCabinet";
 import axios from 'axios';
 import NavbarReact from "./navigation/navigationPanel";
 
@@ -26,33 +29,30 @@ export default class App extends Component {
       loggedInStatus: "NOT_LOGGED_IN",
       user: {}
     });
+    delete sessionStorage.tokenData;
   }
 
   handleLoggin(data){
-    this.setState({
-      loggedInStatus:"LOGGED_IN",
-      user: data
-    });
+    if(data){
+      this.setState({
+        loggedInStatus:"LOGGED_IN",
+        user: data
+      });
+    }
   }
 
   checkLoginStatus() {
-    axios.get('http://localhost: 3001/logged_in',{withCredentials: true})
-      .then(response => {
-        if(response.data.logged_in && this.state.loggedInStatus === "NOT_LOGGED_IN"){
-          this.setState({
-            loggedInStatus: "LOGGED_IN",
-            user: response.data.user
-          })
-        } else if( !response.data.logged_in && this.state.loggedInStatus === "LOGGED_IN"){
-          this.setState({
-            loggedInStatus: "NOT_LOGGED_IN",
-            user: {}
-          })
-        }
+    if(sessionStorage.tokenData && this.state.loggedInStatus === "NOT_LOGGED_IN"){
+      this.setState({
+        loggedInStatus: "LOGGED_IN",
+        user: response.data.user
       })
-      .catch(error => {
-        console.log("check login error", error);
-      });
+    } else if( !sessionStorage.tokenData && this.state.loggedInStatus === "LOGGED_IN"){
+      this.setState({
+        loggedInStatus: "NOT_LOGGED_IN",
+        user: {}
+      })
+    }
   }
 
   componentDidMount(){
@@ -64,7 +64,7 @@ export default class App extends Component {
       <div className='app'>
         <BrowserRouter>
           <React.Fragment>
-          <NavbarReact/>
+          <NavbarReact handleLogout={this.handleLogout}/>
             <Switch>
               <Route 
                 exact 
@@ -86,9 +86,30 @@ export default class App extends Component {
               />
               <Route 
                 exact 
-                path={"/cabinet"} 
+                path={"/cabinetcommon"} 
                 render={props => (
-                  <Cabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <CommonCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                )} 
+              />
+              <Route 
+                exact 
+                path={"/cabinetmoderator"} 
+                render={props => (
+                  <ModeratorCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                )} 
+              />
+              <Route 
+                exact 
+                path={"/cabinetadmin"} 
+                render={props => (
+                  <AdminCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                )} 
+              />
+              <Route 
+                exact 
+                path={"/cabinetdeveloper"} 
+                render={props => (
+                  <DeveloperCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
                 )} 
               />
             </Switch>

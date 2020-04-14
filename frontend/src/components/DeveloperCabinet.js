@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import Profile from './companyComponents/CompanyProfile';
-import User from './companyComponents/UsersList';
+import ProfileCompany from './companyComponents/CompanyProfile';
+import UsersList from './companyComponents/UsersList';
+import CompaniesList from './companyComponents/CompaniesList';
 import DocumentsList from './companyComponents/Documents';
 
 const WrapPage = styled.div`
@@ -19,16 +20,17 @@ const WrapPage = styled.div`
     border-color: gray;
 `;
 
-const Cabinet = (props) => {
+const DeveloperCabinet = (props) => {
     return (
         <WrapPage>
             <div>
-                <h1>Cabinet</h1>
+                <h1>Developer Cabinet</h1>
                 <h1>Status: {props.loggedInStatus}</h1>
             </div>
             <div style={{display: 'flex'}}>
-                <Profile/>
-                <User/>
+                <ProfileCompany/>
+                <UsersList/>
+                <CompaniesList/>
             </div>
             <DocumentsList/>
             
@@ -36,4 +38,4 @@ const Cabinet = (props) => {
     )
 }
 
-export default Cabinet;
+export default DeveloperCabinet;

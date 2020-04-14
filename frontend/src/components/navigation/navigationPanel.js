@@ -2,8 +2,9 @@ import React from 'react';
 import {Navbar} from './styles';
 import { Link } from 'react-router-dom';
  
-const NavbarReact = () => (
- 
+const NavbarReact = (props) => {
+
+  return (
     <Navbar>
       <div className="logo">Logo</div>
 
@@ -12,13 +13,13 @@ const NavbarReact = () => (
           <Link to="/" className="link">Home</Link>
         </li>
         <li>
-          <Link to="/cabinet" className="link">cabinet</Link>
+          <Link to="/cabinetmoderator" className="link">cabinet</Link>
         </li>
         <li>
-          <Link to="/" className="link">Logout</Link>
+          <Link to="/" className="link" onClick={()=> this.props.handleLogout()} >Logout</Link>
         </li>
       </ul>
     </Navbar>
-)
+) }
 
 export default NavbarReact;
