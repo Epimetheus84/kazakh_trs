@@ -75,6 +75,7 @@ class RecognitionModel:
 			RecognitionModel.infer(model, FilePaths.fnInfer)
 
 
+
 def train(model, loader):
 	"train NN"
 	epoch = 0 # number of training epochs since start

@@ -18,6 +18,7 @@ FILE_PATH_LENGTH = 16
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 UPLOAD_FOLDER = '/'
 
+
 class Image(Document):
     IMAGE_STATUS_NEW = 0
     IMAGE_STATUS_TEXT_DETECTED = 1
