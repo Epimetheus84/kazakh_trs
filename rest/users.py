@@ -12,7 +12,6 @@ users = Blueprint('users', __name__)
 @users.route('/list/', methods=['GET'])
 @auth.login_required
 def list_users():
-    print(g.current_user)
     if not g.current_user.has_access_to_users_list():
         abort(403)
 
@@ -84,7 +83,7 @@ def create_user():
             if field in str(exc):
                 return jsonify({'error': 'field {} is not unique'.format(field)}), 400
 
-    return user.to_json()
+    return user.to_json()   
 
 
 @users.route('/delete/<login>', methods=['DELETE'])
@@ -99,5 +98,4 @@ def delete_user(login):
         abort(404)
 
     user.delete()
-    print(datetime.datetime.utcnow())
     return jsonify({'success': True})

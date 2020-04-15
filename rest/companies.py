@@ -7,10 +7,10 @@ companies = Blueprint('companies', __name__)
 
 
 @companies.route('/list/', methods=['GET'])
-@auth.login_required
+# @auth.login_required
 def list_companies():
-    if not g.current_user.has_access_to_companies_list():
-        abort(403)
+    # if not g.current_user.has_access_to_companies_list():
+    #     abort(403)
 
     page = request.args.get('page') or 1
     items_per_page = 10
@@ -62,7 +62,7 @@ def create_company():
     if not g.current_user.has_access_to_create_company():
         abort(403)
 
-    data = request.form
+    data = request.json
 
     company = Company()
     company.insert_data(data)

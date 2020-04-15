@@ -116,7 +116,7 @@ class User(Document):
             'middle_name': self.middle_name,
             'date_created': int(self.date_created.timestamp()),
             'date_modified': int(self.date_modified.timestamp()),
-            'company': Company.objects(id=self.company).get() if Company.objects(id=self.company) else {},
+            'company': Company.objects(id=self.company).get().prepare_to_response() if Company.objects(id=self.company) else {},
             'role': self.role,
         }
 

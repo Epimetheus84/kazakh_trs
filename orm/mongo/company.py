@@ -28,6 +28,7 @@ class Company(Document):
 
     def prepare_to_response(self):
         return {
+            'id': str(self.id),
             'name': self.name,
             'info': self.info,
             'date_created': int(self.date_created.timestamp()),

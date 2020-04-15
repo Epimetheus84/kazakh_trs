@@ -10,6 +10,7 @@ def login():
     if 'password' not in data or 'login' not in data:
         abort(401)
 
+    print(data['login'], data['password'])
     user = AuthHelper.login(data['login'], data['password'])
     if not user:
         abort(401)
