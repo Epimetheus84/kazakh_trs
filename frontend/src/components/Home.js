@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Registration from './auth/Registration';
 import Login from './auth/Login';
 import {WrapPaper, Button} from './auth/styles';
-import axios from 'axios';
 
 class Home extends Component {
     constructor(props){
@@ -19,7 +18,7 @@ class Home extends Component {
     }
 
     saveToken(token) {
-        sessionStorage.setItem('tokenData', JSON.stringify(token));
+        sessionStorage.setItem('tokenData', token);
     }
 
     handleShowComponent(dataToShow, dataToHide){

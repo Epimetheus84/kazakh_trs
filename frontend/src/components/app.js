@@ -6,8 +6,8 @@ import ModeratorCabinet from "./ModeratorCabinet";
 import DeveloperCabinet from "./DeveloperCabinet";
 import AdminCabinet from "./AdminCabinet";
 import CommonCabinet from "./CommonCabinet";
-import axios from 'axios';
 import NavbarReact from "./navigation/navigationPanel";
+import axios from "axios";
 
 export default class App extends Component {
 
@@ -16,12 +16,39 @@ export default class App extends Component {
 
     this.state={
       loggedInStatus:"NOT_LOGGED_IN",
-      user: {}
+      user: {},
+      users: []
     }
 
     this.handleLogout = this.handleLogout.bind(this);
     this.handleLoggin = this.handleLoggin.bind(this);
     this.checkLoginStatus = this.checkLoginStatus.bind(this);
+    // this.showUsers = this.showUsers.bind(this);
+  }
+
+  showUsers=async()=>{
+    const sessionToken = "token "+ sessionStorage.tokenData;
+
+    let res = await axios.get("http://26.140.14.182:4444/users/list", {
+      headers: {
+          Authorization: sessionToken
+      }
+    });
+    let data = res.data;
+      // this.setState({ users: data });
+      console.log('res',data);
+      
+      return ( data
+        // <div>
+        //     {data.length === 0 ? (
+        //         <div>Loading...</div>
+        //     ) : (
+        //         this.state.users.map((e, i) => {console.log('res',e);
+        //             return <div key={i}>{e.first_name}</div>;
+        //          })
+        //     )}
+        // </div>
+    );
   }
 
   handleLogout(){
@@ -109,7 +136,12 @@ export default class App extends Component {
                 exact 
                 path={"/cabinetdeveloper"} 
                 render={props => (
-                  <DeveloperCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <DeveloperCabinet 
+                    {...props} 
+                    loggedInStatus={this.state.loggedInStatus} 
+                    showUsers={this.showUsers}
+                    users={this.state.users}
+                    />
                 )} 
               />
             </Switch>

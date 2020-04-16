@@ -46,6 +46,7 @@ class Login extends Component {
         console.log("form submitted");
         event.preventDefault();
     }
+    
     handleChange(event){
         this.setState({
             [event.target.name]: event.target.value
