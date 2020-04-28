@@ -67,23 +67,26 @@ class Home extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Home</h1>
+            <div style={{display:"flex", flexDirection:"column",alignItems:"center", width: "1100px"}}>
+                    <br/>
+                {/* <h1>Home</h1>
                 <h1>Status: {this.props.loggedInStatus}</h1>
-                <button onClick={()=> this.handleLogoutClick()}>Logout</button>
+                <button onClick={()=> this.handleLogoutClick()}>Logout</button> */}
                 <WrapPaper>
                     <Button 
-                            type='submit'
-                            onClick ={()=>this.handleShowComponent("showLogin","showRegister")}
-                        >
-                            Войти
+                        primary
+                        type='submit'
+                        onClick ={()=>this.handleShowComponent("showLogin","showRegister")}
+                    >
+                        Войти
                     </Button>
-                    <Button 
-                            type='submit'
-                            onClick ={()=>this.handleShowComponent("showRegister","showLogin")}
-                        >
+                    {/* <Button 
+                        primary
+                        type='submit'
+                        onClick ={()=>this.handleShowComponent("showRegister","showLogin")}
+                    >
                             Зарегистрироваться
-                    </Button>
+                    </Button> */}
                 </WrapPaper>
                 {this.state.showRegister
                     ? <Registration handleSuccesfulAuth={this.handleSuccesfulAuth}/>

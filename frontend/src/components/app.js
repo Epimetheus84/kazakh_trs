@@ -17,46 +17,72 @@ export default class App extends Component {
     this.state={
       loggedInStatus:"NOT_LOGGED_IN",
       user: {},
-      users: []
+      usersList:[],
+      companiesList:[]
     }
 
     this.handleLogout = this.handleLogout.bind(this);
     this.handleLoggin = this.handleLoggin.bind(this);
     this.checkLoginStatus = this.checkLoginStatus.bind(this);
-    // this.showUsers = this.showUsers.bind(this);
+    this.saveUsersList = this.saveUsersList.bind(this);
+    this.saveCompaniesList = this.saveCompaniesList.bind(this);
+    this.showUsers = this.showUsers.bind(this);
+    this.showCompanies = this.showCompanies.bind(this);
+  }
+    showUsers = async() => {
+      const sessionToken = "token "+ sessionStorage.tokenData;
+      let res = await axios.get("http://26.140.14.182:4444/users/list", {
+          headers: {
+              Authorization: sessionToken
+          }
+      });
+      let {data} = res;
+      this.saveUsersList(data);
+  }
+  
+  showCompanies = async() => {
+      const sessionToken = "token "+ sessionStorage.tokenData;
+      let res = await axios.get("http://26.140.14.182:4444/companies/list", {
+          headers: {
+              Authorization: sessionToken
+          }
+      });
+      let {data} = res;
+      this.saveCompaniesList(data);
   }
 
-  showUsers=async()=>{
-    const sessionToken = "token "+ sessionStorage.tokenData;
+  saveCompaniesList(data){
+    if(data){
+      this.setState(state => {
+        const companiesList = [...state.companiesList, ...data];
+        return {
+          companiesList,
+          data: '',
+        };
+      });
+    }
+  }
 
-    let res = await axios.get("http://26.140.14.182:4444/users/list", {
-      headers: {
-          Authorization: sessionToken
-      }
-    });
-    let data = res.data;
-      // this.setState({ users: data });
-      console.log('res',data);
-      
-      return ( data
-        // <div>
-        //     {data.length === 0 ? (
-        //         <div>Loading...</div>
-        //     ) : (
-        //         this.state.users.map((e, i) => {console.log('res',e);
-        //             return <div key={i}>{e.first_name}</div>;
-        //          })
-        //     )}
-        // </div>
-    );
+  saveUsersList(data){
+    if(data){
+      this.setState(state => {
+        const usersList = [...state.usersList, ...data];
+        return {
+          usersList,
+          data: '',
+        };
+      });
+    }
   }
 
   handleLogout(){
+    sessionStorage.removeItem('tokenData');
+   
     this.setState({
       loggedInStatus: "NOT_LOGGED_IN",
       user: {}
     });
-    delete sessionStorage.tokenData;
+    
   }
 
   handleLoggin(data){
@@ -72,7 +98,6 @@ export default class App extends Component {
     if(sessionStorage.tokenData && this.state.loggedInStatus === "NOT_LOGGED_IN"){
       this.setState({
         loggedInStatus: "LOGGED_IN",
-        user: response.data.user
       })
     } else if( !sessionStorage.tokenData && this.state.loggedInStatus === "LOGGED_IN"){
       this.setState({
@@ -115,21 +140,39 @@ export default class App extends Component {
                 exact 
                 path={"/cabinetcommon"} 
                 render={props => (
-                  <CommonCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <CommonCabinet 
+                    {...props} 
+                    loggedInStatus={this.state.loggedInStatus} 
+
+                    />
                 )} 
               />
               <Route 
                 exact 
                 path={"/cabinetmoderator"} 
                 render={props => (
-                  <ModeratorCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <ModeratorCabinet 
+                    {...props} 
+                    loggedInStatus={this.state.loggedInStatus} 
+                    showUsers={this.showUsers}
+                    showCompanies={this.showCompanies}
+                    users={this.state.usersList}
+                    companies={this.state.companiesList}
+                    />
                 )} 
               />
               <Route 
                 exact 
                 path={"/cabinetadmin"} 
                 render={props => (
-                  <AdminCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <AdminCabinet 
+                    {...props} 
+                    loggedInStatus={this.state.loggedInStatus}
+                    showUsers={this.showUsers}
+                    showCompanies={this.showCompanies}
+                    users={this.state.usersList}
+                    companies={this.state.companiesList}
+                    />
                 )} 
               />
               <Route 
@@ -140,7 +183,9 @@ export default class App extends Component {
                     {...props} 
                     loggedInStatus={this.state.loggedInStatus} 
                     showUsers={this.showUsers}
-                    users={this.state.users}
+                    showCompanies={this.showCompanies}
+                    users={this.state.usersList}
+                    companies={this.state.companiesList}
                     />
                 )} 
               />

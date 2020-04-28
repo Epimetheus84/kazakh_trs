@@ -1,11 +1,16 @@
-import React from 'react';
-import axios from 'axios';
-import {WrapUserList, UserIcon, Details, UsersListWrap} from './styles';
+import React, {useState} from 'react';
+import {WrapUserList, UserIcon, UserIconDesc, Details, UsersListWrap} from './styles';
+import Registration from '../auth/Registration'
 
+const CompaniesList = (props) => {
+    const [showRegister, setShowRegister] = useState(false);
 
-const UsersList = () => {
-    let variable;
-    let show;
+    let companyList = [];
+    companyList=[...companyList, ...props.companies];
+
+    const showRegisterCompany = () => {
+        setShowRegister(!showRegister); 
+    }
 
     return (
         <WrapUserList>
@@ -13,11 +18,25 @@ const UsersList = () => {
                 Компании:      
             </Details>
             <UsersListWrap>
-                <UserIcon>+</UserIcon>
-                {show}
+                <UserIcon onClick={showRegisterCompany}>+</UserIcon>
+                {
+                    companyList.map((item, index) => {
+                        return (
+                        <UserIconDesc key={index}>
+                            <div>Company: {item.name}</div>
+                            <div>Info: {item.info}</div>
+                        </UserIconDesc>
+                        )
+                    })
+                }
             </UsersListWrap>
+            {showRegister
+                ? <Registration  
+                    showRegisterCompany={showRegisterCompany}
+                />
+                : null}
         </WrapUserList>
     )
 }
 
-export default UsersList;
+export default CompaniesList;

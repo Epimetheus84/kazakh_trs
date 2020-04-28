@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import {WrapUserList, UserIcon, Details, UsersListWrap} from './styles';
+import {WrapUserList, UserIcon, UserIconDesc, Details, UsersListWrap, Button} from './styles';
 import Registration from '../auth/Registration';
+
 
 const UsersList = (props) => {
     const [showRegister, setShowRegister] = useState(false);
-    // const sessionToken = "token "+ sessionStorage.tokenData;
-    // let variable;
-    let show;
-    
-    console.log(props.users,"show")
+
+    let userList = [];
+    userList=[...userList, ...props.users];
+
+    const showRegisterComponent = () => {
+        setShowRegister(!showRegister); 
+    }
 
     return (
         <WrapUserList>
@@ -17,14 +19,29 @@ const UsersList = (props) => {
                 Пользователи:      
             </Details>
             <UsersListWrap>
-                <UserIcon onClick={()=>props.setShowRegister(true)}>+</UserIcon>
+                <UserIcon onClick={showRegisterComponent}>+</UserIcon>
                 {
-                    show
+                    userList.map((item, index) => {
+                        return (
+                        <UserIconDesc key={index}>
+                            <div>Name: {item.first_name}</div>
+                            <div>Surname: {item.last_name}</div>
+                            <div>Position: {
+                                (item.role===10)?"Developer":((item.role===0)?"Employer":(item.role===1)?"Moderator":"Admin")
+                            }
+                            </div>
+                            <div>Email: {item.email}</div>
+                        </UserIconDesc>
+                        )
+                    })
                 }
             </UsersListWrap>
-            {
-                showRegister && <Registration setShowRegister={props.setShowRegister}/>
-            }
+            {showRegister
+                ? <Registration  
+                    showRegisterComponent={showRegisterComponent}
+                    companies={props.companies}
+                />
+                : null}
         </WrapUserList>
     )
 }
