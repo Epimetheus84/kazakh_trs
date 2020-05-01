@@ -17,9 +17,13 @@ def list_companies():
 
     offset = (page - 1) * items_per_page
 
-    list_companies = Company.objects.skip(offset).limit(items_per_page).get()
+    list_companies = Company.objects.skip(offset).limit(items_per_page)
+    result_list = []
+    for user in list_companies:
+        user_data = user.prepare_to_response()
+        result_list.append(user_data)
 
-    return list_companies.to_json()
+    return jsonify(result_list)
 
 
 @companies.route('/show/<file_path>', methods=['GET'])
@@ -63,6 +67,7 @@ def create_company():
         abort(403)
 
     data = request.json
+    print(data)
 
     company = Company()
     company.insert_data(data)

@@ -1,4 +1,6 @@
-from flask import Blueprint, request, abort, jsonify, g
+import os
+
+from flask import Blueprint, request, abort, jsonify, g, send_from_directory
 from rest.helpers.auth import auth
 
 from orm.mongo.image import Image
@@ -95,6 +97,7 @@ def create_image():
     if file.filename == '':
         return jsonify({'error': 'File not uploaded.'}), 400
 
+    image.generate_file_path()
     image.original_filename = file.filename
     image.uploaded_by = g.current_user.login
     image.file_extension = image.get_uploaded_file_ext()
@@ -123,3 +126,9 @@ def delete_image(file_path):
     image.delete()
 
     return jsonify(success=True)
+
+
+@images.route('/uploads/<path:path>')
+def send_images(path):
+    return send_from_directory(os.path.join('..', 'data', 'production', 'images'), filename=path)
+

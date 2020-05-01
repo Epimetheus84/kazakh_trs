@@ -16,7 +16,7 @@ Connection.connect()
 FILE_PATH_LENGTH = 16
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-UPLOAD_FOLDER = '/'
+UPLOAD_FOLDER = os.path.join('.', 'data', 'production', 'images')
 
 
 class Image(Document):
@@ -60,20 +60,21 @@ class Image(Document):
         return True
 
     def generate_file_path(self):
-        self.file_path = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(FILE_PATH_LENGTH))
+        self.file_path = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(FILE_PATH_LENGTH))
 
     def prepare_to_response(self):
         return {
             'original_filename': self.original_filename,
             'status': self.status,
             'coordinates': self.coordinates,
-            'uploaded_by': User.objects(login=self.uploaded_by).get() if User.objects(login=self.uploaded_by) else {},
+            'uploaded_by': User.objects(login=self.uploaded_by).get().login if User.objects(login=self.uploaded_by) else {},
             'date_created': int(self.date_created.timestamp()),
             'date_modified': int(self.date_modified.timestamp()),
-            'data': self.get_base64()
+            'file_url': '/images/uploads/' + self.uploaded_by + '/' + self.file_path + '/original.' + self.file_extension
         }
 
     def to_json(self):
+        print(self.prepare_to_response())
         return json.dumps(self.prepare_to_response())
 
     def get_uploaded_file_ext(self):
@@ -83,6 +84,18 @@ class Image(Document):
         return os.path.join(UPLOAD_FOLDER, self.uploaded_by, self.file_path, 'original.' + self.file_extension)
 
     def upload(self, file):
+        if not os.path.exists(os.path.join(UPLOAD_FOLDER, self.uploaded_by)):
+            try:
+                os.makedirs(os.path.join(UPLOAD_FOLDER, self.uploaded_by))
+            except FileExistsError:
+                print('folder ' + os.path.join(UPLOAD_FOLDER, self.uploaded_by) + ' already exits')
+
+        if not os.path.exists(os.path.join(UPLOAD_FOLDER, self.uploaded_by, self.file_path)):
+            try:
+                os.makedirs(os.path.join(UPLOAD_FOLDER, self.uploaded_by, self.file_path))
+            except FileExistsError:
+                print('folder ' + os.path.join(UPLOAD_FOLDER, self.uploaded_by, self.file_path) + ' already exits')
+
         file_ext = self.get_uploaded_file_ext()
         if file and file_ext in ALLOWED_EXTENSIONS:
             full_file_path = self.get_full_file_path()
@@ -91,6 +104,7 @@ class Image(Document):
 
         return False
 
+    # deprecated
     def get_base64(self):
         full_file_path = self.get_full_file_path()
         with open(full_file_path, "rb") as image_file:

@@ -81,7 +81,13 @@ def create_user():
     except mongoengine.errors.NotUniqueError as exc:
         for field in user._fields_ordered:
             if field in str(exc):
-                return jsonify({'error': 'field {} is not unique'.format(field)}), 400
+                if field == 'id': continue
+                return jsonify({'error': 'запись с таким \"{}\" уже существует'.format(field)}), 400
+    except mongoengine.errors.ValidationError as exc:
+        for field in user._fields_ordered:
+            if field in str(exc):
+                if field == 'id': continue
+                return jsonify({'error': 'поле \"{}\" не может быть пустым  '.format(field)}), 400
 
     return user.to_json()   
 
