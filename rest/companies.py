@@ -45,7 +45,7 @@ def show_company(file_path):
 @auth.login_required
 def update_company(file_path):
     company = Company.objects(file_path=file_path)
-    data = request.form
+    data = request.json
 
     if not company:
         abort(404)
@@ -67,7 +67,6 @@ def create_company():
         abort(403)
 
     data = request.json
-    print(data)
 
     company = Company()
     company.insert_data(data)

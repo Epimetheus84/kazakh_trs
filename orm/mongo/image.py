@@ -1,5 +1,6 @@
 import base64
 import os
+import glob
 import string
 import json
 import random
@@ -36,24 +37,25 @@ class Image(Document):
     text = StringField()
 
     def update_data(self, data):
-        if 'original_filename' in data:
-            self.original_filename = data['original_filename']
-
-        if 'status' in data:
-            self.status = data['status']
-
         if 'coordinates' in data:
             self.coordinates = data['coordinates']
+
+        if 'text' in data:
+            self.text = data['text']
+
+        print(data)
+        self.date_modified = datetime.datetime.utcnow()
+
+    def insert_data(self, data):
+        if 'original_filename' in data:
+            self.original_filename = data['original_filename']
 
         if 'uploaded_by' in data:
             self.uploaded_by = data['uploaded_by']
 
-        self.date_modified = datetime.datetime.utcnow()
-
         if self.original_filename == '':
             self.original_filename = self.file_path
 
-    def insert_data(self, data):
         self.update_data(data)
 
     def can_be_marked(self):
@@ -70,7 +72,9 @@ class Image(Document):
             'uploaded_by': User.objects(login=self.uploaded_by).get().login if User.objects(login=self.uploaded_by) else {},
             'date_created': int(self.date_created.timestamp()),
             'date_modified': int(self.date_modified.timestamp()),
-            'file_url': '/images/uploads/' + self.uploaded_by + '/' + self.file_path + '/original.' + self.file_extension
+            'file_path': self.file_path,
+            'file_url': '/images/uploads/' + self.uploaded_by + '/' + self.file_path + '/original.' + self.file_extension,
+            'text': self.text
         }
 
     def to_json(self):
@@ -80,8 +84,11 @@ class Image(Document):
     def get_uploaded_file_ext(self):
         return '.' in self.original_filename and self.original_filename.rsplit('.', 1)[1].lower()
 
+    def get_full_folder_path(self):
+        return os.path.join(UPLOAD_FOLDER, self.uploaded_by, self.file_path)
+
     def get_full_file_path(self):
-        return os.path.join(UPLOAD_FOLDER, self.uploaded_by, self.file_path, 'original.' + self.file_extension)
+        return os.path.join(self.get_full_folder_path(), 'original.' + self.file_extension)
 
     def upload(self, file):
         if not os.path.exists(os.path.join(UPLOAD_FOLDER, self.uploaded_by)):
@@ -104,9 +111,12 @@ class Image(Document):
 
         return False
 
-    # deprecated
-    def get_base64(self):
-        full_file_path = self.get_full_file_path()
-        with open(full_file_path, "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read())
-            return encoded_string
+    def delete_file(self):
+        files = glob.glob(os.path.join(self.get_full_folder_path(), '*'), recursive=True)
+        for f in files:
+            try:
+                os.remove(f)
+            except OSError as e:
+                print("Error: %s : %s" % (f, e.strerror))
+
+        os.rmdir(self.get_full_folder_path())

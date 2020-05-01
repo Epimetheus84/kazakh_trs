@@ -98,7 +98,10 @@ class User(Document):
     def has_access_to_see_image(self):
         return True
 
-    def has_access_to_update_image(self):
+    def has_access_to_update_image(self, uploaded_by):
+        if self.login == uploaded_by:
+            return True
+
         return self.role == ROLE_ADMIN or self.role == ROLE_DEVELOPER
 
     def has_access_to_create_image(self):
@@ -116,7 +119,8 @@ class User(Document):
             'middle_name': self.middle_name,
             'date_created': int(self.date_created.timestamp()),
             'date_modified': int(self.date_modified.timestamp()),
-            'company': Company.objects(id=self.company).get().prepare_to_response() if Company.objects(id=self.company) else {},
+            'company': Company.objects(id=self.company).get().prepare_to_response() if Company.objects(
+                id=self.company) else {},
             'role': self.role,
         }
 

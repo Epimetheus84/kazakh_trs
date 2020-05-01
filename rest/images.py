@@ -37,9 +37,13 @@ def list_images():
 
     offset = (page - 1) * items_per_page
 
-    list_images = Image.objects.skip(offset).limit(items_per_page).get()
+    list_images = Image.objects.skip(offset).limit(items_per_page)
+    result_list = []
+    for user in list_images:
+        user_data = user.prepare_to_response()
+        result_list.append(user_data)
 
-    return list_images.to_json()
+    return jsonify(result_list)
 
 
 @images.route('/show/<file_path>', methods=['GET'])
@@ -61,16 +65,15 @@ def show_image(file_path):
 @images.route('/update/<file_path>', methods=['PUT'])
 @auth.login_required
 def update_image(file_path):
-    if not g.current_user.has_access_to_update_image():
-        abort(403)
-
     image = Image.objects(file_path=file_path)
-    data = request.form
+    data = request.json
 
     if not image:
         abort(404)
 
     image = image.get()
+    if not g.current_user.has_access_to_update_image(image.uploaded_by):
+        abort(403)
 
     image.update_data(data)
     image.save()
@@ -129,6 +132,6 @@ def delete_image(file_path):
 
 
 @images.route('/uploads/<path:path>')
-def send_images(path):
+def serve_images(path):
     return send_from_directory(os.path.join('..', 'data', 'production', 'images'), filename=path)
 
