@@ -14,18 +14,18 @@ class FilePaths:
 	"""filenames and paths to data"""
 	fnCharList = '../model/charList.txt'
 	fnAccuracy = '../model/accuracy.txt'
-	fnTrain = '../data/'
-	fnInfer = '../data/test.png'
-	fnCorpus = '../data/corpus.txt'
+	fnTrain = '../../data/development/kazakh/'
+	fnInfer = '../../data/development/kazakh/images/42304.png'
+	fnCorpus = '../../data/corpus.txt'
 
 
 class RecognitionModel:
 
 	@staticmethod
-	def infer(model, fnImg, shape):
+	def infer(model, fnImg, shape=None):
 		"""recognize text in image provided by file path"""
 		img = preprocess(cv2.imread(fnImg, cv2.IMREAD_GRAYSCALE), Model.imgSize)
-		img = img[shape[0]:shape[2], shape[1]:shape[3]]
+		# img = img[shape[0]:shape[2], shape[1]:shape[3]]
 		batch = Batch(None, [img])
 		(recognized, probability) = model.inferBatch(batch, True)
 		print('Recognized:', '"' + recognized[0] + '"')
@@ -56,10 +56,10 @@ class RecognitionModel:
 			loader = DataLoader(FilePaths.fnTrain, Model.batchSize, Model.imgSize, Model.maxTextLen)
 
 			# save characters of model for inference mode
-			open(FilePaths.fnCharList, 'w').write(str().join(loader.charList))
+			open(FilePaths.fnCharList, 'w', encoding='utf-8').write(str().join(loader.charList))
 
 			# save words contained in dataset into file
-			open(FilePaths.fnCorpus, 'w').write(str(' ').join(loader.trainWords + loader.validationWords))
+			open(FilePaths.fnCorpus, 'w', encoding='utf-8').write(str(' ').join(loader.trainWords + loader.validationWords))
 
 			# execute training or validation
 			if args.train:
@@ -72,7 +72,7 @@ class RecognitionModel:
 		# infer text on test image
 		else:
 			print(open(FilePaths.fnAccuracy).read())
-			model = Model(open(FilePaths.fnCharList).read(), decoderType, mustRestore=True, dump=args.dump)
+			model = Model(open(FilePaths.fnCharList, encoding='utf-8').read(), decoderType, mustRestore=True, dump=args.dump)
 			RecognitionModel.infer(model, FilePaths.fnInfer)
 
 	@staticmethod

@@ -69,7 +69,9 @@ class User(Document):
         if 'role' in data:
             self.role = data['role']
 
-        if 'company' in data:
+        if 'company' in data \
+                and data['company'] \
+                and Company.objects(id=data['company']):
             self.company = data['company']
 
         self.date_modified = datetime.datetime.utcnow()
@@ -120,7 +122,7 @@ class User(Document):
             'date_created': int(self.date_created.timestamp()),
             'date_modified': int(self.date_modified.timestamp()),
             'company': Company.objects(id=self.company).get().prepare_to_response() if Company.objects(
-                id=self.company) else {},
+                id=self.company) else '',
             'role': self.role,
         }
 

@@ -26,10 +26,10 @@ def list_companies():
     return jsonify(result_list)
 
 
-@companies.route('/show/<file_path>', methods=['GET'])
+@companies.route('/show/<oid>', methods=['GET'])
 @auth.login_required
-def show_company(file_path):
-    company = Company.objects(file_path=file_path)
+def show_company(oid):
+    company = Company.objects(id=oid)
 
     if not company:
         abort(404)
@@ -41,10 +41,10 @@ def show_company(file_path):
     return company.to_json()
 
 
-@companies.route('/update/<file_path>', methods=['PUT'])
+@companies.route('/update/<oid>>', methods=['PUT'])
 @auth.login_required
-def update_company(file_path):
-    company = Company.objects(file_path=file_path)
+def update_company(oid):
+    company = Company.objects(id=oid)
     data = request.json
 
     if not company:
@@ -75,10 +75,10 @@ def create_company():
     return company.to_json()
 
 
-@companies.route('/delete/<file_path>', methods=['DELETE'])
+@companies.route('/delete/<oid>', methods=['DELETE'])
 @auth.login_required
-def delete_company(file_path):
-    company = Company.objects(file_path=file_path)
+def delete_company(oid):
+    company = Company.objects(id=oid)
 
     if not company:
         abort(404)

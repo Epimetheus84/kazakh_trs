@@ -28,32 +28,25 @@ class DataLoader:
 	def __init__(self, filePath, batchSize, imgSize, maxTextLen):
 		"loader for dataset at given location, preprocess images and text according to parameters"
 
-		assert filePath[-1]=='/'
-
 		self.dataAugmentation = False
 		self.currIdx = 0
 		self.batchSize = batchSize
 		self.imgSize = imgSize
 		self.samples = []
 	
-		f=open(filePath+'words.txt')
+		f=open(filePath+'words.txt', encoding='utf-8')
 		chars = set()
-		bad_samples = []
-		bad_samples_reference = ['a01-117-05-02.png', 'r06-022-03-05.png']
 		for line in f:
+			bad_samples = []
 			# ignore comment line
 			if not line or line[0]=='#':
 				continue
 			
 			lineSplit = line.strip().split(' ')
-			assert len(lineSplit) >= 9
-			
-			# filename: part1-part2-part3 --> part1/part1-part2/part1-part2-part3.png
-			fileNameSplit = lineSplit[0].split('-')
-			fileName = filePath + 'words/' + lineSplit[0] + '/' + fileNameSplit[0] + '-' + fileNameSplit[1] + '/' + lineSplit[0] + '.png'
 
-			# GT text are columns starting at 9
-			gtText = self.truncateLabel(' '.join(lineSplit[8:]), maxTextLen)
+			fileName = filePath + 'images/' + lineSplit[0] + '.png'
+
+			gtText = self.truncateLabel(' '.join(lineSplit[1:]), maxTextLen)
 			chars = chars.union(set(list(gtText)))
 
 			# check if image is not empty
@@ -63,11 +56,6 @@ class DataLoader:
 
 			# put sample into list
 			self.samples.append(Sample(gtText, fileName))
-
-		# some images in the IAM dataset are known to be damaged, don't show warning for them
-		if set(bad_samples) != set(bad_samples_reference):
-			print("Warning, damaged images found:", bad_samples)
-			print("Damaged images expected:", bad_samples_reference)
 
 		# split into training and validation set: 95% - 5%
 		splitIdx = int(0.95 * len(self.samples))
