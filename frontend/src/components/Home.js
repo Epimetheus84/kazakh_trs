@@ -9,7 +9,8 @@ class Home extends Component {
 
         this.state={
             showLogin:false,
-            showRegister: false
+            showRegister: false,
+            currentUser: null
           }
 
         this.handleSuccesfulAuth = this.handleSuccesfulAuth.bind(this);
@@ -29,7 +30,7 @@ class Home extends Component {
     }
 
     handleSuccesfulAuth = async (token, userconfig)=>{
-        this.props.handleLoggin(token);
+        // this.props.handleLoggin(token);
         // console.log("ПИХАЕМ ЭТОТ ТОКЕН",`token ${token}`);
 
         // let res = await axios.get("http://26.140.14.182:4444/cabinet/me", {
@@ -47,7 +48,8 @@ class Home extends Component {
           .then(res => {return res.json();})
           .then(
               data => {
-                  console.log(data);
+                    this.props.handleLoggin(data);
+                    console.log(data);
                   if(data.role === 10){
                     this.props.history.push("/cabinetdeveloper");
                   } else if(data.role === 0){
@@ -88,9 +90,9 @@ class Home extends Component {
                             Зарегистрироваться
                     </Button> */}
                 </WrapPaper>
-                {this.state.showRegister
+                {/* {this.state.showRegister
                     ? <Registration handleSuccesfulAuth={this.handleSuccesfulAuth}/>
-                    : null}
+                    : null} */}
                 {this.state.showLogin
                     ? <Login handleSuccesfulAuth={this.handleSuccesfulAuth} saveToken={this.saveToken}/>
                     : null}

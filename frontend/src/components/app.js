@@ -16,9 +16,10 @@ export default class App extends Component {
 
     this.state={
       loggedInStatus:"NOT_LOGGED_IN",
-      user: {},
+      user: null,
       usersList:[],
-      companiesList:[]
+      companiesList:[],
+      imagesList:[]
     }
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -26,8 +27,10 @@ export default class App extends Component {
     this.checkLoginStatus = this.checkLoginStatus.bind(this);
     this.saveUsersList = this.saveUsersList.bind(this);
     this.saveCompaniesList = this.saveCompaniesList.bind(this);
+    this.saveImagesList = this.saveImagesList.bind(this);
     this.showUsers = this.showUsers.bind(this);
     this.showCompanies = this.showCompanies.bind(this);
+    this.showImages = this.showImages.bind(this);
   }
     showUsers = async() => {
       const sessionToken = "token "+ sessionStorage.tokenData;
@@ -50,6 +53,17 @@ export default class App extends Component {
       let {data} = res;
       this.saveCompaniesList(data);
   }
+
+  showImages = async() => {
+    const sessionToken = "token "+ sessionStorage.tokenData;
+    let res = await axios.get("http://26.140.14.182:4444/images/list", {
+        headers: {
+            Authorization: sessionToken
+        }
+    });
+    let {data} = res;
+    this.saveImagesList(data);
+}
 
   saveCompaniesList(data){
     if(data){
@@ -75,12 +89,24 @@ export default class App extends Component {
     }
   }
 
+  saveImagesList(data){
+    if(data){
+      this.setState(state => {
+        const imagesList = [...state.imagesList, ...data];
+        return {
+          imagesList,
+          data: '',
+        };
+      });
+    }
+  }
+
   handleLogout(){
     sessionStorage.removeItem('tokenData');
    
     this.setState({
       loggedInStatus: "NOT_LOGGED_IN",
-      user: {}
+      user: null
     });
     
   }
@@ -142,8 +168,8 @@ export default class App extends Component {
                 render={props => (
                   <CommonCabinet 
                     {...props} 
-                    loggedInStatus={this.state.loggedInStatus} 
-
+                    loggedInStatus={this.state.loggedInStatus}
+                    currentUser={this.state.user}
                     />
                 )} 
               />
@@ -158,6 +184,7 @@ export default class App extends Component {
                     showCompanies={this.showCompanies}
                     users={this.state.usersList}
                     companies={this.state.companiesList}
+                    currentUser={this.state.user}
                     />
                 )} 
               />
@@ -172,6 +199,9 @@ export default class App extends Component {
                     showCompanies={this.showCompanies}
                     users={this.state.usersList}
                     companies={this.state.companiesList}
+                    images={this.state.imagesList}
+                    showImages={this.showImages}
+                    currentUser={this.state.user}
                     />
                 )} 
               />
@@ -186,6 +216,9 @@ export default class App extends Component {
                     showCompanies={this.showCompanies}
                     users={this.state.usersList}
                     companies={this.state.companiesList}
+                    images={this.state.imagesList}
+                    showImages={this.showImages}
+                    currentUser={this.state.user}
                     />
                 )} 
               />

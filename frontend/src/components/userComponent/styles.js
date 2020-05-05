@@ -78,10 +78,4 @@ export const Details = styled.div`
     padding: 0.25em 0.5em;
     border: 2px dotted #90d2c6;
     border-radius: 10px;
-
-    /* border: none;
-    outline: none;
-    background: none;
-    box-shadow: inset 5px 5px 5px #cbced1,
-                inset -5px -5px 5px #ffffff; */
 `;

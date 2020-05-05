@@ -42,7 +42,7 @@ class Login extends Component {
             if(error.response.status === 401){
                 alert("Введен неправильный пароль или логин");
             }
-            console.log("login error", error);
+            console.log("login error", error.response.status);
         });
 
         console.log("form submitted");

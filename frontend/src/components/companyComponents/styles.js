@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import deleteIcon from './icons/button.png';
 
 export const WrapPaper = styled.div`
     margin-top: 10px;
@@ -59,8 +60,12 @@ export const UserIcon = styled.div`
     padding: 10px;
     cursor: pointer;
 `;
-export const UserIconDesc = styled.div`
-    width: 90%;
+
+export const AddImageInput = styled.input`
+    display: none;
+`;
+export const AddImageIcon = styled.label`
+    width: 55px;
     color: white;
     background-color: #90d2c6;
     font-size: 1em;
@@ -68,8 +73,58 @@ export const UserIconDesc = styled.div`
     margin: 5px;
     padding: 10px;
     cursor: pointer;
+`;
+
+export const AddImageButton = styled.button`
+    color: white;
+    background-color: #90d2c6;
+    font-size: 1em;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+`;
+
+export const UserDescWrap = styled.div`
+    width: 90%;
+    background-color: #90d2c6;
+    font-size: 1em;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+export const UserIconDesc = styled.div`
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
+
+    &:hover{
+        color: red;
+    }
+`;
+
+export const ImageDesc = styled.div`
+    width: 90%;
+    background-color: #90d2c6;
+    color: white;
+    font-size: 1em;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+
+    &:hover{
+        color: red;
+    }
 `;
 
 export const Logo = styled.input`
@@ -103,4 +158,20 @@ export const Button = styled.button`
     border: 2px solid #90d2c6;
     border-radius: 10px;
     cursor: pointer;
+`;
+
+export const DeleteIcon = styled.div`
+    background-image: url(${deleteIcon});
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: cover;
+    cursor: pointer;
+
+    &:hover{
+        background-color: red;
+        border-radius: 50%;
+    }
 `;

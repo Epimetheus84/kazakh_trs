@@ -18,12 +18,11 @@ const WrapPage = styled.div`
 `;
 
 const AdminCabinet = (props) => {
-    console.log("wer",props)
     useEffect(()=>{
         props.showUsers();
-        props.showCompanies();
+        props.showImages();
     },[])
-    
+    console.log("Admin props", props)
     return (
         <WrapPage>
             {/* <div>
@@ -31,10 +30,12 @@ const AdminCabinet = (props) => {
                 <h1>Status: {props.loggedInStatus}</h1>
             </div> */}
             <div style={{display: 'flex'}}>
-                <UserProfile  users={props.users}/>
-                <UsersList  users={props.users} />
+                <UserProfile  users={props.users} />
+                {props.currentUser && <UsersList  users={props.users} currentUser={props.currentUser}/>}
+                {!props.currentUser && <UsersList  users={props.users} />}
+                
             </div>
-            <DocumentsList/>
+            <DocumentsList images={props.images} companies={props.companies}/>
             
         </WrapPage>
     )

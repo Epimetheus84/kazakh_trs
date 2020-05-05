@@ -4,7 +4,6 @@ import UserProfile from './userComponent/UserProfile';
 import UsersList from './companyComponents/UsersList';
 import CompaniesList from './companyComponents/CompaniesList';
 import DocumentsList from './companyComponents/Documents';
-import axios from "axios";
 
 const WrapPage = styled.div`
     margin-top: 10px;
@@ -28,9 +27,15 @@ export default class DeveloperCabinet extends Component{
     componentDidMount() {
         this.props.showUsers();
         this.props.showCompanies();
+        this.props.showImages();
     }
     
-    render(){
+    
+    render(){console.log('Devprops',this.props)
+    let user = null;
+    if(this.props.currentUser){
+        user=this.props.currentUser
+    }
         return (
             <WrapPage>
                 {/* <div>
@@ -39,10 +44,10 @@ export default class DeveloperCabinet extends Component{
                 </div> */}
                 <div style={{display: 'flex'}}>
                     <UserProfile/>
-                    <UsersList users={this.props.users} companies={this.props.companies}/>
+                    <UsersList users={this.props.users} companies={this.props.companies} currentUser={user}/>
                     <CompaniesList companies={this.props.companies}/>
                 </div>
-                <DocumentsList/>
+                <DocumentsList images={this.props.images} companies={this.props.companies}/>
                 
             </WrapPage>
         )
