@@ -1,36 +1,33 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import ProfileCompany from './companyComponents/CompanyProfile';
-import UsersList from './companyComponents/UsersList';
+import UserProfile from './userComponent/UserProfile';
 import DocumentsList from './companyComponents/Documents';
 
 const WrapPage = styled.div`
     margin-top: 10px;
     padding: 25px;
-    background: #ffffff;
-    width: 1340px;
-    /* height: 200px; */
-    box-shadow:  0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    background: transparent;
+    width: 1100px;
     display: flex;
     flex-direction: column;
     align-items: space-around;
-    justify-content: space-around;
+    justify-content: space-between;
     border-radius: 10px;
     border-color: gray;
 `;
 
 const CommonCabinet = (props) => {
+    useEffect(()=>{
+        props.showImages();
+    },[])
     return (
         <WrapPage>
-            <div>
-                <h1>User Cabinet</h1>
-                <h1>Status: {props.loggedInStatus}</h1>
-            </div>
             <div style={{display: 'flex'}}>
-                <ProfileCompany/>
-                <UsersList/>
+                <UserProfile/>
+                <DocumentsList images={props.images} style={{marginTop:"10px"}}/>
             </div>
-            <DocumentsList/>
+            
             
         </WrapPage>
     )

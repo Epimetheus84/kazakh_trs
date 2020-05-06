@@ -31,23 +31,19 @@ export default class DeveloperCabinet extends Component{
     }
     
     
-    render(){console.log('Devprops',this.props)
+    render(){
     let user = null;
     if(this.props.currentUser){
         user=this.props.currentUser
     }
         return (
             <WrapPage>
-                {/* <div>
-                    <h1>Developer Cabinet</h1>
-                    <h1>Status: {this.props.loggedInStatus}</h1>
-                </div> */}
                 <div style={{display: 'flex'}}>
                     <UserProfile/>
                     <UsersList users={this.props.users} companies={this.props.companies} currentUser={user}/>
                     <CompaniesList companies={this.props.companies}/>
                 </div>
-                <DocumentsList images={this.props.images} companies={this.props.companies}/>
+                <DocumentsList images={this.props.images}/>
                 
             </WrapPage>
         )

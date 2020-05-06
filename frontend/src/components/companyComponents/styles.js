@@ -28,7 +28,7 @@ export const WrapUserList = styled.div`
     border-radius: 10px;
 `;
 export const WrapDocumentList = styled.div`
-    margin-top: 35px;
+    margin-top: 10px;
     background: #ecf0f3;
     width: 100%;
     /* height: 200px; */

@@ -70,7 +70,6 @@ const UsersList = (props) => {
             handleDeletion(login);
         }
     }
-    console.log("props.currentUser",props.currentUser)
     return (
         <WrapUserList>
             <Details>

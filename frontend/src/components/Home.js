@@ -49,7 +49,6 @@ class Home extends Component {
           .then(
               data => {
                     this.props.handleLoggin(data);
-                    console.log(data);
                   if(data.role === 10){
                     this.props.history.push("/cabinetdeveloper");
                   } else if(data.role === 0){

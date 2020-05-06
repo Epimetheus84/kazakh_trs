@@ -16,7 +16,7 @@ const NavbarReact = (props) => {
           <Link to="/cabinetmoderator" className="link">cabinet</Link>
         </li>
         <li>
-          <Link to="/" className="link" onClick={()=> this.props.handleLogout()} >Logout</Link>
+          <Link to="/" className="link" onClick={()=> props.handleLogout()} >Logout</Link>
         </li>
       </ul>
     </Navbar>

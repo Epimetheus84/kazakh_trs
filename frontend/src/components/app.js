@@ -170,6 +170,8 @@ export default class App extends Component {
                     {...props} 
                     loggedInStatus={this.state.loggedInStatus}
                     currentUser={this.state.user}
+                    images={this.state.imagesList}
+                    showImages={this.showImages}
                     />
                 )} 
               />

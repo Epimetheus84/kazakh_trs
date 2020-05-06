@@ -26,10 +26,10 @@ class Registration extends Component {
                     number:0,
                     name: "User"
                 },
-                {
-                    number:1,
-                    name: "Moderator"
-                },
+                // {
+                //     number:1,
+                //     name: "Moderator"
+                // },
                 {
                     number:2,
                     name: "Admin"
@@ -46,6 +46,7 @@ class Registration extends Component {
         this.handleSubmitEditCompany = this.handleSubmitEditCompany.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmitCom = this.handleSubmitCom.bind(this);
+        this.getCurrentUserInfo = this.getCurrentUserInfo.bind(this);
     }
 
     componentDidMount(){
@@ -58,7 +59,8 @@ class Registration extends Component {
                 last_name:this.props.userInfo.last_name,
                 email: this.props.userInfo.email,
                 company:this.props.userInfo.company.id,
-                role: this.props.userInfo.role
+                role: this.props.userInfo.role,
+                roleCheck: this.props.userInfo.role
             });
         }
         if(this.props.companyInfo){
@@ -81,12 +83,28 @@ class Registration extends Component {
                 company: this.props.userCompanyDetect
             });
         }
-        if(this.props.userRole){
-            console.log("userRole",this.props.userRole)
-            this.setState({
-                roleCheck: this.props.userRole
-            });
-        }
+        // if(this.props.userRole){
+        //     console.log("userRole",this.props.userRole)
+        //     this.setState({
+        //         roleCheck: this.props.userRole
+        //     });
+        // }
+    }
+
+    getCurrentUserInfo = async ()=>{
+        fetch("http://26.140.14.182:4444/cabinet/me", {
+            headers: {
+                Authorization: `token ${sessionStorage.tokenData}`
+            }
+          })
+          .then(res => {return res.json();})
+          .then(
+              data => {console.log("data",data)
+                this.setState({
+                    roleCheck: data.role
+                });
+                }
+              );
     }
 
     handleSubmit(event){
@@ -236,7 +254,7 @@ class Registration extends Component {
             [event.target.name]: event.target.value
         });
     }
-
+    
     render() {
         if(this.props.showRegisterComponent){
             return (
@@ -332,7 +350,7 @@ class Registration extends Component {
                 </WrapPaper>
             );
         }
-        if(this.props.showEditComponent){
+        if(this.props.showEditComponent){console.log('roleCheck',this.state.roleCheck)
             return (
                 <WrapPaper style={{position: "absolute"}}>
                     <form onSubmit={this.handleSubmitEdit} className="regForm">

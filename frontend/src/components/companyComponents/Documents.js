@@ -64,7 +64,7 @@ const DocumentsList = (props) => {
                     })
                 }
             </UsersListWrap>
-            <DropAndCrop/>
+            {/* <DropAndCrop/> */}
         </WrapDocumentList>
     )
 }
