@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState , useEffect} from 'react';
 import axios from 'axios';
 import {WrapPaper, Logo, Details} from './styles';
 
@@ -22,7 +22,7 @@ const Profile = (props) => {
         .then(res => {return res.json();})
         .then(
             data => {
-                //console.log("This user info = ",data);
+                console.log("herererere")
                 setShowRole(data.role); 
                 setShowLogin(data.login); 
                 setShowEmail(data.email); 
@@ -35,7 +35,11 @@ const Profile = (props) => {
                 }
             );
     }
-    handleSuccesfulAuth();
+
+    useEffect(()=>{
+        handleSuccesfulAuth();
+    },[])
+    
     return (
         <WrapPaper>
             <Details style={{marginBottom:"50px"}}>{

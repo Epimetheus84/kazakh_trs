@@ -99,7 +99,7 @@ class Registration extends Component {
           })
           .then(res => {return res.json();})
           .then(
-              data => {console.log("data",data)
+              data => {
                 this.setState({
                     roleCheck: data.role
                 });
