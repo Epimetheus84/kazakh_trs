@@ -7,7 +7,7 @@ export const Navbar = styled.nav`
     align-items: center;
 
     background: #F8F8FF;
-    color: white;
+    color: #90d2c6;
     width: 100%;
     height: 15vh;
     margin-bottom: 10vh;
@@ -27,7 +27,7 @@ export const Navbar = styled.nav`
         list-style: none;
     }
     .link{
-        color: white;
+        color: #90d2c6;
         font-size: 2.5vh;
         text-decoration: none;
         text-shadow: 1px 1px 1px #D3D3D3;

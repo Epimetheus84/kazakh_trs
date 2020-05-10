@@ -6,8 +6,8 @@ import ModeratorCabinet from "./ModeratorCabinet";
 import DeveloperCabinet from "./DeveloperCabinet";
 import AdminCabinet from "./AdminCabinet";
 import CommonCabinet from "./CommonCabinet";
-import axios from 'axios';
 import NavbarReact from "./navigation/navigationPanel";
+import axios from "axios";
 
 export default class App extends Component {
 
@@ -16,20 +16,99 @@ export default class App extends Component {
 
     this.state={
       loggedInStatus:"NOT_LOGGED_IN",
-      user: {}
+      user: null,
+      usersList:[],
+      companiesList:[],
+      imagesList:[]
     }
 
     this.handleLogout = this.handleLogout.bind(this);
     this.handleLoggin = this.handleLoggin.bind(this);
     this.checkLoginStatus = this.checkLoginStatus.bind(this);
+    this.saveUsersList = this.saveUsersList.bind(this);
+    this.saveCompaniesList = this.saveCompaniesList.bind(this);
+    this.saveImagesList = this.saveImagesList.bind(this);
+    this.showUsers = this.showUsers.bind(this);
+    this.showCompanies = this.showCompanies.bind(this);
+    this.showImages = this.showImages.bind(this);
+  }
+    showUsers = async() => {
+      const sessionToken = "token "+ sessionStorage.tokenData;
+      let res = await axios.get("http://kazakh-trs.local/api/v1/users/list", {
+          headers: {
+              Authorization: sessionToken
+          }
+      });
+      let {data} = res;
+      this.saveUsersList(data);
+  }
+  
+  showCompanies = async() => {
+      const sessionToken = "token "+ sessionStorage.tokenData;
+      let res = await axios.get("http://kazakh-trs.local/api/v1/companies/list", {
+          headers: {
+              Authorization: sessionToken
+          }
+      });
+      let {data} = res;
+      this.saveCompaniesList(data);
+  }
+
+  showImages = async() => {
+    const sessionToken = "token "+ sessionStorage.tokenData;
+    let res = await axios.get("http://kazakh-trs.local/api/v1/images/list", {
+        headers: {
+            Authorization: sessionToken
+        }
+    });
+    let {data} = res;
+    this.saveImagesList(data);
+}
+
+  saveCompaniesList(data){
+    if(data){
+      this.setState(state => {
+        const companiesList = [...state.companiesList, ...data];
+        return {
+          companiesList,
+          data: '',
+        };
+      });
+    }
+  }
+
+  saveUsersList(data){
+    if(data){
+      this.setState(state => {
+        const usersList = [...state.usersList, ...data];
+        return {
+          usersList,
+          data: '',
+        };
+      });
+    }
+  }
+
+  saveImagesList(data){
+    if(data){
+      this.setState(state => {
+        const imagesList = [...state.imagesList, ...data];
+        return {
+          imagesList,
+          data: '',
+        };
+      });
+    }
   }
 
   handleLogout(){
+    sessionStorage.removeItem('tokenData');
+   
     this.setState({
       loggedInStatus: "NOT_LOGGED_IN",
-      user: {}
+      user: null
     });
-    delete sessionStorage.tokenData;
+    
   }
 
   handleLoggin(data){
@@ -45,7 +124,6 @@ export default class App extends Component {
     if(sessionStorage.tokenData && this.state.loggedInStatus === "NOT_LOGGED_IN"){
       this.setState({
         loggedInStatus: "LOGGED_IN",
-        user: response.data.user
       })
     } else if( !sessionStorage.tokenData && this.state.loggedInStatus === "LOGGED_IN"){
       this.setState({
@@ -88,28 +166,62 @@ export default class App extends Component {
                 exact 
                 path={"/cabinetcommon"} 
                 render={props => (
-                  <CommonCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <CommonCabinet 
+                    {...props} 
+                    loggedInStatus={this.state.loggedInStatus}
+                    currentUser={this.state.user}
+                    images={this.state.imagesList}
+                    showImages={this.showImages}
+                    />
                 )} 
               />
               <Route 
                 exact 
                 path={"/cabinetmoderator"} 
                 render={props => (
-                  <ModeratorCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <ModeratorCabinet 
+                    {...props} 
+                    loggedInStatus={this.state.loggedInStatus} 
+                    showUsers={this.showUsers}
+                    showCompanies={this.showCompanies}
+                    users={this.state.usersList}
+                    companies={this.state.companiesList}
+                    currentUser={this.state.user}
+                    />
                 )} 
               />
               <Route 
                 exact 
                 path={"/cabinetadmin"} 
                 render={props => (
-                  <AdminCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <AdminCabinet 
+                    {...props} 
+                    loggedInStatus={this.state.loggedInStatus}
+                    showUsers={this.showUsers}
+                    showCompanies={this.showCompanies}
+                    users={this.state.usersList}
+                    companies={this.state.companiesList}
+                    images={this.state.imagesList}
+                    showImages={this.showImages}
+                    currentUser={this.state.user}
+                    />
                 )} 
               />
               <Route 
                 exact 
                 path={"/cabinetdeveloper"} 
                 render={props => (
-                  <DeveloperCabinet {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <DeveloperCabinet 
+                    {...props} 
+                    loggedInStatus={this.state.loggedInStatus} 
+                    showUsers={this.showUsers}
+                    showCompanies={this.showCompanies}
+                    users={this.state.usersList}
+                    companies={this.state.companiesList}
+                    images={this.state.imagesList}
+                    showImages={this.showImages}
+                    currentUser={this.state.user}
+                    />
                 )} 
               />
             </Switch>

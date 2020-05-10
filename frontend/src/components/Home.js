@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Registration from './auth/Registration';
 import Login from './auth/Login';
 import {WrapPaper, Button} from './auth/styles';
-import axios from 'axios';
 
 class Home extends Component {
     constructor(props){
@@ -10,7 +9,8 @@ class Home extends Component {
 
         this.state={
             showLogin:false,
-            showRegister: false
+            showRegister: false,
+            currentUser: null
           }
 
         this.handleSuccesfulAuth = this.handleSuccesfulAuth.bind(this);
@@ -19,7 +19,7 @@ class Home extends Component {
     }
 
     saveToken(token) {
-        sessionStorage.setItem('tokenData', JSON.stringify(token));
+        sessionStorage.setItem('tokenData', token);
     }
 
     handleShowComponent(dataToShow, dataToHide){
@@ -30,7 +30,7 @@ class Home extends Component {
     }
 
     handleSuccesfulAuth = async (token, userconfig)=>{
-        this.props.handleLoggin(token);
+        // this.props.handleLoggin(token);
         // console.log("ПИХАЕМ ЭТОТ ТОКЕН",`token ${token}`);
 
         // let res = await axios.get("http://26.140.14.182:4444/cabinet/me", {
@@ -48,7 +48,7 @@ class Home extends Component {
           .then(res => {return res.json();})
           .then(
               data => {
-                  console.log(data);
+                    this.props.handleLoggin(data);
                   if(data.role === 10){
                     this.props.history.push("/cabinetdeveloper");
                   } else if(data.role === 0){
@@ -68,27 +68,30 @@ class Home extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Home</h1>
+            <div style={{display:"flex", flexDirection:"column",alignItems:"center", width: "1100px"}}>
+                    <br/>
+                {/* <h1>Home</h1>
                 <h1>Status: {this.props.loggedInStatus}</h1>
-                <button onClick={()=> this.handleLogoutClick()}>Logout</button>
+                <button onClick={()=> this.handleLogoutClick()}>Logout</button> */}
                 <WrapPaper>
                     <Button 
-                            type='submit'
-                            onClick ={()=>this.handleShowComponent("showLogin","showRegister")}
-                        >
-                            Войти
+                        primary
+                        type='submit'
+                        onClick ={()=>this.handleShowComponent("showLogin","showRegister")}
+                    >
+                        Войти
                     </Button>
-                    <Button 
-                            type='submit'
-                            onClick ={()=>this.handleShowComponent("showRegister","showLogin")}
-                        >
+                    {/* <Button 
+                        primary
+                        type='submit'
+                        onClick ={()=>this.handleShowComponent("showRegister","showLogin")}
+                    >
                             Зарегистрироваться
-                    </Button>
+                    </Button> */}
                 </WrapPaper>
-                {this.state.showRegister
+                {/* {this.state.showRegister
                     ? <Registration handleSuccesfulAuth={this.handleSuccesfulAuth}/>
-                    : null}
+                    : null} */}
                 {this.state.showLogin
                     ? <Login handleSuccesfulAuth={this.handleSuccesfulAuth} saveToken={this.saveToken}/>
                     : null}

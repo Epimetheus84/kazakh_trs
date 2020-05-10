@@ -28,7 +28,7 @@ class Login extends Component {
             password
         } = this.state;
         
-        axios.post('http://26.140.14.182:4444/cabinet/login', {
+        axios.post('http://26.140.14.182:4444/cabinet/login/', {
             login: login,
             password: password,
         },
@@ -39,13 +39,16 @@ class Login extends Component {
                 this.props.handleSuccesfulAuth(response.data.token, response.config.data);
             }
         }).catch(error=>{
-            this.props.handleSuccesfulAuth();
-            console.log("login error", error);
+            if(error.response.status === 401){
+                alert("Введен неправильный пароль или логин");
+            }
+            console.log("login error", error.response.status);
         });
 
         console.log("form submitted");
         event.preventDefault();
     }
+    
     handleChange(event){
         this.setState({
             [event.target.name]: event.target.value
