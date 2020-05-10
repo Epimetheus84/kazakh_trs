@@ -1,6 +1,8 @@
 import os
+import json
 import threading
 
+from tensorflow import keras
 from flask import Flask, abort, jsonify
 from orm.mongo.image import Image
 from model.src_v2.RecognitionModel import RecognitionModel
@@ -11,15 +13,24 @@ THREADS_MAX_COUNT = 10
 
 
 def thread_function(image):
-    input_file = image.file_path
-    coordinates = image.coordinates
-    text = ''
+    input_file = image.get_full_file_path()
+    if not os.path.isfile(input_file):
+        raise Exception('File does not exists')
+
+    coordinates = json.loads(image.coordinates)
+    text = []
 
     for shape in coordinates:
-        shape_text = RecognitionModel.recognize(input_file, shape)
-        text += shape_text + ' '
+        word = RecognitionModel.recognize(input_file, shape)
+        if not word:
+            continue
 
-    image.text = text
+        text.append({
+            'coordinates': shape,
+            'word': word
+        })
+
+    image.text = json.loads(text)
     image.status = Image.IMAGE_STATUS_TEXT_RECOGNIZED
     image.save()
     return True
@@ -30,7 +41,7 @@ def main():
     return 'Service available'
 
 
-@app.route('/mark/<file_path>')
+@app.route('/recognize/<file_path>')
 def recognize(file_path):
     image = Image.objects(file_path=file_path)
 
@@ -48,4 +59,4 @@ def recognize(file_path):
 
 
 if __name__ == '__main__':
-    app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('FLASK_RUN_PORT', 4444)))
+    app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('FLASK_RUN_PORT', 4446)))

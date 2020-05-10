@@ -1,10 +1,11 @@
+import json
 import os
 import threading
 
 from flask import Flask, abort, jsonify
 
 from orm.mongo.image import Image
-from text_marker.detector import Detector
+from text_marker.cv.detector import Detector
 
 app = Flask(__name__)
 
@@ -12,9 +13,9 @@ THREADS_MAX_COUNT = 10
 
 
 def thread_function(image):
-    input_file = image.file_path
+    input_file = image.get_full_file_path()
     rect = Detector.get_rect(input_file)
-    image.coordinates = rect
+    image.coordinates = json.dumps(rect)
     image.status = Image.IMAGE_STATUS_TEXT_DETECTED
     image.save()
     return True
@@ -43,4 +44,4 @@ def mark(file_path):
 
 
 if __name__ == '__main__':
-    app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 4441)))
+    app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4445)))

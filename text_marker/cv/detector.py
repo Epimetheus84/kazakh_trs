@@ -4,6 +4,7 @@ import cv2
 class Detector:
     @staticmethod
     def get_rect(input_file, ele_size=(8, 2)):  #
+        print(input_file)
         img = cv2.imread(input_file)
         if len(img.shape) == 3:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -21,3 +22,4 @@ class Detector:
                  Rect]
         print(RectP)
         return RectP
+

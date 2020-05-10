@@ -145,5 +145,5 @@ def validate(model, loader):
 	return charErrorRate
 
 
-RecognitionModel.main()
+RecognitionModel.main(RecognitionModel.fnInfer)
 

@@ -5,7 +5,8 @@ import json
 
 from mongoengine import *
 
-from orm.mongo.company import Company
+import orm.mongo.company as com
+import orm.mongo.image as img
 from orm.mongo.connection import Connection
 from rest.helpers.password import Password
 
@@ -71,16 +72,13 @@ class User(Document):
 
         if 'company' in data \
                 and data['company'] \
-                and Company.objects(id=data['company']):
+                and com.Company.objects(id=data['company']):
             self.company = data['company']
 
         self.date_modified = datetime.datetime.utcnow()
 
     def insert_data(self, data):
         self.update_data(data)
-
-    def has_access_to_users_list(self):
-        return True
 
     def has_access_to_see_user(self):
         return True
@@ -94,9 +92,6 @@ class User(Document):
     def has_access_to_delete_user(self):
         return self.role == ROLE_ADMIN or self.role == ROLE_DEVELOPER
 
-    def has_access_to_images_list(self):
-        return True
-
     def has_access_to_see_image(self):
         return True
 
@@ -107,7 +102,7 @@ class User(Document):
         return self.role == ROLE_ADMIN or self.role == ROLE_DEVELOPER
 
     def has_access_to_create_image(self):
-        return self.role == ROLE_ADMIN or self.role == ROLE_DEVELOPER
+        return True
 
     def has_access_to_delete_image(self):
         return self.role == ROLE_ADMIN or self.role == ROLE_DEVELOPER
@@ -121,7 +116,7 @@ class User(Document):
             'middle_name': self.middle_name,
             'date_created': int(self.date_created.timestamp()),
             'date_modified': int(self.date_modified.timestamp()),
-            'company': Company.objects(id=self.company).get().prepare_to_response() if Company.objects(
+            'company': com.Company.objects(id=self.company).get().prepare_to_response() if com.Company.objects(
                 id=self.company) else '',
             'role': self.role,
         }
@@ -129,14 +124,14 @@ class User(Document):
     def to_json(self):
         return json.dumps(self.prepare_to_response())
 
-    def has_access_to_companies_list(self):
-        return self.role == ROLE_DEVELOPER
-
     def has_access_to_see_company(self, company_id):
         return self.company == company_id
 
     def has_access_to_update_company(self, company_id):
-        if self.role != ROLE_ADMIN and self.role != ROLE_DEVELOPER:
+        if self.role == ROLE_DEVELOPER:
+            return True
+
+        if self.role != ROLE_ADMIN:
             return False
 
         return self.company == company_id
@@ -145,7 +140,37 @@ class User(Document):
         return self.role == ROLE_DEVELOPER
 
     def has_access_to_delete_company(self, company_id):
-        if self.role != ROLE_ADMIN and self.role != ROLE_DEVELOPER:
+        if self.role == ROLE_DEVELOPER:
+            return True
+
+        if self.role != ROLE_ADMIN:
             return False
 
         return self.company == company_id
+
+    def get_list_of_users(self, offset, items_per_page):
+        if self.role == ROLE_DEVELOPER:
+            return User.objects.skip(offset).limit(items_per_page)
+
+        return User.objects(company=self.company).skip(offset).limit(items_per_page)
+
+    def get_list_of_companies(self, offset, items_per_page):
+        if self.role == ROLE_DEVELOPER:
+            return com.Company.objects.skip(offset).limit(items_per_page)
+
+        return com.Company.objects(id=self.company)
+
+    def get_list_of_images(self, offset, items_per_page):
+        if self.role == ROLE_DEVELOPER:
+            return img.Image.objects.skip(offset).limit(items_per_page)
+
+        if self.role == ROLE_ADMIN:
+            users_ids = []
+            employees = User.objects(company=self.company)
+            for employee in employees:
+                users_ids.append(employee.id)
+
+            return img.Image.objects(uploaded_by__in=users_ids)
+
+        return img.Image.objects(uploaded_by=self.id)
+

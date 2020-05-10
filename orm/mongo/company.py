@@ -4,6 +4,8 @@ import json
 from mongoengine import *
 from orm.mongo.connection import Connection
 
+import orm.mongo.user as usr
+
 Connection.connect()
 
 
@@ -26,6 +28,9 @@ class Company(Document):
 
         self.date_modified = datetime.datetime.utcnow()
 
+    def update_data(self, data):
+        self.insert_data(data)
+
     def prepare_to_response(self):
         return {
             'id': str(self.id),
@@ -38,3 +43,9 @@ class Company(Document):
     def to_json(self):
         return json.dumps(self.prepare_to_response())
 
+    def delete_with_employees(self):
+        employees = usr.User.objects(company=self.id)
+        for employee in employees:
+            employee.delete()
+
+        self.delete()

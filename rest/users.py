@@ -12,15 +12,12 @@ users = Blueprint('users', __name__)
 @users.route('/list/', methods=['GET'])
 @auth.login_required
 def list_users():
-    if not g.current_user.has_access_to_users_list():
-        abort(403)
-
     page = request.args.get('page') or 1
     items_per_page = 10
 
     offset = (page - 1) * items_per_page
 
-    list_users = User.objects.skip(offset).limit(items_per_page)
+    list_users = g.current_user.get_list_of_users(offset, items_per_page)
     result_list = []
     for user in list_users:
         user_data = user.prepare_to_response()

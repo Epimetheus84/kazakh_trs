@@ -8,9 +8,8 @@ import random
 from mongoengine import *
 from orm.mongo.connection import Connection
 
+import orm.mongo.user as usr
 import datetime
-
-from orm.mongo.user import User
 
 Connection.connect()
 
@@ -69,7 +68,7 @@ class Image(Document):
             'original_filename': self.original_filename,
             'status': self.status,
             'coordinates': self.coordinates,
-            'uploaded_by': User.objects(login=self.uploaded_by).get().login if User.objects(login=self.uploaded_by) else {},
+            'uploaded_by': usr.User.objects(login=self.uploaded_by).get().login if usr.User.objects(login=self.uploaded_by) else {},
             'date_created': int(self.date_created.timestamp()),
             'date_modified': int(self.date_modified.timestamp()),
             'file_path': self.file_path,

@@ -31,19 +31,19 @@ class DataProvider:
         return text
 
     def hasNext(self):
-        return self.idx <= 1000
+        return self.idx <= 1
 
     def getNext(self):
-        h = 842
-        w = 595
+        h = 3507
+        w = 2528
         img = np.zeros((h, w, 3), np.uint8)
         img.fill(255)
         b, g, r, a = random.randrange(0, 100, 1), 0, 0, 0
         text = self.getText()
         self.idx += 1
 
-        font_size = random.randrange(16, 24, 1)
-        font = ImageFont.truetype("data/TTWPGOTT.ttf", font_size, encoding="UTF-8")
+        font_size = random.randrange(64, 80, 1)
+        font = ImageFont.truetype("TTWPGOTT.ttf", font_size, encoding="UTF-8")
         width, height = font.getsize(text)
         img_pil = Image.fromarray(img)
         draw = ImageDraw.Draw(img_pil)
@@ -84,32 +84,29 @@ def salt(image):
 
 
 def create_dataset(data_provider):
-    f = open('data/words.txt', 'w+')
-    if not os.path.exists('data'):
-        os.makedirs('data')
-    if not os.path.exists('data/images'):
-        os.makedirs('data/images')
+    if not os.path.exists('../data/development/kazakh'):
+        os.makedirs('../data/development/kazakh')
+
+    if not os.path.exists('../data/development/kazakh/examples'):
+        os.makedirs('../data/development/kazakh/examples')
 
     ctr = 0
     while data_provider.hasNext():
         sample = data_provider.getNext()
 
-        cv2.imwrite('data/images/%d.png' % ctr, sample[1])
+        cv2.imwrite('../data/development/kazakh/examples/%d.png' % ctr, sample[1])
 
-        line = '%d' % ctr + ' X X X X X X X ' + sample[0] + '\n'
-        f.write(line)
+        line = '%d' % ctr + ' ' + sample[0] + '\n'
 
         ctr += 1
 
 
 if __name__ == '__main__':
     words = []
-    with open("data/words.csv") as csvfile:
+    with open("words.csv", encoding='utf8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             words.append(row[0])
-
-    print(words)
 
     data_provider = DataProvider(words)
     create_dataset(data_provider)

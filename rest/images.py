@@ -29,15 +29,12 @@ def mark_image(file_path):
 @images.route('/list/', methods=['GET'])
 @auth.login_required
 def list_images():
-    if not g.current_user.has_access_to_images_list():
-        abort(403)
-
     page = request.args.get('page') or 1
     items_per_page = 10
 
     offset = (page - 1) * items_per_page
 
-    list_images = Image.objects.skip(offset).limit(items_per_page)
+    list_images = g.current_user.get_list_of_images(offset, items_per_page)
     result_list = []
     for user in list_images:
         user_data = user.prepare_to_response()
