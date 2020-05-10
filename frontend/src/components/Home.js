@@ -40,7 +40,7 @@ class Home extends Component {
         //       }).then(res => console.log("rersfd",res));
         // let { data } = res.data;
 
-        fetch("http://26.140.14.182:4444/cabinet/me", {
+        fetch("http://kazakh-trs.local:8080/api/v1/cabinet/me", {
             headers: {
                 Authorization: `token ${token}`
             }

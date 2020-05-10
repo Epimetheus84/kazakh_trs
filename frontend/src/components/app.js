@@ -34,7 +34,7 @@ export default class App extends Component {
   }
     showUsers = async() => {
       const sessionToken = "token "+ sessionStorage.tokenData;
-      let res = await axios.get("http://kazakh-trs.local/api/v1/users/list", {
+      let res = await axios.get("http://kazakh-trs.local:8080/api/v1/users/list", {
           headers: {
               Authorization: sessionToken
           }
@@ -45,7 +45,7 @@ export default class App extends Component {
   
   showCompanies = async() => {
       const sessionToken = "token "+ sessionStorage.tokenData;
-      let res = await axios.get("http://kazakh-trs.local/api/v1/companies/list", {
+      let res = await axios.get("http://kazakh-trs.local:8080/api/v1/companies/list", {
           headers: {
               Authorization: sessionToken
           }
@@ -56,7 +56,7 @@ export default class App extends Component {
 
   showImages = async() => {
     const sessionToken = "token "+ sessionStorage.tokenData;
-    let res = await axios.get("http://kazakh-trs.local/api/v1/images/list", {
+    let res = await axios.get("http://kazakh-trs.local:8080/api/v1/images/list", {
         headers: {
             Authorization: sessionToken
         }
