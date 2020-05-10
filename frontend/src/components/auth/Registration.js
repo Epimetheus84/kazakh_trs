@@ -92,7 +92,7 @@ class Registration extends Component {
     }
 
     getCurrentUserInfo = async ()=>{
-        fetch("http://kazakh-trs.local:8080/api/v1/cabinet/me", {
+        fetch("http://kazakh-trs.kz:8080/api/v1/cabinet/me", {
             headers: {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
