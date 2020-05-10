@@ -1,5 +1,6 @@
 from flask import Blueprint, request, abort, jsonify, g
 from rest.helpers.auth import AuthHelper, auth
+from collections.abc import Iterable
 
 cabinet = Blueprint('cabinet', __name__)
 
@@ -7,7 +8,7 @@ cabinet = Blueprint('cabinet', __name__)
 @cabinet.route('/login/',  methods=['POST'])
 def login():
     data = request.json
-    if 'password' not in data or 'login' not in data:
+    if not isinstance(data, Iterable) or 'password' not in data or 'login' not in data:
         abort(401)
 
     print(data['login'], data['password'])

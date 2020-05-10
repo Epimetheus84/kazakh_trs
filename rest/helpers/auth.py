@@ -3,12 +3,18 @@ from flask_httpauth import HTTPTokenAuth
 
 auth = HTTPTokenAuth(scheme='Token')
 
+
 class AuthHelper:
     @staticmethod
     def login(login, password):
-        user = User.objects.get(login=login)
+        user = User.objects(login=login)
+        if not user:
+            return False
+
+        user = user.get()
         if not user.check_password(password):
             return False
+
         return user
 
     @staticmethod
@@ -18,3 +24,9 @@ class AuthHelper:
 
         user = User.objects(token=token).get()
         return user
+
+
+
+
+
+
