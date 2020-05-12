@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Profile from './userComponent/UserProfile';
-import DocumentsList from './userComponent/Documents';
+import Profile from './reusComponents/UserProfile';
 
 const WrapUserPage = styled.div`
     margin-top: 10px;
@@ -27,7 +26,6 @@ const Users = (props) => {
             </div>
             <div style={{display: 'flex'}}>
                 <Profile/>
-                <DocumentsList/>
             </div>
             
             

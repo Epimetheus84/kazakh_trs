@@ -1,6 +1,10 @@
 import React from 'react';
-import axios from 'axios';
-import {WrapPaper, Logo, Details} from './styles';
+
+import {
+    WrapPaper, 
+    Details, 
+    Logo
+} from '../../style/styled_comp/styles';
 
 const Profile = () => {
     return (

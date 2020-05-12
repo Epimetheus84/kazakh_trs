@@ -1,20 +1,21 @@
 import React, {useState} from 'react';
-import axios, {post} from 'axios';
-import DropAndCrop from '../ImageEdit/DropAndCrop';
+// import axios, {post} from 'axios';
+// import DropAndCrop from '../ImageEdit/DropAndCrop';
 
 import {
-    WrapDocumentList, 
+    WrapPaper, 
+    Details, 
+    ListWrap, 
     AddImageInput, 
     AddImageIcon, 
     AddImageButton,
-    ImageDesc, 
-    Details, 
-    UsersListWrap
-} from './styles';
+    ImageDesc
+} from '../../style/styled_comp/styles';
 
 const DocumentsList = (props) => {
     const [file, setFile]=useState(null);
     const [files, setFiles]=useState([]);
+    const [isPrimary, setIsPrimary]=useState(false);
 
     let imagesList = [];
     imagesList=[...imagesList, ...props.images];
@@ -34,9 +35,10 @@ const DocumentsList = (props) => {
         setFiles(<li key={e.target.files[0].size}>
                     файл=> {e.target.files[0].name} 
                 </li>)
+        setIsPrimary(true);
       }
     const fileUpload = (file) => {
-        const url = 'http://26.140.14.182:4444/images/create/';
+        const url = 'http://kazakh-trs.kz:8080/api/v1/images/create/';
         const formData = new FormData();
         formData.append('file',file)
         const config = {
@@ -49,17 +51,17 @@ const DocumentsList = (props) => {
       }
 
     return (
-        <WrapDocumentList>
+        <WrapPaper documents>
             <Details>
                 Загруженные документы:      
             </Details>
-            <UsersListWrap>
+            <ListWrap>
                 <form onSubmit={onFormSubmit}>
                 <AddImageIcon htmlFor="file-upload" >
                     Выбрать файл
                 </AddImageIcon>
                 <AddImageInput type="file" accept="image/*" id="file-upload"  onChange={onChange}/>
-                <AddImageButton type="submit">Загрузить <ul>{files}</ul></AddImageButton>
+                <AddImageButton type="submit" primary={isPrimary}>Загрузить <ul>{files}</ul></AddImageButton>
                 
                 <hr/>
                 
@@ -74,9 +76,9 @@ const DocumentsList = (props) => {
                         )
                     })
                 }
-            </UsersListWrap>
+            </ListWrap>
             {/* <DropAndCrop/> */}
-        </WrapDocumentList>
+        </WrapPaper>
     )
 }
 

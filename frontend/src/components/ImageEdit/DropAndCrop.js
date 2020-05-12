@@ -127,7 +127,7 @@ function DropAndCrop() {
             } = this.state;
             const sessionToken = `token ${sessionStorage.tokenData}`;
     
-            axios.post('http://26.140.14.182:4444/companies/create/', 
+            axios.post('http://kazakh-trs.kz:8080/api/v1/companies/create/', 
             {
                     name: companyName,
                     info: info,
