@@ -7,6 +7,8 @@ from rest.users import users
 from rest.companies import companies
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
+
 
 app.register_blueprint(cabinet, url_prefix='/cabinet')
 app.register_blueprint(users, url_prefix='/users')

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Registration from './auth/Registration';
 import Login from './auth/Login';
 import {WrapPaper, Button} from './auth/styles';
@@ -29,18 +30,8 @@ class Home extends Component {
         })
     }
 
-    handleSuccesfulAuth = async (token, userconfig)=>{
-        // this.props.handleLoggin(token);
-        // console.log("ПИХАЕМ ЭТОТ ТОКЕН",`token ${token}`);
-
-        // let res = await axios.get("http://26.140.14.182:4444/cabinet/me", {
-        //         headers: {
-        //             Authorization: `token ${token}`
-        //         }
-        //       }).then(res => console.log("rersfd",res));
-        // let { data } = res.data;
-
-        fetch("http://26.140.14.182:4444/cabinet/me", {
+    handleSuccesfulAuth = async (token)=>{
+        axios.get("http://kazakh-trs.kz:8080/api/v1/cabinet/me", {
             headers: {
                 Authorization: `token ${token}`
             }

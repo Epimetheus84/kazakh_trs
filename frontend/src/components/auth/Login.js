@@ -28,7 +28,7 @@ class Login extends Component {
             password
         } = this.state;
         
-        axios.post('http://kazakh-trs.local:8080/api/v1/cabinet/login/', {
+        axios.post('http://kazakh-trs.kz:8080/api/v1/cabinet/login/', {
             login: login,
             password: password,
         },

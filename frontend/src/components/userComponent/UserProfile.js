@@ -14,7 +14,7 @@ const Profile = (props) => {
     const [showLastModified, setlastModified] = useState(0);
 
     const handleSuccesfulAuth = async ()=>{
-        fetch("http://26.140.14.182:4444/cabinet/me", {
+        fetch("http://kazakh-trs.kz:8080/api/v1/cabinet/me", {
             headers: {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
