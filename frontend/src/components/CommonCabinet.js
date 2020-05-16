@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import ProfileCompany from './companyComponents/CompanyProfile';
-import UserProfile from './userComponent/UserProfile';
-import DocumentsList from './companyComponents/Documents';
+import UserProfile from './reusComponents/UserProfile';
+import DocumentsList from './reusComponents/Documents';
 
 const WrapPage = styled.div`
     margin-top: 10px;

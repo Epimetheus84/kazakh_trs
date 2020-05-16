@@ -59,8 +59,7 @@ class Registration extends Component {
                 last_name:this.props.userInfo.last_name,
                 email: this.props.userInfo.email,
                 company:this.props.userInfo.company.id,
-                role: this.props.userInfo.role,
-                roleCheck: this.props.userInfo.role
+                role: this.props.userInfo.role
             });
         }
         if(this.props.companyInfo){
@@ -89,6 +88,7 @@ class Registration extends Component {
         //         roleCheck: this.props.userRole
         //     });
         // }
+        this.getCurrentUserInfo();
     }
 
     getCurrentUserInfo = async ()=>{
@@ -118,7 +118,7 @@ class Registration extends Component {
             company
         } = this.state;
 
-        axios.post(`http://26.140.14.182:4444/users/create/`, 
+        axios.post(`http://kazakh-trs.kz:8080/api/v1/users/create/`, 
         {
             login: login,
             email: email,
@@ -158,7 +158,7 @@ class Registration extends Component {
             company
         } = this.state;
 
-        axios.put(`http://26.140.14.182:4444/users/update/${oldLogin}`, 
+        axios.put(`http://kazakh-trs.kz:8080/api/v1/users/update/${oldLogin}`, 
         {
             login: login,
             email: email,
@@ -193,7 +193,7 @@ class Registration extends Component {
         } = this.state;
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.post('http://26.140.14.182:4444/companies/create/', 
+        axios.post('http://kazakh-trs.kz:8080/api/v1/companies/create/', 
         {
                 name: companyName,
                 info: info,
@@ -225,7 +225,7 @@ class Registration extends Component {
         } = this.state;
         const sessionToken = `token ${sessionStorage.tokenData}`;
         
-        axios.put(`http://26.140.14.182:4444/companies/update/${company}`, 
+        axios.put(`http://kazakh-trs.kz:8080/api/v1/companies/update/${company}`, 
         {
                 name: companyName,
                 info: info,
@@ -350,7 +350,7 @@ class Registration extends Component {
                 </WrapPaper>
             );
         }
-        if(this.props.showEditComponent){console.log('roleCheck',this.state.roleCheck)
+        if(this.props.showEditComponent){
             return (
                 <WrapPaper style={{position: "absolute"}}>
                     <form onSubmit={this.handleSubmitEdit} className="regForm">

@@ -1,15 +1,8 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-import {
-    WrapUserList, 
-    UserIcon, 
-    UserDescWrap,
-    UserIconDesc, 
-    Details, 
-    DeleteIcon,
-    UsersListWrap
-} from './styles';
+import {WrapPaper, Details, ListWrap, Button1, DescriptionWrap, DescriptionItems, ButtonDelete} from '../../style/styled_comp/styles';
+
 import Registration from '../auth/Registration'
 
 const CompaniesList = (props) => {
@@ -36,7 +29,7 @@ const CompaniesList = (props) => {
     const handleDeletion = (id) => {
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.delete(`http://26.140.14.182:4444/companies/delete/${id}`, {
+        axios.delete(`http://kazakh-trs.kz:8080/api/v1/companies/delete/${id}`, {
             headers: {
                 Authorization: sessionToken
             }
@@ -63,26 +56,26 @@ const CompaniesList = (props) => {
     }
 
     return (
-        <WrapUserList>
+        <WrapPaper>
             <Details>
                 Компании:      
             </Details>
-            <UsersListWrap>
-                <UserIcon onClick={showRegisterCompany}>+</UserIcon>
+            <ListWrap>
+                <Button1 onClick={showRegisterCompany}>+</Button1>
                 {
                     companyList.map((item, index) => {
                         return (
-                        <UserDescWrap key={index}>
-                            <UserIconDesc onClick={()=>showEditCompany(item)}>
+                        <DescriptionWrap key={index}>
+                            <DescriptionItems onClick={()=>showEditCompany(item)}>
                                 <div>Company: {item.name}</div>
                                 <div>Info: {item.info}</div>
-                            </UserIconDesc>
-                            <DeleteIcon onClick={()=>confirmDeletion(item.id, item.name)} />
-                        </UserDescWrap>
+                            </DescriptionItems>
+                            <ButtonDelete onClick={()=>confirmDeletion(item.id, item.name)} />
+                        </DescriptionWrap>
                         )
                     })
                 }
-            </UsersListWrap>
+            </ListWrap>
             {showRegister
                 ? <Registration  
                     showRegisterCompany={showRegisterCompany}
@@ -94,7 +87,7 @@ const CompaniesList = (props) => {
                     companyInfo={company}
                 />
                 : null}
-        </WrapUserList>
+        </WrapPaper>
     )
 }
 

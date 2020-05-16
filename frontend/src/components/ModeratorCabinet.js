@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import ProfileCompany from './companyComponents/CompanyProfile';
-import UsersList from './companyComponents/UsersList';
-import DocumentsList from './companyComponents/Documents';
+import ProfileCompany from './reusComponents/CompanyProfile';
+import UsersList from './reusComponents/UsersList';
+import DocumentsList from './reusComponents/Documents';
 
 const WrapPage = styled.div`
     margin-top: 10px;

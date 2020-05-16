@@ -1,22 +1,10 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import UserProfile from './userComponent/UserProfile';
-import UsersList from './companyComponents/UsersList';
-import CompaniesList from './companyComponents/CompaniesList';
-import DocumentsList from './companyComponents/Documents';
+import UserProfile from './reusComponents/UserProfile';
+import UsersList from './reusComponents/UsersList';
+import CompaniesList from './reusComponents/CompaniesList';
+import DocumentsList from './reusComponents/Documents';
 
-const WrapPage = styled.div`
-    margin-top: 10px;
-    padding: 25px;
-    background: transparent;
-    width: 1100px;
-    display: flex;
-    flex-direction: column;
-    align-items: space-around;
-    justify-content: space-between;
-    border-radius: 10px;
-    border-color: gray;
-`;
+import {WrapPage} from '../style/styled_comp/styles';
 
 export default class DeveloperCabinet extends Component{
     constructor(props){
@@ -29,7 +17,6 @@ export default class DeveloperCabinet extends Component{
         this.props.showCompanies();
         this.props.showImages();
     }
-    
     
     render(){
     let user = null;
@@ -44,7 +31,6 @@ export default class DeveloperCabinet extends Component{
                     <CompaniesList companies={this.props.companies}/>
                 </div>
                 <DocumentsList images={this.props.images}/>
-                
             </WrapPage>
         )
     }
