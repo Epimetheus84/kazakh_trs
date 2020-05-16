@@ -1,0 +1,39 @@
+form.regForm {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  padding: 10px;
+  justify-content: space-around;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  font-family: 'montserrat';
+}
+
+body {
+  overflow-x: hidden;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  height: 100%;
+  background-color: #ecf0f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*# sourceMappingURL=app-13ed2c8f759406c6e383.map*/

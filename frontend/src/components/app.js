@@ -7,6 +7,7 @@ import DeveloperCabinet from "./DeveloperCabinet";
 import AdminCabinet from "./AdminCabinet";
 import CommonCabinet from "./CommonCabinet";
 import NavbarReact from "./navigation/navigationPanel";
+import Mapper from "./ImageMapping/Mapper";
 import axios from "axios";
 
 export default class App extends Component {
@@ -223,6 +224,13 @@ export default class App extends Component {
                     currentUser={this.state.user}
                     />
                 )} 
+              />
+              <Route
+                exact
+                path={"/imagemapping/:filePath"}
+                render={props => (
+                  <Mapper {...props}/>
+                )}
               />
             </Switch>
           </React.Fragment>
