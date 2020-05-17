@@ -1,8 +1,7 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { Stage, Layer, Rect, Transformer } from 'react-konva';
+import { Rect, Transformer } from 'react-konva';
 
-const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
+const Rectangle = ({ shapeProps, isSelected, onSelect, onChange, isDraggable }) => {
   const shapeRef = React.useRef();
   const trRef = React.useRef();
 
@@ -20,9 +19,8 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
         onTap={onSelect}
         ref={shapeRef}
         {...shapeProps}
-        draggable
+        draggable={isDraggable}
         onDragEnd={e => {
-          console.log(e.target.x(), e.target.y())
           onChange({
             ...shapeProps,
             x: e.target.x(),
@@ -47,7 +45,7 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange }) => {
           });
         }}
       />
-      {isSelected && (
+      {isSelected && isDraggable && (
         <Transformer
           ref={trRef}
           boundBoxFunc={(oldBox, newBox) => {
