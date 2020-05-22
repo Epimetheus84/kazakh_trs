@@ -5,7 +5,7 @@ export const WrapPage = styled.div`
     margin-top: 10px;
     padding: 25px;
     background: transparent;
-    width: 1100px;
+    width: 90%;
     display: flex;
     flex-direction: column;
     align-items: space-around;
@@ -15,10 +15,10 @@ export const WrapPage = styled.div`
 `;
 
 export const WrapPaper = styled.div`
-    margin-left: ${props => props.profile ? 'none' : props.documents ? 'none' :'35px'};
+    margin-left: ${props => (props.profile===true) ? 'none' : props.documents ? 'none' :'35px'};
     margin-top: 10px;
     background: #ecf0f3;
-    width: ${props => props.profile ? '45%' : props.documents ? '100%' : '90%'};
+    width: ${props => (props.profile===true) ? '45%' : props.documents ? '100%' : '90%'};
     /* height: 200px; */
     box-shadow:  7px 7px 10px #cbced1, -7px -7px 10px #ffffff;
     display: flex;
@@ -37,10 +37,10 @@ export const Details = styled.div`
     padding: 0.25em 0.5em;
     border: 2px dotted #90d2c6;
     border-radius: 10px;
-    border-style:${props => props.profile ? 'solid' : ''};
-    border-width:${props => props.profile ? '1px' : ''};
-    font-size: ${props => props.profile ? '1.5em' : ''}; 
-    padding-top:${props => props.profile ? '10px' : ''};
+    border-style:${props => (props.profile===true) ? 'solid' : ''};
+    border-width:${props => (props.profile===true) ? '1px' : ''};
+    font-size: ${props => (props.profile===true) ? '1.5em' : ''}; 
+    padding-top:${props => (props.profile===true) ? '10px' : ''};
 `;
 
 export const ListWrap = styled.div`
@@ -76,6 +76,20 @@ export const Button2 = styled.button`
     border: 2px solid #90d2c6;
     border-radius: 10px;
     cursor: pointer;
+`;
+export const Button3 = styled.div`
+    height: 15px;
+    color: #90d2c6;
+    background-color: white;
+    font-size: 1em;
+    border-radius: 5px;
+    margin: 0px;
+    padding: 8px;
+    cursor: pointer;
+
+    &:hover{
+        background-color: red;
+    }
 `;
 
 export const ButtonDelete = styled.div`
@@ -152,7 +166,7 @@ export const ImageDesc = styled.div`
     padding: 10px;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
 
     &:hover{
         color: red;

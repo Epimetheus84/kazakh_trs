@@ -13,7 +13,7 @@ const Profile = (props) => {
     const [showLastModified, setlastModified] = useState(0);
 
     const handleSuccesfulAuth = async ()=>{
-        fetch("http://kazakh-trs.kz:8080/api/v1/cabinet/me", {
+        fetch(`${props.url}/cabinet/me`, {
             headers: {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
@@ -39,21 +39,21 @@ const Profile = (props) => {
     },[])
     
     return (
-        <WrapPaper profile>
+        <WrapPaper profile={true}>
             <Details style={{marginBottom:"50px"}}>{
                 (showRole === 10)?"Разработчик":
                     (showRole === 0)?"Сотрудник":
                     (showRole === 1)?"Модератор":
                     (showRole === 2)?"Администратор":""
                 }</Details>
-            <Details profile={'true'} >Логин: {showLogin}</Details>
-            <Details profile={'true'} >Email: {showEmail}</Details>
-            <Details profile={'true'} >Имя: {showFirstName}</Details>
-            <Details profile={'true'} >Отчество: {showMiddleName}</Details>
-            <Details profile={'true'} >Фамилия: {showLastName}</Details>
-            <Details profile={'true'} >Компания: {showCompanyName}</Details>
-            <Details profile={'true'} >Создана: {showCreated}</Details>
-            <Details profile={'true'} >Послед. изменение: {showLastModified}</Details>
+            <Details profile={true} >Логин: {showLogin}</Details>
+            <Details profile={true} >Email: {showEmail}</Details>
+            <Details profile={true} >Имя: {showFirstName}</Details>
+            <Details profile={true} >Отчество: {showMiddleName}</Details>
+            <Details profile={true} >Фамилия: {showLastName}</Details>
+            <Details profile={true} >Компания: {showCompanyName}</Details>
+            <Details profile={true} >Создана: {showCreated}</Details>
+            <Details profile={true} >Послед. изменение: {showLastModified}</Details>
         </WrapPaper>
     )
 }

@@ -45,7 +45,7 @@ const UsersList = (props) => {
     const handleDeletion = (login) => {
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.delete(`http://kazakh-trs.kz:8080/api/v1/users/delete/${login}`, {
+        axios.delete(`${props.url}/users/delete/${login}`, {
             headers: {
                 Authorization: sessionToken
             }
@@ -60,7 +60,7 @@ const UsersList = (props) => {
             console.log("User deletion error", error);
             alert("Some error happens")
         })
-
+        props.showUsers();
         console.log("form submitted");
     }
 
@@ -105,6 +105,8 @@ const UsersList = (props) => {
                     companies={props.companies}
                     userRole={currentUserRole}
                     userCompanyDetect={currentUserCompany}
+                    showUsers={props.showUsers}
+                    url={props.url}
                 />
                 : null}
             {showEdit
@@ -112,7 +114,9 @@ const UsersList = (props) => {
                     showEditComponent={showEditComponent}
                     companies={props.companies}
                     userInfo={user}
-                    // userRole={currentUserRole}
+                    showUsers={props.showUsers}
+                    userRole={currentUserRole}
+                    url={props.url}
                 />
                 : null}
         </WrapPaper>

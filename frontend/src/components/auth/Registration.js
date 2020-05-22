@@ -49,9 +49,9 @@ class Registration extends Component {
         this.getCurrentUserInfo = this.getCurrentUserInfo.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount(){console.log('REG_PROPS',this.props)
         if(this.props.userInfo){
-            console.log("INFO",this.props.userInfo)
+            // console.log("INFO",this.props.userInfo)
             this.setState({
                 login:this.props.userInfo.login,
                 oldLogin: this.props.userInfo.login,
@@ -63,7 +63,7 @@ class Registration extends Component {
             });
         }
         if(this.props.companyInfo){
-            console.log("Company INFO",this.props.companyInfo)
+            // console.log("Company INFO",this.props.companyInfo)
             this.setState({
                 companyName:this.props.companyInfo.name,
                 info: this.props.companyInfo.info,
@@ -71,28 +71,23 @@ class Registration extends Component {
             });
         }
         if(this.props.companies){
-            console.log("Compna",this.props)
+            // console.log("Compna",this.props)
             this.setState({
                 company: this.props.companies[0].id
             });
         }
         if(this.props.userCompanyDetect){
-            console.log("userCompanyDetect",this.props.userCompanyDetect)
+            // console.log("userCompanyDetect",this.props.userCompanyDetect)
             this.setState({
                 company: this.props.userCompanyDetect
             });
         }
-        // if(this.props.userRole){
-        //     console.log("userRole",this.props.userRole)
-        //     this.setState({
-        //         roleCheck: this.props.userRole
-        //     });
-        // }
+
         this.getCurrentUserInfo();
     }
 
     getCurrentUserInfo = async ()=>{
-        fetch("http://kazakh-trs.kz:8080/api/v1/cabinet/me", {
+        fetch(`${this.props.url}/cabinet/me`, {
             headers: {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
@@ -118,7 +113,7 @@ class Registration extends Component {
             company
         } = this.state;
 
-        axios.post(`http://kazakh-trs.kz:8080/api/v1/users/create/`, 
+        axios.post(`${this.props.url}/users/create/`, 
         {
             login: login,
             email: email,
@@ -142,7 +137,10 @@ class Registration extends Component {
             alert("Произошла ошибка!", error.response.status);
             this.props.showRegisterComponent();
         });
-
+        setTimeout(()=>{
+            this.props.showUsers();
+        },1500)
+        
         event.preventDefault();
     }
 
@@ -158,7 +156,7 @@ class Registration extends Component {
             company
         } = this.state;
 
-        axios.put(`http://kazakh-trs.kz:8080/api/v1/users/update/${oldLogin}`, 
+        axios.put(`${this.props.url}/users/update/${oldLogin}`, 
         {
             login: login,
             email: email,
@@ -182,7 +180,9 @@ class Registration extends Component {
             alert("Произошла ошибка!", error.response.status);
             this.props.showEditComponent();
         });
-
+        setTimeout(()=>{
+            this.props.showUsers();
+        },1500)
         event.preventDefault();
     }
 
@@ -193,7 +193,7 @@ class Registration extends Component {
         } = this.state;
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.post('http://kazakh-trs.kz:8080/api/v1/companies/create/', 
+        axios.post(`${this.props.url}/v1/companies/create/`, 
         {
                 name: companyName,
                 info: info,
@@ -211,8 +211,10 @@ class Registration extends Component {
             console.log("Company registration error", error);
             alert("Произошла ошибка!", error.response.status);
             this.props.showRegisterCompany();
-        })
-
+        });
+        setTimeout(()=>{
+            this.props.showCompanies();
+        },1500)
         console.log("form submitted");
         // event.preventDefault();
     }
@@ -225,7 +227,7 @@ class Registration extends Component {
         } = this.state;
         const sessionToken = `token ${sessionStorage.tokenData}`;
         
-        axios.put(`http://kazakh-trs.kz:8080/api/v1/companies/update/${company}`, 
+        axios.put(`${this.props.url}/companies/update/${company}`, 
         {
                 name: companyName,
                 info: info,
@@ -243,8 +245,10 @@ class Registration extends Component {
             console.log("Company registration error", error);
             alert("Произошла ошибка!", error.response.status);
             this.props.showEditCompany();
-        })
-
+        });
+        setTimeout(()=>{
+            this.props.showCompanies();
+        },1500)
         console.log("form submitted");
         // event.preventDefault();
     }

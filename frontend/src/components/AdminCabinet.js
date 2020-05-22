@@ -3,26 +3,14 @@ import styled from 'styled-components';
 import UserProfile from './reusComponents/UserProfile';
 import UsersList from './reusComponents/UsersList';
 import DocumentsList from './reusComponents/Documents';
-
-const WrapPage = styled.div`
-    margin-top: 10px;
-    padding: 25px;
-    background: transparent;
-    width: 1100px;
-    display: flex;
-    flex-direction: column;
-    align-items: space-around;
-    justify-content: space-between;
-    border-radius: 10px;
-    border-color: gray;
-`;
+import { WrapPage } from '../style/styled_comp/styles';
 
 const AdminCabinet = (props) => {
     useEffect(()=>{
         props.showUsers();
         props.showImages();
     },[])
-    console.log("Admin props", props)
+    
     return (
         <WrapPage>
             {/* <div>
@@ -30,12 +18,23 @@ const AdminCabinet = (props) => {
                 <h1>Status: {props.loggedInStatus}</h1>
             </div> */}
             <div style={{display: 'flex'}}>
-                <UserProfile  users={props.users} />
-                {props.currentUser && <UsersList  users={props.users} currentUser={props.currentUser}/>}
-                {!props.currentUser && <UsersList  users={props.users} />}
+                <UserProfile  users={props.users} url={props.url} />
+                {props.currentUser 
+                    && <UsersList  
+                        users={props.users} 
+                        currentUser={props.currentUser} 
+                        url={props.url}
+                        showUsers={props.showUsers}
+                        />}
+                {!props.currentUser 
+                    && <UsersList  
+                        users={props.users} 
+                        url={props.url}
+                        showUsers={props.showUsers}
+                    />}
                 
             </div>
-            <DocumentsList images={props.images} companies={props.companies}/>
+            <DocumentsList images={props.images} companies={props.companies} url={props.url}/>
             
         </WrapPage>
     )

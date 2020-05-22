@@ -29,7 +29,7 @@ const CompaniesList = (props) => {
     const handleDeletion = (id) => {
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.delete(`http://kazakh-trs.kz:8080/api/v1/companies/delete/${id}`, {
+        axios.delete(`${props.url}/companies/delete/${id}`, {
             headers: {
                 Authorization: sessionToken
             }
@@ -44,7 +44,7 @@ const CompaniesList = (props) => {
             console.log("Company deletion error", error,error.response.status);
             alert("Some error happens")
         })
-
+        props.showCompanies();
         console.log("form submitted");
     }
 
@@ -79,12 +79,14 @@ const CompaniesList = (props) => {
             {showRegister
                 ? <Registration  
                     showRegisterCompany={showRegisterCompany}
+                    showCompanies={props.showCompanies}
                 />
                 : null}
             {showEdit
                 ? <Registration  
                     showEditCompany={showEditCompany}
                     companyInfo={company}
+                    showCompanies={props.showCompanies}
                 />
                 : null}
         </WrapPaper>
