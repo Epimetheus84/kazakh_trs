@@ -83,6 +83,9 @@ class User(Document):
     def has_access_to_see_user(self):
         return True
 
+    def has_access_to_recognize_image(self):
+        return True
+
     def has_access_to_update_user(self):
         return self.role == ROLE_ADMIN or self.role == ROLE_DEVELOPER
 
@@ -93,6 +96,9 @@ class User(Document):
         return self.role == ROLE_ADMIN or self.role == ROLE_DEVELOPER
 
     def has_access_to_see_image(self):
+        return True
+
+    def has_access_to_mark_image(self):
         return True
 
     def has_access_to_update_image(self, uploaded_by):

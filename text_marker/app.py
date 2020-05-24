@@ -15,7 +15,8 @@ THREADS_MAX_COUNT = 10
 def thread_function(image):
     input_file = image.get_full_file_path()
     rect = Detector.get_rect(input_file)
-    image.coordinates = json.dumps(rect)
+    coordinates = Image.prepare_coordinates(rect)
+    image.coordinates = json.dumps(coordinates)
     image.status = Image.IMAGE_STATUS_TEXT_DETECTED
     image.save()
     return True

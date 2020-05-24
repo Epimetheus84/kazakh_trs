@@ -60,6 +60,9 @@ class Image(Document):
     def can_be_marked(self):
         return True
 
+    def can_be_recognized(self):
+        return True
+
     def generate_file_path(self):
         self.file_path = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(FILE_PATH_LENGTH))
 
@@ -119,3 +122,46 @@ class Image(Document):
                 print("Error: %s : %s" % (f, e.strerror))
 
         os.rmdir(self.get_full_folder_path())
+
+    @staticmethod
+    def prepare_coordinates(rects):
+        coordinates_list = []
+        sorted_coordinates = []
+        words_by_line = {}
+        line_num = word_index = 0
+        for rect in rects:
+            coordinates_list.append({
+                'x0': rect[0],
+                'x1': rect[2],
+                'y0': rect[1],
+                'y1': rect[3],
+            })
+
+        # отсортировал слова по y0 координате
+        coordinates_list = sorted(coordinates_list, key=lambda x: x['y0'])
+
+        while word_index < coordinates_list.__len__():
+            coordinates = coordinates_list[word_index]
+            first_word_in_line = coordinates
+            line_height = coordinates['y1'] - coordinates['y0']
+            words_by_line[line_num] = []
+
+            # высчитал высоту слова и считаю что это высота строки
+            # беру y0 первого элемента, прибавляю к нему высоту строки
+            # все слова у которых y0 меньше этого числа,
+            # складываю в отдельный массив и считаю что это массив слов на одной строке
+            while coordinates['y0'] < first_word_in_line['y1'] + line_height:
+                coordinates = coordinates_list[word_index]
+                words_by_line[line_num].append(coordinates)
+                word_index += 1
+
+            # сортирую слова внутри каждой строки по иксу
+            words_by_line[line_num] = sorted(words_by_line[line_num], key=lambda x: x['x0'])
+            line_num += 1
+
+        # пересобираю все это в общий массив
+        for index, line in words_by_line.items():
+            for word in line:
+                sorted_coordinates.append(word)
+
+        return sorted_coordinates

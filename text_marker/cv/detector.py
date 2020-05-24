@@ -4,7 +4,6 @@ import cv2
 class Detector:
     @staticmethod
     def get_rect(input_file, ele_size=(8, 2)):  #
-        print(input_file)
         img = cv2.imread(input_file)
         if len(img.shape) == 3:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -20,6 +19,5 @@ class Detector:
         Rect = [cv2.boundingRect(i) for i in contours if i.shape[0] > 100]
         RectP = [(int(i[0] - i[2] * 0.08), int(i[1] - i[3] * 0.08), int(i[0] + i[2] * 1.1), int(i[1] + i[3] * 1.1)) for i in
                  Rect]
-        print(RectP)
         return RectP
 

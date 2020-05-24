@@ -2,27 +2,11 @@ import os
 
 from flask import Blueprint, request, abort, jsonify, g, send_from_directory
 from rest.helpers.auth import auth
+from rest.helpers.mircoservices.text_marker import TextMarker
 
 from orm.mongo.image import Image
 
 images = Blueprint('images', __name__)
-
-
-@images.route('/mark/<file_path>', methods=['GET'])
-@auth.login_required
-def mark_image(file_path):
-    if not g.current_user.has_access_to_mark_image():
-        abort(403)
-
-    image = Image.objects(file_path=file_path)
-
-    if not image:
-        abort(404)
-
-    image = image.get()
-
-    if not image.can_be_marked():
-        abort(405)
 
 
 # CRUD
@@ -30,7 +14,7 @@ def mark_image(file_path):
 @auth.login_required
 def list_images():
     page = request.args.get('page') or 1
-    items_per_page = 10
+    items_per_page = 100
 
     offset = (page - 1) * items_per_page
 
@@ -132,3 +116,44 @@ def delete_image(file_path):
 def serve_images(path):
     return send_from_directory(os.path.join('..', 'data', 'production', 'images'), filename=path)
 
+
+@images.route('/mark/<file_path>', methods=['GET'])
+@auth.login_required
+def mark_image(file_path):
+    if not g.current_user.has_access_to_mark_image():
+        abort(403)
+
+    image = Image.objects(file_path=file_path)
+
+    if not image:
+        abort(404)
+
+    image = image.get()
+
+    if not image.can_be_marked():
+        abort(405)
+
+    response = TextMarker.mark(image.file_path)
+
+    return response
+
+
+@images.route('/recognize/<file_path>', methods=['GET'])
+@auth.login_required
+def mark_image(file_path):
+    if not g.current_user.has_access_to_recognize_image():
+        abort(403)
+
+    image = Image.objects(file_path=file_path)
+
+    if not image:
+        abort(404)
+
+    image = image.get()
+
+    if not image.can_be_recognized():
+        abort(405)
+
+    response = TextMarker.mark(image.file_path)
+
+    return response
