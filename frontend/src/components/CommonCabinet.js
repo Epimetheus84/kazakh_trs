@@ -2,19 +2,7 @@ import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import UserProfile from './reusComponents/UserProfile';
 import DocumentsList from './reusComponents/Documents';
-
-const WrapPage = styled.div`
-    margin-top: 10px;
-    padding: 25px;
-    background: transparent;
-    width: 1100px;
-    display: flex;
-    flex-direction: column;
-    align-items: space-around;
-    justify-content: space-between;
-    border-radius: 10px;
-    border-color: gray;
-`;
+import { WrapPage } from '../style/styled_comp/styles';
 
 const CommonCabinet = (props) => {
     useEffect(()=>{
@@ -23,8 +11,13 @@ const CommonCabinet = (props) => {
     return (
         <WrapPage>
             <div style={{display: 'flex'}}>
-                <UserProfile/>
-                <DocumentsList images={props.images} style={{marginTop:"10px"}}/>
+                <UserProfile url={props.url}/>
+                <DocumentsList 
+                    images={props.images} 
+                    style={{marginTop:"10px"}} 
+                    url={props.url}
+                    showImages={props.showImages}
+                />
             </div>
             
             

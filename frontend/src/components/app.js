@@ -20,7 +20,8 @@ export default class App extends Component {
       user: null,
       usersList:[],
       companiesList:[],
-      imagesList:[]
+      imagesList:[],
+      url:"http://kazakh-trs.kz:8088/api/v1"
     }
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -32,44 +33,44 @@ export default class App extends Component {
     this.showUsers = this.showUsers.bind(this);
     this.showCompanies = this.showCompanies.bind(this);
     this.showImages = this.showImages.bind(this);
-  }
+    }
     showUsers = async() => {
       const sessionToken = "token "+ sessionStorage.tokenData;
-      let res = await axios.get("http://kazakh-trs.kz:8080/api/v1/users/list", {
+      let res = await axios.get(`${this.state.url}/users/list`, {
           headers: {
               Authorization: sessionToken
           }
       });
       let {data} = res;
       this.saveUsersList(data);
-  }
+    }
   
-  showCompanies = async() => {
+    showCompanies = async() => {
+        const sessionToken = "token "+ sessionStorage.tokenData;
+        let res = await axios.get(`${this.state.url}/companies/list`, {
+            headers: {
+                Authorization: sessionToken
+            }
+        });
+        let {data} = res;
+        this.saveCompaniesList(data);
+    }
+
+    showImages = async() => {
       const sessionToken = "token "+ sessionStorage.tokenData;
-      let res = await axios.get("http://kazakh-trs.kz:8080/api/v1/companies/list", {
+      let res = await axios.get(`${this.state.url}/images/list`, {
           headers: {
               Authorization: sessionToken
           }
       });
       let {data} = res;
-      this.saveCompaniesList(data);
-  }
-
-  showImages = async() => {
-    const sessionToken = "token "+ sessionStorage.tokenData;
-    let res = await axios.get("http://kazakh-trs.kz:8080/api/v1/images/list", {
-        headers: {
-            Authorization: sessionToken
-        }
-    });
-    let {data} = res;
-    this.saveImagesList(data);
-}
+      this.saveImagesList(data);
+    }
 
   saveCompaniesList(data){
     if(data){
       this.setState(state => {
-        const companiesList = [...state.companiesList, ...data];
+        const companiesList = [...data];
         return {
           companiesList,
           data: '',
@@ -81,7 +82,7 @@ export default class App extends Component {
   saveUsersList(data){
     if(data){
       this.setState(state => {
-        const usersList = [...state.usersList, ...data];
+        const usersList = [...data];
         return {
           usersList,
           data: '',
@@ -93,7 +94,7 @@ export default class App extends Component {
   saveImagesList(data){
     if(data){
       this.setState(state => {
-        const imagesList = [...state.imagesList, ...data];
+        const imagesList = [...data];
         return {
           imagesList,
           data: '',
@@ -107,7 +108,10 @@ export default class App extends Component {
    
     this.setState({
       loggedInStatus: "NOT_LOGGED_IN",
-      user: null
+      user: null,
+      usersList:[],
+      companiesList:[],
+      imagesList:[]
     });
     
   }
@@ -153,6 +157,7 @@ export default class App extends Component {
                     handleLogout= {this.handleLogout} 
                     handleLoggin= {this.handleLoggin} 
                     loggedInStatus={this.state.loggedInStatus} 
+                    url = {this.state.url}
                   />
                 )} 
               />
@@ -160,7 +165,10 @@ export default class App extends Component {
                 exact 
                 path={"/users/:first_name/:second_name"} 
                 render={props => (
-                  <Users {...props} loggedInStatus={this.state.loggedInStatus} />
+                  <Users {...props} 
+                    loggedInStatus={this.state.loggedInStatus} 
+                    url = {this.state.url}
+                  />
                 )} 
               />
               <Route 
@@ -173,6 +181,7 @@ export default class App extends Component {
                     currentUser={this.state.user}
                     images={this.state.imagesList}
                     showImages={this.showImages}
+                    url = {this.state.url}
                     />
                 )} 
               />
@@ -188,6 +197,7 @@ export default class App extends Component {
                     users={this.state.usersList}
                     companies={this.state.companiesList}
                     currentUser={this.state.user}
+                    url = {this.state.url}
                     />
                 )} 
               />
@@ -205,6 +215,7 @@ export default class App extends Component {
                     images={this.state.imagesList}
                     showImages={this.showImages}
                     currentUser={this.state.user}
+                    url = {this.state.url}
                     />
                 )} 
               />
@@ -222,6 +233,7 @@ export default class App extends Component {
                     images={this.state.imagesList}
                     showImages={this.showImages}
                     currentUser={this.state.user}
+                    url = {this.state.url}
                     />
                 )} 
               />

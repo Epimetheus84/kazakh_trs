@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import Registration from './auth/Registration';
 import Login from './auth/Login';
 import {WrapPaper, Button} from './auth/styles';
 
@@ -31,7 +29,7 @@ class Home extends Component {
     }
 
     handleSuccesfulAuth = async (token)=>{
-        axios.get("http://kazakh-trs.kz:8080/api/v1/cabinet/me", {
+        fetch(`${this.props.url}/cabinet/me`, {
             headers: {
                 Authorization: `token ${token}`
             }
@@ -63,7 +61,7 @@ class Home extends Component {
                     <br/>
                 <WrapPaper>
                     <Button 
-                        primary
+                        
                         type='submit'
                         onClick ={()=>this.handleShowComponent("showLogin","showRegister")}
                     >
@@ -71,7 +69,7 @@ class Home extends Component {
                     </Button>
                 </WrapPaper>
                 {this.state.showLogin
-                    ? <Login handleSuccesfulAuth={this.handleSuccesfulAuth} saveToken={this.saveToken}/>
+                    ? <Login handleSuccesfulAuth={this.handleSuccesfulAuth} saveToken={this.saveToken} url={this.props.url}/>
                     : null}
             </div>
         );

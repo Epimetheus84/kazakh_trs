@@ -1,54 +1,51 @@
 import React, {useState} from 'react';
-// import axios, {post} from 'axios';
-// import DropAndCrop from '../ImageEdit/DropAndCrop';
+import axios, {post} from 'axios';
+import DropAndCrop from '../ImageEdit/DropAndCrop';
+import Mapper from '../ImageMapping/Mapper';
 
 import {
     WrapPaper, 
     Details, 
-    ListWrap, 
-    AddImageInput, 
-    AddImageIcon, 
-    AddImageButton,
-    ImageDesc
+    ListWrap,
+    ImageDesc,
+    ButtonDelete,
+    Button3
 } from '../../style/styled_comp/styles';
 
 const DocumentsList = (props) => {
-    const [file, setFile]=useState(null);
-    const [files, setFiles]=useState([]);
-    const [isPrimary, setIsPrimary]=useState(false);
+    const [showMapper, setShowMapper]=useState(false);
 
     let imagesList = [];
     imagesList=[...imagesList, ...props.images];
 
-    const onFormSubmit = (e) => {
-        e.preventDefault() // Stop form submit
-        if(file){
-            fileUpload(file).then((response)=>{
-                console.log(response.data);
-            })
-        } else 
-            alert("Выберите файл для загрузки !")
-        
-      }
-    const onChange = (e) => {console.log("loaded images ", e.target.files[0])
-        setFile(e.target.files[0])
-        setFiles(<li key={e.target.files[0].size}>
-                    файл=> {e.target.files[0].name} 
-                </li>)
-        setIsPrimary(true);
-      }
-    const fileUpload = (file) => {
-        const url = 'http://kazakh-trs.kz:8080/api/v1/images/create/';
-        const formData = new FormData();
-        formData.append('file',file)
-        const config = {
+    const handleDeletion = (name) => {
+        const sessionToken = `token ${sessionStorage.tokenData}`;
+
+        axios.delete(`${props.url}/images/delete/${name}`, {
             headers: {
-                Authorization: `token ${sessionStorage.tokenData}`,
-                'content-type': 'multipart/form-data'
+                Authorization: sessionToken
             }
+        },
+        {withCredentials: true}
+        ).then(response => {
+            if(response.status === 200){
+                console.log("Image deletion response", response)
+                alert("Image is Deleted");
+            }
+        }).catch(error=>{
+            console.log("Image deletion error", error);
+            alert("Some error happens")
+        })
+        props.showImages();
+        console.log("form submitted");
+    }
+
+    const confirmDeletion =(name) => {
+        const doDeletion = confirm("Хотите удалить изображение ?");
+        if(doDeletion){
+            handleDeletion(name);
         }
-        return  post(url, formData,config)
-      }
+    }
 
     return (
         <WrapPaper documents>
@@ -56,28 +53,31 @@ const DocumentsList = (props) => {
                 Загруженные документы:      
             </Details>
             <ListWrap>
-                <form onSubmit={onFormSubmit}>
-                <AddImageIcon htmlFor="file-upload" >
-                    Выбрать файл
-                </AddImageIcon>
-                <AddImageInput type="file" accept="image/*" id="file-upload"  onChange={onChange}/>
-                <AddImageButton type="submit" primary={isPrimary}>Загрузить <ul>{files}</ul></AddImageButton>
-                
+                <DropAndCrop url={props.url} showImages={props.showImages}/>
                 <hr/>
-                
-                </form>
+                <p style={{color: '#90d2c6', marginTop:"25px"}}>Сохраненные изображения</p>
                 {
                     imagesList.map((item, index) => {
                         return (
                         <ImageDesc key={index}>
-                            <div>Загрузил: {item.uploaded_by}</div>
-                            <div>Название: {item.original_filename}</div>
+                            <div>
+                                <div>Загрузил: {item.uploaded_by}</div>
+                                <div>Название: {item.original_filename}</div>
+                            </div>
+                            <div style={{display:'flex'}}>
+                                {item.coordinates 
+                                    && <Button3 onClick={()=>console.log("Hop Eeeee!")}>
+                                            Показать координаты
+                                        </Button3>
+                                        }
+                                <ButtonDelete onClick={()=>confirmDeletion(item.file_path)}/>
+                                {showMapper && <Mapper/>}
+                            </div>
                         </ImageDesc>
                         )
                     })
                 }
             </ListWrap>
-            {/* <DropAndCrop/> */}
         </WrapPaper>
     )
 }
