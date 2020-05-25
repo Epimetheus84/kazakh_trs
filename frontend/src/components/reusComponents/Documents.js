@@ -14,9 +14,17 @@ import {
 
 const DocumentsList = (props) => {
     const [showMapper, setShowMapper]=useState(false);
+    const [coords, setCoords]=useState([]);
+    const [imgSrc, setImgSrc]=useState('');
 
     let imagesList = [];
     imagesList=[...imagesList, ...props.images];
+
+    const handleMapperShow = (coords, url) => {
+        setCoords(coords);
+        setImgSrc(url);
+        setShowMapper(!showMapper);
+    }
 
     const handleDeletion = (name) => {
         const sessionToken = `token ${sessionStorage.tokenData}`;
@@ -56,6 +64,7 @@ const DocumentsList = (props) => {
                 <DropAndCrop url={props.url} showImages={props.showImages}/>
                 <hr/>
                 <p style={{color: '#90d2c6', marginTop:"25px"}}>Сохраненные изображения</p>
+                {showMapper && <Mapper coordinates={coords} imgSrc={imgSrc} />}
                 {
                     imagesList.map((item, index) => {
                         return (
@@ -66,12 +75,11 @@ const DocumentsList = (props) => {
                             </div>
                             <div style={{display:'flex'}}>
                                 {item.coordinates 
-                                    && <Button3 onClick={()=>alert(item.coordinates)}>
+                                    && <Button3 onClick={()=>handleMapperShow(JSON.parse(item.coordinates), item.file_url)}>
                                             Показать координаты
                                         </Button3>
                                         }
                                 <ButtonDelete onClick={()=>confirmDeletion(item.file_path)}/>
-                                {showMapper && <Mapper/>}
                             </div>
                         </ImageDesc>
                         )
