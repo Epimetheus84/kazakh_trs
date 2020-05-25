@@ -92,9 +92,9 @@ class Registration extends Component {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
           })
-          .then(res => {return res.json();})
+          .then(res => {console.log(res, 'sdfgsdf'); return res.json();})
           .then(
-              data => {
+              data => { 
                 this.setState({
                     roleCheck: data.role
                 });
@@ -193,7 +193,7 @@ class Registration extends Component {
         } = this.state;
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.post(`${this.props.url}/v1/companies/create/`, 
+        axios.post(`${this.props.url}/companies/create/`, 
         {
                 name: companyName,
                 info: info,
@@ -216,7 +216,7 @@ class Registration extends Component {
             this.props.showCompanies();
         },1500)
         console.log("form submitted");
-        // event.preventDefault();
+        event.preventDefault();
     }
 
     handleSubmitEditCompany(event){

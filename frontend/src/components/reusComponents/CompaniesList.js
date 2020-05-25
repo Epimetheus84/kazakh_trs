@@ -80,6 +80,7 @@ const CompaniesList = (props) => {
                 ? <Registration  
                     showRegisterCompany={showRegisterCompany}
                     showCompanies={props.showCompanies}
+                    url={props.url}
                 />
                 : null}
             {showEdit
@@ -87,6 +88,7 @@ const CompaniesList = (props) => {
                     showEditCompany={showEditCompany}
                     companyInfo={company}
                     showCompanies={props.showCompanies}
+                    url={props.url}
                 />
                 : null}
         </WrapPaper>
