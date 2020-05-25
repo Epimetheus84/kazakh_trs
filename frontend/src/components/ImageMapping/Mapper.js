@@ -12,16 +12,16 @@ const originalImageSize = {
 
 const initialRectangles = [
   {
-    x1: 10,
-    y1: 10,
-    x2: 110,
-    y2: 110
+    x0: 10,
+    y0: 10,
+    x1: 110,
+    y1: 110
   },
   {
-    x1: 10,
-    y1: 10,
-    x2: 110,
-    y2: 110
+    x0: 10,
+    y0: 10,
+    x1: 110,
+    y1: 110
   }
 ];
 
@@ -32,7 +32,8 @@ class Mapper extends Component {
     const resizeRatio = showWidth / originalImageSize.width;
 
     this.state = {
-      rectangles: initialRectangles,
+      imgSrc: props.imgSrc,
+      rectangles: props.coordinates,
       selectedId: null,
       showWidth: showWidth,
       showHeight: showHeight,
@@ -63,10 +64,10 @@ class Mapper extends Component {
     const { rectangles } = this.state;
     rectangles.push(
       {
-        x1: 10,
-        y1: 10,
-        x2: 110,
-        y2: 110
+        x0: 10,
+        y0: 10,
+        x1: 110,
+        y1: 110
       }
     );
     this.setState({rectangles: rectangles});
@@ -84,19 +85,19 @@ class Mapper extends Component {
   coordinatesConversation(rect, index) {
     const { resizeRatio } = this.state;
 
-    const x1 = (Math.floor(rect.x1 * resizeRatio * 100) / 100);
-    const y1 = (Math.floor(rect.y1 * resizeRatio * 100) / 100);
+    const x0 = (Math.floor(rect.x0 * resizeRatio * 100) / 100);
+    const y0 = (Math.floor(rect.y0 * resizeRatio * 100) / 100);
 
-    const x2 = (Math.ceil(rect.x2 * resizeRatio * 100) / 100);
-    const y2 = (Math.ceil(rect.y2 * resizeRatio * 100) / 100);
+    const x1 = (Math.ceil(rect.x1 * resizeRatio * 100) / 100);
+    const y1 = (Math.ceil(rect.y1 * resizeRatio * 100) / 100);
 
-    console.log(x1, x2, y1, y2);
+    console.log(x0, x1, y0, y1);
 
     return {
-      x: x1,
-      y: y1,
-      width: x2 - x1,
-      height: y2 - y1,
+      x: x0,
+      y: y0,
+      width: x1 - x0,
+      height: y1 - y0,
       stroke: 'red',
       strokeWidth: 1,
       fill: 'transparent',
@@ -108,24 +109,25 @@ class Mapper extends Component {
   backwardCoordinatesConversation(newParams) {
     const { resizeRatio } = this.state;
 
-    const x1 = newParams.x / resizeRatio;
-    const y1 = newParams.y / resizeRatio;
+    const x0 = newParams.x / resizeRatio;
+    const y0 = newParams.y / resizeRatio;
 
-    const x2 = (newParams.width  + newParams.x) / resizeRatio;
-    const y2 = (newParams.height + newParams.y) / resizeRatio;
+    const x1 = (newParams.width  + newParams.x) / resizeRatio;
+    const y1 = (newParams.height + newParams.y) / resizeRatio;
 
-    console.log(x1, x2, y1, y2);
+    console.log(x0, x1, y0, y1);
 
     return {
+      x0,
+      y0,
       x1,
-      y1,
-      x2,
-      y2
+      y1
     }
   }
 
   render() {
-    const {rectangles, selectedId, showHeight, showWidth, recognizedText} = this.state;
+    const {rectangles, selectedId, showHeight, showWidth, recognizedText, imgSrc} = this.state;
+    console.log("imgSrc", imgSrc)
     return (
       <div>
         <button onClick={this.addNewShape} type={'button'}>Добавить</button>
@@ -141,11 +143,12 @@ class Mapper extends Component {
             <TextImage
                 showHeight={showHeight}
                 showWidth={showWidth}
-                imageScr={'http://localhost:4444/images/uploads/aidar/yyvphxs1ikqoims6/original.png'}
+                imageScr={imgSrc}
             />
           </Layer>
           <Layer>
           {rectangles.map((rect, i) => {
+            console.log('rect',rect)
             const preparedRect = this.coordinatesConversation(rect, i);
             return (
               <Rectangle
