@@ -66,7 +66,7 @@ const DocumentsList = (props) => {
                             </div>
                             <div style={{display:'flex'}}>
                                 {item.coordinates 
-                                    && <Button3 onClick={()=>console.log("Hop Eeeee!")}>
+                                    && <Button3 onClick={()=>alert(item.coordinates)}>
                                             Показать координаты
                                         </Button3>
                                         }

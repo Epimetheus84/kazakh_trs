@@ -53,7 +53,6 @@ const UsersList = (props) => {
         {withCredentials: true}
         ).then(response => {
             if(response.status === 200){
-                console.log("User deletion response", response)
                 alert("User is Deleted")
             }
         }).catch(error=>{
@@ -61,7 +60,6 @@ const UsersList = (props) => {
             alert("Some error happens")
         })
         props.showUsers();
-        console.log("form submitted");
     }
 
     const confirmDeletion =(login) => {
