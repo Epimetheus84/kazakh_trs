@@ -37,8 +37,8 @@ class Mapper extends Component {
       imgSrc: apiUrl + props.imgSrc,
       rectangles: props.coordinates,
       selectedId: null,
-      showWidth: showWidth,
-      showHeight: showHeight,
+      showWidth: props.imgWidth,
+      showHeight: props.imgHight,
       resizeRatio: resizeRatio
     };
 

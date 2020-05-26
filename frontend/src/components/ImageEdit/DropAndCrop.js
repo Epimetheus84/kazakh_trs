@@ -20,10 +20,7 @@ function DropAndCrop(props) {
     const [imgSrcExt, setImgSrcExt]=useState(null);
     // const [crop, setCrop]=useState({aspect:1/1});
     const [crop, setCrop]=useState({});
-
     const imagePreviewCanvasRef = React.createRef();
-
-
     const [file, setFile]=useState(null);
 
     const verifyFile = (file)=>{
@@ -72,22 +69,26 @@ function DropAndCrop(props) {
             }
     }
 
+    const timerStatus = (name) => {
+        setInterval(() => checkImage(name), 10000);
+    }
     const onFormSubmit = () => {
         if(file){
             fileUpload(file).then((response)=>{
-                
                 alert("Файл загружен!");
-                checkImage(response.data.file_path);
+                findCoords(response.data.file_path);
                 handleClearToDefault();
                 // setFiles([]);
                 props.showImages();
+                timerStatus(response.data.file_path);
+                
             })
         } else 
             alert("Выберите файл для загрузки !")
         
     }
 
-    const checkImage = (name) => {
+    const findCoords = (name) => {
         const url = `${props.url}/images/mark/${name}`;
         fetch(url,{
             headers: {
@@ -98,6 +99,24 @@ function DropAndCrop(props) {
         .then(
             data => {
                 console.log('data',data);
+            }
+        );
+    }
+
+    const checkImage = (name, status) => {
+        const url = `${props.url}/images/show/${name}`;
+        fetch(url,{
+            headers: {
+                Authorization: `token ${sessionStorage.tokenData}`
+            }
+        })
+        .then(res => {return res.json();})
+        .then(
+            data => {
+                if(data.status === 1){
+                    clearInterval(timerStatus);
+                    props.showImages();
+                }
             }
         );
     }

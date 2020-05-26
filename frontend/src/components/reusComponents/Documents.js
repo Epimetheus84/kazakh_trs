@@ -16,13 +16,18 @@ const DocumentsList = (props) => {
     const [showMapper, setShowMapper]=useState(false);
     const [coords, setCoords]=useState([]);
     const [imgSrc, setImgSrc]=useState('');
+    const [imgWidth, setImgWidth]=useState(0);
+    const [imgHight, setImgHight]=useState(0);
+    
 
     let imagesList = [];
     imagesList=[...imagesList, ...props.images];
 
-    const handleMapperShow = (coords, url) => {
+    const handleMapperShow = (coords, url, size) => {
         setCoords(coords);
         setImgSrc(url);
+        setImgWidth(size.width);
+        setImgHight(size.hight);
         setShowMapper(!showMapper);
     }
 
@@ -44,7 +49,11 @@ const DocumentsList = (props) => {
             console.log("Image deletion error", error);
             alert("Some error happens")
         })
-        props.showImages();
+
+        setTimeout(()=>{
+            props.showImages();
+        },1500)
+
         console.log("form submitted");
     }
 
@@ -64,7 +73,12 @@ const DocumentsList = (props) => {
                 <DropAndCrop url={props.url} showImages={props.showImages}/>
                 <hr/>
                 <p style={{color: '#90d2c6', marginTop:"25px"}}>Сохраненные изображения</p>
-                {showMapper && <Mapper coordinates={coords} imgSrc={imgSrc} />}
+                {showMapper && <Mapper 
+                                    coordinates={coords} 
+                                    imgSrc={imgSrc} 
+                                    imgWidth={imgWidth}
+                                    imgHight={imgHight}
+                                    />}
                 {
                     imagesList.map((item, index) => {
                         return (
@@ -72,13 +86,21 @@ const DocumentsList = (props) => {
                             <div>
                                 <div>Загрузил: {item.uploaded_by}</div>
                                 <div>Название: {item.original_filename}</div>
+                                <div>Дата: {item.date_created}</div>
                             </div>
                             <div style={{display:'flex'}}>
                                 {item.coordinates 
-                                    && <Button3 onClick={()=>handleMapperShow(JSON.parse(item.coordinates), item.file_url)}>
+                                    && <Button3 onClick={()=>
+                                        handleMapperShow(
+                                            JSON.parse(item.coordinates), 
+                                            item.file_url, 
+                                            JSON.parse(item.image_size))
+                                        }
+                                        >
                                             Показать координаты
                                         </Button3>
                                         }
+                                {item.status === 3 && console.log("STATUS THREE")}
                                 <ButtonDelete onClick={()=>confirmDeletion(item.file_path)}/>
                             </div>
                         </ImageDesc>

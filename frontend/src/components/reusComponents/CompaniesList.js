@@ -44,7 +44,11 @@ const CompaniesList = (props) => {
             console.log("Company deletion error", error,error.response.status);
             alert("Some error happens")
         })
-        props.showCompanies();
+
+        setTimeout(()=>{
+            this.props.showCompanies();
+        },1500)
+        
         console.log("form submitted");
     }
 
