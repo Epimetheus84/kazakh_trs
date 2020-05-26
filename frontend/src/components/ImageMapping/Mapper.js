@@ -28,6 +28,7 @@ const initialRectangles = [
 class Mapper extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     const showHeight = showWidth * (props.height / props.width);
     const resizeRatio = showWidth / props.width;
 
@@ -37,8 +38,8 @@ class Mapper extends Component {
       imgSrc: apiUrl + props.imgSrc,
       rectangles: props.coordinates,
       selectedId: null,
-      showWidth: props.imgWidth,
-      showHeight: props.imgHight,
+      showWidth: showWidth,
+      showHeight: showHeight,
       resizeRatio: resizeRatio
     };
 

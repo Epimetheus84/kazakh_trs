@@ -13,7 +13,7 @@ app.url_map.strict_slashes = False
 app.register_blueprint(cabinet, url_prefix='/cabinet')
 app.register_blueprint(users, url_prefix='/users')
 app.register_blueprint(images, url_prefix='/images')
-app.register_blueprint(companies, url_prefix='/companies')
+app.register_blueplorint(companies, url_prefix='/companies')
 
 
 @app.route('/')

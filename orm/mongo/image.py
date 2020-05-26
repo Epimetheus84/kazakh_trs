@@ -5,6 +5,7 @@ import string
 import json
 import random
 
+from PIL import Image as plimg
 from mongoengine import *
 from orm.mongo.connection import Connection
 
@@ -32,6 +33,7 @@ class Image(Document):
     date_created = DateTimeField(default=datetime.datetime.utcnow)
     date_modified = DateTimeField(default=datetime.datetime.utcnow)
     status = IntField(max_value=10, required=True, default=IMAGE_STATUS_NEW)
+    image_size = StringField(max_length=128)
     coordinates = StringField()
     text = StringField()
 
@@ -70,6 +72,7 @@ class Image(Document):
         return {
             'original_filename': self.original_filename,
             'status': self.status,
+            'image_size': self.image_size,
             'coordinates': self.coordinates,
             'uploaded_by': usr.User.objects(login=self.uploaded_by).get().login if usr.User.objects(login=self.uploaded_by) else {},
             'date_created': int(self.date_created.timestamp()),
@@ -112,6 +115,16 @@ class Image(Document):
             return True
 
         return False
+
+    def set_image_sizes(self):
+        im = plimg.open(self.get_full_file_path())
+        width, height = im.size
+        self.image_size = json.dumps({
+            'width': width,
+            'height': height
+        })
+
+        return True
 
     def delete_file(self):
         files = glob.glob(os.path.join(self.get_full_folder_path(), '*'), recursive=True)

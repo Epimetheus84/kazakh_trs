@@ -17,7 +17,7 @@ const DocumentsList = (props) => {
     const [coords, setCoords]=useState([]);
     const [imgSrc, setImgSrc]=useState('');
     const [imgWidth, setImgWidth]=useState(0);
-    const [imgHight, setImgHight]=useState(0);
+    const [imgHeight, setImgHight]=useState(0);
     
 
     let imagesList = [];
@@ -27,7 +27,7 @@ const DocumentsList = (props) => {
         setCoords(coords);
         setImgSrc(url);
         setImgWidth(size.width);
-        setImgHight(size.hight);
+        setImgHight(size.height);
         setShowMapper(!showMapper);
     }
 
@@ -76,8 +76,8 @@ const DocumentsList = (props) => {
                 {showMapper && <Mapper 
                                     coordinates={coords} 
                                     imgSrc={imgSrc} 
-                                    imgWidth={imgWidth}
-                                    imgHight={imgHight}
+                                    width={imgWidth}
+                                    height={imgHeight}
                                     />}
                 {
                     imagesList.map((item, index) => {

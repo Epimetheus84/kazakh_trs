@@ -89,6 +89,8 @@ def create_image():
     if not image.upload(file):
         return jsonify({'error': 'This file cannot be uploaded.'}), 400
 
+    image.set_image_sizes()
+
     image.save()
 
     return image.to_json()
@@ -140,7 +142,7 @@ def mark_image(file_path):
 
 @images.route('/recognize/<file_path>', methods=['GET'])
 @auth.login_required
-def mark_image(file_path):
+def recognize_image(file_path):
     if not g.current_user.has_access_to_recognize_image():
         abort(403)
 
