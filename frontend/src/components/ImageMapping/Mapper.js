@@ -6,8 +6,8 @@ import Rectangle from "./Rectangle";
 const showWidth = 1200;
 
 const originalImageSize = {
-  width: 1600,
-  height: 1600
+  width: 2528,
+  height: 3507
 };
 
 const initialRectangles = [
@@ -28,11 +28,13 @@ const initialRectangles = [
 class Mapper extends Component {
   constructor(props) {
     super(props);
-    const showHeight = showWidth * (originalImageSize.height / originalImageSize.width);
-    const resizeRatio = showWidth / originalImageSize.width;
+    const showHeight = showWidth * (props.height / props.width);
+    const resizeRatio = showWidth / props.width;
+
+    const apiUrl = 'http://kazakh-trs.kz:8088/api/v1';
 
     this.state = {
-      imgSrc: props.imgSrc,
+      imgSrc: apiUrl + props.imgSrc,
       rectangles: props.coordinates,
       selectedId: null,
       showWidth: showWidth,
