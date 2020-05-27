@@ -71,6 +71,7 @@ function DropAndCrop(props) {
 
     const timerStatus = (name) => {
         setInterval(() => checkImage(name), 10000);
+        console.log("Check status")
     }
     const onFormSubmit = () => {
         if(file){

@@ -18,17 +18,21 @@ const DocumentsList = (props) => {
     const [imgSrc, setImgSrc]=useState('');
     const [imgWidth, setImgWidth]=useState(0);
     const [imgHeight, setImgHight]=useState(0);
+    const [imgName, setImgName]=useState('');
+    const [imgText, setImgText]=useState('');
     
 
     let imagesList = [];
     imagesList=[...imagesList, ...props.images];
 
-    const handleMapperShow = (coords, url, size) => {
+    const handleMapperShow = (coords, url, size, name, text) => {
         setCoords(coords);
         setImgSrc(url);
         setImgWidth(size.width);
         setImgHight(size.height);
         setShowMapper(!showMapper);
+        setImgName(name);
+        setImgText(text);
     }
 
     const handleDeletion = (name) => {
@@ -78,6 +82,8 @@ const DocumentsList = (props) => {
                                     imgSrc={imgSrc} 
                                     width={imgWidth}
                                     height={imgHeight}
+                                    imgName={imgName}
+                                    imgText={imgText}
                                     />}
                 {
                     imagesList.map((item, index) => {
@@ -94,13 +100,16 @@ const DocumentsList = (props) => {
                                         handleMapperShow(
                                             JSON.parse(item.coordinates), 
                                             item.file_url, 
-                                            JSON.parse(item.image_size))
+                                            JSON.parse(item.image_size),
+                                            item.file_path,
+                                            JSON.parse(item.text)
+                                            )
                                         }
                                         >
-                                            Показать координаты
+                                            {item.status === 3 ? "Текст определен" : "Показать координаты"}
                                         </Button3>
                                         }
-                                {item.status === 3 && console.log("STATUS THREE")}
+                                {/* {item.status === 3 && setImgText(JSON.parse(item.text))} */}
                                 <ButtonDelete onClick={()=>confirmDeletion(item.file_path)}/>
                             </div>
                         </ImageDesc>

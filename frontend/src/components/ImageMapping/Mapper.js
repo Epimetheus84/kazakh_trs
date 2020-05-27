@@ -28,7 +28,6 @@ const initialRectangles = [
 class Mapper extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     const showHeight = showWidth * (props.height / props.width);
     const resizeRatio = showWidth / props.width;
 
@@ -37,15 +36,33 @@ class Mapper extends Component {
     this.state = {
       imgSrc: apiUrl + props.imgSrc,
       rectangles: props.coordinates,
+      imgName: props.imgName,
       selectedId: null,
       showWidth: showWidth,
       showHeight: showHeight,
-      resizeRatio: resizeRatio
+      resizeRatio: resizeRatio,
+      recognizedText: props.imgText
     };
 
     this.checkDeselect = this.checkDeselect.bind(this);
     this.addNewShape = this.addNewShape.bind(this);
     this.removeSelectedShape = this.removeSelectedShape.bind(this);
+    this.recognizeText = this.recognizeText.bind(this);
+  }
+
+  recognizeText = (name) => {
+    const url = `http://kazakh-trs.kz:8088/api/v1/images/recognize/${name}`;
+    fetch(url,{
+        headers: {
+            Authorization: `token ${sessionStorage.tokenData}`
+        }
+    })
+    .then(res => {return res.json();})
+    .then(
+        data => {
+            console.log('recognizeTextStatus', data)
+        }
+    );
   }
 
   selectShape(vSelectedId) {
@@ -94,7 +111,7 @@ class Mapper extends Component {
     const x1 = (Math.ceil(rect.x1 * resizeRatio * 100) / 100);
     const y1 = (Math.ceil(rect.y1 * resizeRatio * 100) / 100);
 
-    console.log(x0, x1, y0, y1);
+    // console.log(x0, x1, y0, y1);
 
     return {
       x: x0,
@@ -129,8 +146,7 @@ class Mapper extends Component {
   }
 
   render() {
-    const {rectangles, selectedId, showHeight, showWidth, recognizedText, imgSrc} = this.state;
-    console.log("imgSrc", imgSrc)
+    const {rectangles, selectedId, showHeight, showWidth, recognizedText, imgSrc, imgName} = this.state;
     return (
       <div>
         <button onClick={this.addNewShape} type={'button'}>Добавить</button>
@@ -151,7 +167,6 @@ class Mapper extends Component {
           </Layer>
           <Layer>
           {rectangles.map((rect, i) => {
-            console.log('rect',rect)
             const preparedRect = this.coordinatesConversation(rect, i);
             return (
               <Rectangle
@@ -172,7 +187,7 @@ class Mapper extends Component {
           })}
           </Layer>
         </Stage>
-        <button>Сохранить и распознать текст</button>
+        <button onClick={()=>this.recognizeText(imgName)}>Сохранить и распознать текст</button>
         <textarea value={recognizedText}/>
       </div>
     );
