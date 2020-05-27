@@ -23,7 +23,7 @@ UPLOAD_FOLDER = os.path.join('.', 'data', 'production', 'images')
 class Image(Document):
     IMAGE_STATUS_NEW = 0
     IMAGE_STATUS_TEXT_DETECTED = 1
-    IMAGE_STATUS_DIVIDED = 2
+    IMAGE_STATUS_ON_PROCESSING = 2
     IMAGE_STATUS_TEXT_RECOGNIZED = 3
 
     file_path = StringField(max_length=FILE_PATH_LENGTH, required=True)

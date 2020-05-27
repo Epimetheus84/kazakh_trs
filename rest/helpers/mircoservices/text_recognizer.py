@@ -1,14 +1,11 @@
 import requests
 
-ADDRESS = ''
+ADDRESS = 'http://127.0.0.1:4446'
 
 
 class TextRecognizer:
     @staticmethod
-    def mark(file_path):
-        url = ADDRESS + '/recognize'
-        data = {
-            'file_path': file_path
-        }
-        response = requests.post(url=url, data=data)
+    def recognize(file_path):
+        url = ADDRESS + '/recognize/' + file_path
+        response = requests.get(url=url)
         return response.json()

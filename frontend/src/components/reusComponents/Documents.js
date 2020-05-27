@@ -17,7 +17,7 @@ const DocumentsList = (props) => {
     const [coords, setCoords]=useState([]);
     const [imgSrc, setImgSrc]=useState('');
     const [imgWidth, setImgWidth]=useState(0);
-    const [imgHeight, setImgHight]=useState(0);
+    const [imgHeZZight, setImgHight]=useState(0);
     
 
     let imagesList = [];
@@ -77,7 +77,7 @@ const DocumentsList = (props) => {
                                     coordinates={coords} 
                                     imgSrc={imgSrc} 
                                     width={imgWidth}
-                                    height={imgHeight}
+                                    height={imgHeZZight}
                                     />}
                 {
                     imagesList.map((item, index) => {
@@ -89,17 +89,17 @@ const DocumentsList = (props) => {
                                 <div>Дата: {item.date_created}</div>
                             </div>
                             <div style={{display:'flex'}}>
-                                {item.coordinates 
-                                    && <Button3 onClick={()=>
-                                        handleMapperShow(
-                                            JSON.parse(item.coordinates), 
-                                            item.file_url, 
-                                            JSON.parse(item.image_size))
-                                        }
-                                        >
-                                            Показать координаты
-                                        </Button3>
-                                        }
+                                {item.coordinates
+                                && <Button3 onClick={() =>
+                                    handleMapperShow(
+                                        JSON.parse(item.coordinates),
+                                        item.file_url,
+                                        JSON.parse(item.image_size))
+                                }
+                                >
+                                    Показать координаты
+                                </Button3>
+                                }
                                 {item.status === 3 && console.log("STATUS THREE")}
                                 <ButtonDelete onClick={()=>confirmDeletion(item.file_path)}/>
                             </div>

@@ -10,7 +10,7 @@ class Home extends Component {
             showLogin:false,
             showRegister: false,
             currentUser: null
-          }
+        };
 
         this.handleSuccesfulAuth = this.handleSuccesfulAuth.bind(this);
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
