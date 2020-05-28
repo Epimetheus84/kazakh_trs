@@ -18,7 +18,7 @@ export default class DeveloperCabinet extends Component{
         this.props.showImages();
     }
     
-    render(){
+    render(){console.log('this.props.images',this.props.images)
     let user = null;
     if(this.props.currentUser){
         user=this.props.currentUser

@@ -46,7 +46,7 @@ const CompaniesList = (props) => {
         })
 
         setTimeout(()=>{
-            this.props.showCompanies();
+            props.showCompanies();
         },1500)
         
         console.log("form submitted");

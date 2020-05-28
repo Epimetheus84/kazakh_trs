@@ -102,7 +102,7 @@ const DocumentsList = (props) => {
                                             item.file_url, 
                                             JSON.parse(item.image_size),
                                             item.file_path,
-                                            JSON.parse(item.text)
+                                            item.text
                                             )
                                         }
                                         >

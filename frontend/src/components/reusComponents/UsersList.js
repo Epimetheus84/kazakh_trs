@@ -59,7 +59,9 @@ const UsersList = (props) => {
             console.log("User deletion error", error);
             alert("Some error happens")
         })
-        props.showUsers();
+        setTimeout(()=>{
+            props.showUsers();
+        },1500)
     }
 
     const confirmDeletion =(login) => {

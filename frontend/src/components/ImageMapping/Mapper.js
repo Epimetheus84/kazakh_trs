@@ -32,7 +32,7 @@ class Mapper extends Component {
     const resizeRatio = showWidth / props.width;
 
     const apiUrl = 'http://kazakh-trs.kz:8088/api/v1';
-
+    console.log('props.imgText',props.imgText)
     this.state = {
       imgSrc: apiUrl + props.imgSrc,
       rectangles: props.coordinates,
@@ -170,6 +170,7 @@ class Mapper extends Component {
             const preparedRect = this.coordinatesConversation(rect, i);
             return (
               <Rectangle
+                  key={i}
                   shapeProps={preparedRect}
                   isSelected={preparedRect.id === selectedId}
                   isDraggable={true} // передать false чтобы запретить редактировать шейпы
