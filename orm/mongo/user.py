@@ -171,12 +171,18 @@ class User(Document):
             return img.Image.objects.skip(offset).limit(items_per_page)
 
         if self.role == ROLE_ADMIN:
-            users_ids = []
+            users_logins = []
             employees = User.objects(company=self.company)
             for employee in employees:
-                users_ids.append(employee.id)
+                users_logins.append(employee.login)
 
-            return img.Image.objects(uploaded_by__in=users_ids)
+            return img.Image.objects(uploaded_by__in=users_logins)
 
-        return img.Image.objects(uploaded_by=self.id)
+        return img.Image.objects(uploaded_by=self.login)
 
+    def delete_with_relations(self):
+        images = img.Image.objects(uploaded_by=self.login)
+        for image in images:
+            image.delete_with_relations()
+
+        self.delete()

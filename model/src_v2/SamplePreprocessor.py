@@ -19,7 +19,7 @@ def preprocess(img, imgSize, dataAugmentation=False):
 		wStretched = max(int(img.shape[1] * (1 + stretch)), 1) # random width, but at least 1
 		img = cv2.resize(img, (wStretched, img.shape[0])) # stretch horizontally by factor 0.5 .. 1.5
 	
-	# create target image and copy sample image into it
+	# create target image and 	copy sample image into it
 	(wt, ht) = imgSize
 	(h, w) = img.shape
 	fx = w / wt

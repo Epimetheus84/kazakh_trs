@@ -100,5 +100,5 @@ def delete_user(login):
     if not user.__len__():
         abort(404)
 
-    user.delete()
+    user.delete_with_relations()
     return jsonify({'success': True})

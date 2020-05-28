@@ -85,6 +85,6 @@ def delete_company(oid):
     if not g.current_user.has_access_to_delete_company(company.id):
         abort(403)
 
-    company.delete_with_employees()
+    company.delete_with_relations()
 
     return jsonify(success=True)
