@@ -26,7 +26,7 @@ class RecognitionModel:
 	def infer(model, fnImg, shape=None):
 		"""recognize text in image provided by file path"""
 		img = cv2.imread(fnImg, cv2.IMREAD_GRAYSCALE)
-		# img = img[shape[1]:shape[3], shape[0]:shape[2]]
+		img = img[shape['y0']:shape['y1'], shape['x0']:shape['x1']]
 		img = preprocess(img, Model.imgSize)
 		batch = Batch(None, [img])
 		(recognized, probability) = model.inferBatch(batch, True)
@@ -152,5 +152,11 @@ class RecognitionModel:
 		decoder_type = RecognitionModel.get_decoder_type()
 		print(open(FilePaths.fnCharList, encoding='utf-8').read())
 		model = Model(open(FilePaths.fnCharList, encoding='utf-8').read(), decoder_type, mustRestore=True)
-		return RecognitionModel.infer(model, input_file, shape)
+
+		try:
+			text = RecognitionModel.infer(model, input_file, shape)
+		except TypeError:
+			return ''
+
+		return text
 

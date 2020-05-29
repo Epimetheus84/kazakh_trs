@@ -23,7 +23,7 @@ UPLOAD_FOLDER = os.path.join('.', 'data', 'production', 'images')
 class Image(Document):
     IMAGE_STATUS_NEW = 0
     IMAGE_STATUS_TEXT_DETECTED = 1
-    IMAGE_STATUS_DIVIDED = 2
+    IMAGE_STATUS_ON_PROCESSING = 2
     IMAGE_STATUS_TEXT_RECOGNIZED = 3
 
     file_path = StringField(max_length=FILE_PATH_LENGTH, required=True)
@@ -163,7 +163,8 @@ class Image(Document):
             # беру y0 первого элемента, прибавляю к нему высоту строки
             # все слова у которых y0 меньше этого числа,
             # складываю в отдельный массив и считаю что это массив слов на одной строке
-            while coordinates['y0'] < first_word_in_line['y1'] + line_height:
+            while coordinates['y0'] < first_word_in_line['y1'] + line_height \
+                    and word_index < coordinates_list.__len__():
                 coordinates = coordinates_list[word_index]
                 words_by_line[line_num].append(coordinates)
                 word_index += 1
@@ -178,3 +179,8 @@ class Image(Document):
                 sorted_coordinates.append(word)
 
         return sorted_coordinates
+
+    def delete_with_entities(self):
+        self.delete_file()
+        self.delete()
+

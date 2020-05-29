@@ -76,7 +76,8 @@ module.exports = webpackMerge(webpackCommon, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
     },
-    host: env.devServer.host || 'localhost',
+    host: '0.0.0.0',
+    disableHostCheck: true,   // That solved it
     port: env.devServer.port || 3000,
     contentBase: path.resolve(__dirname, '../static'),
     watchContentBase: true,

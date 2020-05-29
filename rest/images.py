@@ -3,6 +3,7 @@ import os
 from flask import Blueprint, request, abort, jsonify, g, send_from_directory
 from rest.helpers.auth import auth
 from rest.helpers.mircoservices.text_marker import TextMarker
+from rest.helpers.mircoservices.text_recognizer import TextRecognizer
 
 from orm.mongo.image import Image
 
@@ -108,8 +109,7 @@ def delete_image(file_path):
         abort(404)
 
     image = image.get()
-    image.delete_file()
-    image.delete()
+    image.delete_with_entities()
 
     return jsonify(success=True)
 
@@ -135,6 +135,9 @@ def mark_image(file_path):
     if not image.can_be_marked():
         abort(405)
 
+    image.status = Image.IMAGE_STATUS_ON_PROCESSING
+    image.save()
+
     response = TextMarker.mark(image.file_path)
 
     return response
@@ -156,6 +159,9 @@ def recognize_image(file_path):
     if not image.can_be_recognized():
         abort(405)
 
-    response = TextMarker.mark(image.file_path)
+    image.status = Image.IMAGE_STATUS_ON_PROCESSING
+    image.save()
+
+    response = TextRecognizer.recognize(image.file_path)
 
     return response

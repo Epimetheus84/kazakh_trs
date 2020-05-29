@@ -20,7 +20,6 @@ const DocumentsList = (props) => {
     const [imgHeight, setImgHight]=useState(0);
     const [imgName, setImgName]=useState('');
     const [imgText, setImgText]=useState('');
-    
 
     let imagesList = [];
     imagesList=[...imagesList, ...props.images];

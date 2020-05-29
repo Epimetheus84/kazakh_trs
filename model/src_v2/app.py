@@ -18,19 +18,20 @@ def thread_function(image):
         raise Exception('File does not exists')
 
     coordinates = json.loads(image.coordinates)
-    text = []
+    text = ''
 
+    i = 0
     for shape in coordinates:
         word = RecognitionModel.recognize(input_file, shape)
         if not word:
             continue
 
-        text.append({
-            'coordinates': shape,
-            'word': word
-        })
+        text += word + ' '
+        coordinates[i]['word'] = word
+        i += 1
 
-    image.text = json.loads(text)
+    image.coordinates = json.dumps(coordinates)
+    image.text = text
     image.status = Image.IMAGE_STATUS_TEXT_RECOGNIZED
     image.save()
     return True
