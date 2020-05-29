@@ -34,6 +34,10 @@ const DocumentsList = (props) => {
         setImgText(text);
     }
 
+    const closeMapper = () => {
+        setShowMapper(false);
+    }
+
     const handleDeletion = (name) => {
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
@@ -83,6 +87,7 @@ const DocumentsList = (props) => {
                                     height={imgHeight}
                                     imgName={imgName}
                                     imgText={imgText}
+                                    closeMapper={closeMapper}
                                     />}
                 {
                     imagesList.map((item, index) => {

@@ -26,13 +26,13 @@ const initialRectangles = [
 ];
 
 class Mapper extends Component {
-  constructor(props) {
+  constructor(props) {console.log("MapperProps", props)
     super(props);
     const showHeight = showWidth * (props.height / props.width);
     const resizeRatio = showWidth / props.width;
 
     const apiUrl = 'http://kazakh-trs.kz:8088/api/v1';
-    console.log('props.imgText',props.imgText)
+
     this.state = {
       imgSrc: apiUrl + props.imgSrc,
       rectangles: props.coordinates,
@@ -63,6 +63,8 @@ class Mapper extends Component {
             console.log('recognizeTextStatus', data)
         }
     );
+
+    this.props.closeMapper();
   }
 
   selectShape(vSelectedId) {
