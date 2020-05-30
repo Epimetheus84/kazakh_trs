@@ -9,7 +9,8 @@ import {
     ListWrap,
     ImageDesc,
     ButtonDelete,
-    Button3
+    Button3,
+    Span
 } from '../../style/styled_comp/styles';
 
 const DocumentsList = (props) => {
@@ -70,7 +71,6 @@ const DocumentsList = (props) => {
             handleDeletion(name);
         }
     }
-
     return (
         <WrapPaper documents>
             <Details>
@@ -87,6 +87,7 @@ const DocumentsList = (props) => {
                                     height={imgHeight}
                                     imgName={imgName}
                                     imgText={imgText}
+                                    setImgText={setImgText}
                                     closeMapper={closeMapper}
                                     />}
                 {
@@ -110,7 +111,9 @@ const DocumentsList = (props) => {
                                             )
                                         }
                                         >
-                                            {item.status === 3 ? "Текст определен" : "Показать координаты"}
+                                            <Span>
+                                                {item.status === 3 ? "Текст определен" : "Показать координаты"}
+                                            </Span>
                                         </Button3>
                                         }
                                 {/* {item.status === 3 && setImgText(JSON.parse(item.text))} */}
