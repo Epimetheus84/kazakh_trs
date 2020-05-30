@@ -11,12 +11,7 @@ export const Navbar = styled.nav`
     width: 100%;
     height: 15vh;
     margin-bottom: 10vh;
-
-    .logo{
-        font-size:7vh;
-        font-weight: bold;
-        text-shadow: 3px 3px 3px #D3D3D3;
-    }
+    
     .nav-links{
         display: flex;
         flex-flow: row nowrap;
@@ -32,4 +27,4 @@ export const Navbar = styled.nav`
         text-decoration: none;
         text-shadow: 1px 1px 1px #D3D3D3;
     }
-`
+`;

@@ -157,6 +157,8 @@ class RecognitionModel:
 			text = RecognitionModel.infer(model, input_file, shape)
 		except TypeError:
 			return ''
+		except Exception:
+			return ''
 
 		return text
 

@@ -31,7 +31,7 @@ class DataProvider:
         return text
 
     def hasNext(self):
-        return self.idx <= 1
+        return self.idx <= 10
 
     def getNext(self):
         h = 3507

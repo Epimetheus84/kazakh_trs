@@ -180,7 +180,7 @@ class Image(Document):
 
         return sorted_coordinates
 
-    def delete_with_entities(self):
+    def delete_with_relations(self):
         self.delete_file()
         self.delete()
 

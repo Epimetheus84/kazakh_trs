@@ -52,8 +52,8 @@ const Profile = (props) => {
             <Details profile={true} >Отчество: {showMiddleName}</Details>
             <Details profile={true} >Фамилия: {showLastName}</Details>
             <Details profile={true} >Компания: {showCompanyName}</Details>
-            <Details profile={true} >Создана: {showCreated}</Details>
-            <Details profile={true} >Послед. изменение: {showLastModified}</Details>
+            <Details profile={true} >Создана: {new Date(showCreated * 1000).getDay()}.{new Date(showCreated * 1000).getMonth()}.{new Date(showCreated * 1000).getFullYear()} {new Date(showCreated * 1000).getHours()}:{new Date(showCreated).getMinutes()}</Details>
+            <Details profile={true} >Послед. изменение: {new Date(showCreated * 1000).getDay()}.{new Date(showCreated * 1000).getMonth()}.{new Date(showCreated * 1000).getFullYear()} {new Date(showCreated * 1000).getHours()}:{new Date(showCreated).getMinutes()}</Details>
         </WrapPaper>
     )
 }

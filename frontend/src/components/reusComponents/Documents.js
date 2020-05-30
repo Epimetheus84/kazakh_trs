@@ -96,7 +96,7 @@ const DocumentsList = (props) => {
                             <div>
                                 <div>Загрузил: {item.uploaded_by}</div>
                                 <div>Название: {item.original_filename}</div>
-                                <div>Дата: {item.date_created}</div>
+                                <div>Дата: {new Date(item.date_created * 1000).getDay()}.{new Date(item.date_created * 1000).getMonth()}.{new Date(item.date_created * 1000).getFullYear()} {new Date(item.date_created * 1000).getHours()}:{new Date(item.date_created).getMinutes()}</div>
                             </div>
                             <div style={{display:'flex'}}>
                                 {item.coordinates 

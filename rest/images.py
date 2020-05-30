@@ -109,7 +109,7 @@ def delete_image(file_path):
         abort(404)
 
     image = image.get()
-    image.delete_with_entities()
+    image.delete_with_relations()
 
     return jsonify(success=True)
 
