@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-import {WrapPaper, Details, ListWrap, Button1, DescriptionWrap, DescriptionItems, ButtonDelete} from '../../style/styled_comp/styles';
+import {WrapPaper, Details, ListWrap, Button1, DescriptionWrap, DescriptionItems, ButtonDelete, Span} from '../../style/styled_comp/styles';
 
 import Registration from '../auth/Registration'
 
@@ -46,7 +46,7 @@ const CompaniesList = (props) => {
         })
 
         setTimeout(()=>{
-            this.props.showCompanies();
+            props.showCompanies();
         },1500)
         
         console.log("form submitted");
@@ -65,7 +65,11 @@ const CompaniesList = (props) => {
                 Компании:      
             </Details>
             <ListWrap>
-                <Button1 onClick={showRegisterCompany}>+</Button1>
+                <Button1 onClick={showRegisterCompany}>
+                    <Span>
+                        +
+                    </Span>
+                </Button1>
                 {
                     companyList.map((item, index) => {
                         return (

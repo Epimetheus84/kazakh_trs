@@ -8,7 +8,8 @@ import {
     Button1, 
     DescriptionWrap, 
     DescriptionItems, 
-    ButtonDelete
+    ButtonDelete,
+    Span
 } from '../../style/styled_comp/styles';
 
 import Registration from '../auth/Registration';
@@ -59,7 +60,9 @@ const UsersList = (props) => {
             console.log("User deletion error", error);
             alert("Some error happens")
         })
-        props.showUsers();
+        setTimeout(()=>{
+            props.showUsers();
+        },1500)
     }
 
     const confirmDeletion =(login) => {
@@ -74,7 +77,11 @@ const UsersList = (props) => {
                 Пользователи:      
             </Details>
             <ListWrap>
-                <Button1 onClick={showRegisterComponent}>+</Button1>
+                <Button1 onClick={showRegisterComponent}>
+                    <Span>
+                        +
+                    </Span>
+                </Button1>
                 {
                     props.users.map((item, index) => {
                         return (

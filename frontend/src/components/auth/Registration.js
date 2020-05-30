@@ -49,7 +49,7 @@ class Registration extends Component {
         this.getCurrentUserInfo = this.getCurrentUserInfo.bind(this);
     }
 
-    componentDidMount(){console.log('REG_PROPS',this.props)
+    componentDidMount(){
         if(this.props.userInfo){
             // console.log("INFO",this.props.userInfo)
             this.setState({
@@ -92,7 +92,7 @@ class Registration extends Component {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
           })
-          .then(res => {console.log(res, 'sdfgsdf'); return res.json();})
+          .then(res => {return res.json();})
           .then(
               data => { 
                 this.setState({

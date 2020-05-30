@@ -9,7 +9,8 @@ import {
     ListWrap,
     ImageDesc,
     ButtonDelete,
-    Button3
+    Button3,
+    Span
 } from '../../style/styled_comp/styles';
 
 const DocumentsList = (props) => {
@@ -17,18 +18,25 @@ const DocumentsList = (props) => {
     const [coords, setCoords]=useState([]);
     const [imgSrc, setImgSrc]=useState('');
     const [imgWidth, setImgWidth]=useState(0);
-    const [imgHeZZight, setImgHight]=useState(0);
-    
+    const [imgHeight, setImgHight]=useState(0);
+    const [imgName, setImgName]=useState('');
+    const [imgText, setImgText]=useState('');
 
     let imagesList = [];
     imagesList=[...imagesList, ...props.images];
 
-    const handleMapperShow = (coords, url, size) => {
+    const handleMapperShow = (coords, url, size, name, text) => {
         setCoords(coords);
         setImgSrc(url);
         setImgWidth(size.width);
         setImgHight(size.height);
         setShowMapper(!showMapper);
+        setImgName(name);
+        setImgText(text);
+    }
+
+    const closeMapper = () => {
+        setShowMapper(false);
     }
 
     const handleDeletion = (name) => {
@@ -63,7 +71,6 @@ const DocumentsList = (props) => {
             handleDeletion(name);
         }
     }
-
     return (
         <WrapPaper documents>
             <Details>
@@ -77,7 +84,11 @@ const DocumentsList = (props) => {
                                     coordinates={coords} 
                                     imgSrc={imgSrc} 
                                     width={imgWidth}
-                                    height={imgHeZZight}
+                                    height={imgHeight}
+                                    imgName={imgName}
+                                    imgText={imgText}
+                                    setImgText={setImgText}
+                                    closeMapper={closeMapper}
                                     />}
                 {
                     imagesList.map((item, index) => {
@@ -89,18 +100,23 @@ const DocumentsList = (props) => {
                                 <div>Дата: {item.date_created}</div>
                             </div>
                             <div style={{display:'flex'}}>
-                                {item.coordinates
-                                && <Button3 onClick={() =>
-                                    handleMapperShow(
-                                        JSON.parse(item.coordinates),
-                                        item.file_url,
-                                        JSON.parse(item.image_size))
-                                }
-                                >
-                                    Показать координаты
-                                </Button3>
-                                }
-                                {item.status === 3 && console.log("STATUS THREE")}
+                                {item.coordinates 
+                                    && <Button3 onClick={()=>
+                                        handleMapperShow(
+                                            JSON.parse(item.coordinates), 
+                                            item.file_url, 
+                                            JSON.parse(item.image_size),
+                                            item.file_path,
+                                            item.text
+                                            )
+                                        }
+                                        >
+                                            <Span>
+                                                {item.status === 3 ? "Текст определен" : "Показать координаты"}
+                                            </Span>
+                                        </Button3>
+                                        }
+                                {/* {item.status === 3 && setImgText(JSON.parse(item.text))} */}
                                 <ButtonDelete onClick={()=>confirmDeletion(item.file_path)}/>
                             </div>
                         </ImageDesc>

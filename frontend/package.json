@@ -63,6 +63,7 @@
     "react-dropzone": "^11.0.1",
     "react-image-crop": "^8.6.2",
     "react-konva": "^16.13.0-3",
+    "react-loader-spinner": "^3.1.14",
     "react-redux": "5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.3.1",

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import deleteIcon from '../../components/reusComponents/icons/button.png';
+import trash from '../../components/reusComponents/icons/trash.svg'
 
 export const WrapPage = styled.div`
     margin-top: 10px;
@@ -55,16 +55,45 @@ export const ListWrap = styled.div`
 `;
 
 export const Button1 = styled.div`
-    height: 55px;
-    width: 55px;
+    height: 40px;
+    width: 40px;
     color: white;
     background-color: #90d2c6;
     font-size: 2em;
-    border-radius: 5px;
+    border-radius: 5px; 
     margin: 5px;
     padding: 10px;
     cursor: pointer;
+    position: relative;
+    &:hover{
+        font-weight: 700;
+        font-size: 2.5em;
+    }
 `;
+
+export const Textarea = styled.textarea`
+    width: 1200px;
+    height: 200px !important;
+    background: white;
+    color: #90d2c6;
+    height: 35;
+    fontSize: 1em;
+    margin: 15;
+    marginBottom: 10;
+    padding: 0.25em 1em;
+    border: 2px solid #90d2c6;
+    borderRadius: 10;
+`;
+
+export const Span = styled.span`
+    position: absolute;
+    transform: translate(50%,-50%);
+    top: 50%;
+    right: 50%;
+    text-align: center;
+    width: 100%;
+`;
+
 export const Button2 = styled.button`
     background: ${props => props.primary ? "#90d2c6" : "white"};
     color: ${props => props.primary ? "white" : "#90d2c6"};
@@ -74,37 +103,52 @@ export const Button2 = styled.button`
     margin-bottom: 10px;
     padding: 0.25em 1em;
     border: 2px solid #90d2c6;
+    position: relative;
+    width: 200px;
     border-radius: 10px;
     cursor: pointer;
+    &:hover{
+        font-weight: 700;
+        color: #54a899;
+        box-shadow: 0 0 4px 0px #00000085;
+    }
 `;
+
 export const Button3 = styled.div`
     height: 15px;
     color: #90d2c6;
     background-color: white;
+    border: 1px solid #90d2c6;
     font-size: 1em;
     border-radius: 5px;
     margin: 0px;
     padding: 8px;
     cursor: pointer;
-
+    position: relative;
+    width: 300px;
+    margin-right: 5px;
+    transition: 0.2s;
     &:hover{
-        background-color: red;
+        font-weight: 700;
+        color: #54a899;
+        box-shadow: 0 0 4px 0px #00000085;
     }
 `;
 
 export const ButtonDelete = styled.div`
-    background-image: url(${deleteIcon});
-    background-size: cover;
+    background-image: url(${trash});
     width: 30px;
     height: 30px;
+    filter: invert(1);
     background-repeat: no-repeat;
     background-position: left;
     background-size: cover;
     cursor: pointer;
-
+    transition: 0.2s;
     &:hover{
-        background-color: red;
-        border-radius: 50%;
+        // background-color: red;
+        // border-radius: 50%;
+        filter: none;
     }
 `;
 
@@ -127,7 +171,8 @@ export const DescriptionItems = styled.div`
     flex-direction: column;
 
     &:hover{
-        color: red;
+        // color: red;
+        font-weight: 700;
     }
 `;
 
@@ -169,7 +214,8 @@ export const ImageDesc = styled.div`
     justify-content: space-between;
 
     &:hover{
-        color: red;
+        font-weight: 700;
+        // color: red;
     }
 `;
 

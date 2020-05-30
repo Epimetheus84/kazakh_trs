@@ -13,7 +13,7 @@ const NavbarReact = (props) => {
           <Link to="/" className="link">Home</Link>
         </li>
         <li>
-          <Link to="/cabinetmoderator" className="link">cabinet</Link>
+          <Link to="/cabinetmoderator" className="link">Cabinet</Link>
         </li>
         <li>
           <Link to="/" className="link" onClick={()=> props.handleLogout()} >Logout</Link>

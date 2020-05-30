@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { Stage, Layer, Image } from 'react-konva';
 import TextImage from './TextImage';
 import Rectangle from "./Rectangle";
+import axios from 'axios';
+import {
+  Button2, Textarea, Span
+} from '../../style/styled_comp/styles';
+
 
 const showWidth = 1200;
 
@@ -26,9 +31,8 @@ const initialRectangles = [
 ];
 
 class Mapper extends Component {
-  constructor(props) {
+  constructor(props) {console.log("MapperProps", props)
     super(props);
-    console.log(props);
     const showHeight = showWidth * (props.height / props.width);
     const resizeRatio = showWidth / props.width;
 
@@ -37,15 +41,74 @@ class Mapper extends Component {
     this.state = {
       imgSrc: apiUrl + props.imgSrc,
       rectangles: props.coordinates,
+      imgName: props.imgName,
       selectedId: null,
       showWidth: showWidth,
       showHeight: showHeight,
-      resizeRatio: resizeRatio
+      resizeRatio: resizeRatio,
+      recognizedText: props.imgText
     };
 
     this.checkDeselect = this.checkDeselect.bind(this);
     this.addNewShape = this.addNewShape.bind(this);
     this.removeSelectedShape = this.removeSelectedShape.bind(this);
+    this.recognizeText = this.recognizeText.bind(this);
+  }
+
+  recognizeText = (name) => {
+    const url = `http://kazakh-trs.kz:8088/api/v1/images/recognize/${name}`;
+    fetch(url,{
+        headers: {
+            Authorization: `token ${sessionStorage.tokenData}`
+        }
+    })
+    .then(res => {return res.json();})
+    .then(
+        data => {
+            console.log('recognizeTextStatus', data)
+        }
+    );
+
+    this.props.closeMapper();
+
+  }
+
+  componentDidMount() {
+    const {imgText} = this.props
+    this.setState({ recognizeText: imgText })
+  }
+
+  changeText = (event) => {
+    const { setImgText } = this.props
+    console.log('Mapper -> changeText -> event', event.target.value);
+    this.setState({ recognizeText: event.target.value })
+    setImgText(event.target.value)
+  }
+    
+  saveRectangles = (name) => {
+    const { recognizeText } = this.state
+    console.log('Mapper -> saveRectangles -> recognizedText', recognizeText)
+    const { rectangles } = this.state
+    const { setImgText } = this.props
+    axios.put(
+      `http://kazakh-trs.kz:8088/api/v1/images/update/${name}`,
+      {
+        cordinates: rectangles,
+        text: recognizeText
+      },
+      {
+        headers: {
+          Authorization: `token ${sessionStorage.tokenData}`
+        }
+      }
+    ).then(res => {
+      console.log('Mapper -> saveRectangles -> res', res)
+      alert('Cохранены!')
+    }).catch(err => {
+      console.log('Mapper -> saveRectangles -> err', err)
+      alert('Не удалось сохранить!')
+    })
+
   }
 
   selectShape(vSelectedId) {
@@ -94,7 +157,7 @@ class Mapper extends Component {
     const x1 = (Math.ceil(rect.x1 * resizeRatio * 100) / 100);
     const y1 = (Math.ceil(rect.y1 * resizeRatio * 100) / 100);
 
-    console.log(x0, x1, y0, y1);
+    // console.log(x0, x1, y0, y1);
 
     return {
       x: x0,
@@ -129,13 +192,22 @@ class Mapper extends Component {
   }
 
   render() {
-    const {rectangles, selectedId, showHeight, showWidth, recognizedText, imgSrc} = this.state;
-    console.log("imgSrc", imgSrc)
+    const {rectangles, selectedId, showHeight, showWidth, recognizedText, imgSrc, imgName, recognizeText} = this.state;
+    console.log(recognizeText)
+
     return (
       <div>
-        <button onClick={this.addNewShape} type={'button'}>Добавить</button>
+        <Button2 onClick={this.addNewShape}>
+          <Span>
+            Добавить
+          </Span>
+        </Button2>
         {selectedId !== null
-            ? <button onClick={this.removeSelectedShape} type={'button'}>Удалить</button>
+            ? <Button2 onClick={this.removeSelectedShape}>
+                <Span>
+                  Удалить
+                </Span>
+              </Button2>
             : ''
         }
         <Stage width={showWidth} height={showHeight}
@@ -151,10 +223,10 @@ class Mapper extends Component {
           </Layer>
           <Layer>
           {rectangles.map((rect, i) => {
-            console.log('rect',rect)
             const preparedRect = this.coordinatesConversation(rect, i);
             return (
               <Rectangle
+                  key={i}
                   shapeProps={preparedRect}
                   isSelected={preparedRect.id === selectedId}
                   isDraggable={true} // передать false чтобы запретить редактировать шейпы
@@ -172,8 +244,9 @@ class Mapper extends Component {
           })}
           </Layer>
         </Stage>
-        <button>Сохранить и распознать текст</button>
-        <textarea value={recognizedText}/>
+        <Button2 onClick={()=>this.recognizeText(imgName)}>Распознать текст</Button2>
+        <Button2 onClick={()=>this.saveRectangles(imgName)}>Сохранить</Button2>
+        <Textarea value={recognizeText} onChange={this.changeText} />
       </div>
     );
   }
