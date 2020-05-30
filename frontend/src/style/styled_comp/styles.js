@@ -55,16 +55,25 @@ export const ListWrap = styled.div`
 `;
 
 export const Button1 = styled.div`
-    height: 55px;
-    width: 55px;
+    height: 40px;
+    width: 40px;
     color: white;
     background-color: #90d2c6;
     font-size: 2em;
-    border-radius: 5px;
+    border-radius: 5px; 
     margin: 5px;
     padding: 10px;
     cursor: pointer;
+    position: relative;
 `;
+
+export const Span = styled.span`
+    position: absolute;
+    transform: translate(50%,-50%);
+    top: 50%;
+    right: 50%;
+`;
+
 export const Button2 = styled.button`
     background: ${props => props.primary ? "#90d2c6" : "white"};
     color: ${props => props.primary ? "white" : "#90d2c6"};
@@ -77,6 +86,7 @@ export const Button2 = styled.button`
     border-radius: 10px;
     cursor: pointer;
 `;
+
 export const Button3 = styled.div`
     height: 15px;
     color: #90d2c6;
