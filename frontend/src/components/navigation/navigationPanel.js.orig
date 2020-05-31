@@ -18,7 +18,11 @@ const NavbarReact = (props) => {
           <Link to="/" className="link">&nbsp;</Link>
         </li>
         <li>
+<<<<<<< HEAD
           <Link to="/cabinetmoderator" className="link">&nbsp;</Link>
+=======
+          <Link to="/cabinetmoderator" className="link">Cabinet</Link>
+>>>>>>> 86f92278f3883dcff726547b4561de3db8d7baaa
         </li>
         <li>
           <Link to="/" className="link" onClick={()=> props.handleLogout()} >Выйти</Link>

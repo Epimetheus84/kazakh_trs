@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { Stage, Layer, Image } from 'react-konva';
 import TextImage from './TextImage';
 import Rectangle from "./Rectangle";
+import axios from 'axios';
+import {
+  Button2, Textarea, Span
+} from '../../style/styled_comp/styles';
+
 
 const showWidth = 1200;
 
@@ -65,6 +70,45 @@ class Mapper extends Component {
     );
 
     this.props.closeMapper();
+
+  }
+
+  componentDidMount() {
+    const {imgText} = this.props
+    this.setState({ recognizeText: imgText })
+  }
+
+  changeText = (event) => {
+    const { setImgText } = this.props
+    console.log('Mapper -> changeText -> event', event.target.value);
+    this.setState({ recognizeText: event.target.value })
+    setImgText(event.target.value)
+  }
+    
+  saveRectangles = (name) => {
+    const { recognizeText } = this.state
+    console.log('Mapper -> saveRectangles -> recognizedText', recognizeText)
+    const { rectangles } = this.state
+    const { setImgText } = this.props
+    axios.put(
+      `http://kazakh-trs.kz:8088/api/v1/images/update/${name}`,
+      {
+        cordinates: rectangles,
+        text: recognizeText
+      },
+      {
+        headers: {
+          Authorization: `token ${sessionStorage.tokenData}`
+        }
+      }
+    ).then(res => {
+      console.log('Mapper -> saveRectangles -> res', res)
+      alert('Cохранены!')
+    }).catch(err => {
+      console.log('Mapper -> saveRectangles -> err', err)
+      alert('Не удалось сохранить!')
+    })
+
   }
 
   selectShape(vSelectedId) {
@@ -148,12 +192,22 @@ class Mapper extends Component {
   }
 
   render() {
-    const {rectangles, selectedId, showHeight, showWidth, recognizedText, imgSrc, imgName} = this.state;
+    const {rectangles, selectedId, showHeight, showWidth, recognizedText, imgSrc, imgName, recognizeText} = this.state;
+    console.log(recognizeText)
+
     return (
       <div>
-        <button onClick={this.addNewShape} type={'button'}>Добавить</button>
+        <Button2 onClick={this.addNewShape}>
+          <Span>
+            Добавить
+          </Span>
+        </Button2>
         {selectedId !== null
-            ? <button onClick={this.removeSelectedShape} type={'button'}>Удалить</button>
+            ? <Button2 onClick={this.removeSelectedShape}>
+                <Span>
+                  Удалить
+                </Span>
+              </Button2>
             : ''
         }
         <Stage width={showWidth} height={showHeight}
@@ -190,8 +244,9 @@ class Mapper extends Component {
           })}
           </Layer>
         </Stage>
-        <button onClick={()=>this.recognizeText(imgName)}>Сохранить и распознать текст</button>
-        <textarea value={recognizedText}/>
+        <Button2 onClick={()=>this.recognizeText(imgName)}>Распознать текст</Button2>
+        <Button2 onClick={()=>this.saveRectangles(imgName)}>Сохранить</Button2>
+        <Textarea value={recognizeText} onChange={this.changeText} />
       </div>
     );
   }
