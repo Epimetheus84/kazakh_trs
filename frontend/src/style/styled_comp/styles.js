@@ -77,12 +77,12 @@ export const Textarea = styled.textarea`
     background: white;
     color: #90d2c6;
     height: 35;
-    fontSize: 1em;
+    font-size: 1em;
     margin: 15;
-    marginBottom: 10;
+    margin-bottom: 10;
     padding: 0.25em 1em;
     border: 2px solid #90d2c6;
-    borderRadius: 10;
+    border-radius: 10;
 `;
 
 export const Span = styled.span`
