@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {url} from '../serverUrl';
 
 import {
     WrapPaper, 
@@ -46,7 +47,7 @@ const UsersList = (props) => {
     const handleDeletion = (login) => {
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.delete(`${props.url}/users/delete/${login}`, {
+        axios.delete(`${url}/users/delete/${login}`, {
             headers: {
                 Authorization: sessionToken
             }
@@ -111,7 +112,6 @@ const UsersList = (props) => {
                     userRole={currentUserRole}
                     userCompanyDetect={currentUserCompany}
                     showUsers={props.showUsers}
-                    url={props.url}
                 />
                 : null}
             {showEdit
@@ -121,7 +121,6 @@ const UsersList = (props) => {
                     userInfo={user}
                     showUsers={props.showUsers}
                     userRole={currentUserRole}
-                    url={props.url}
                 />
                 : null}
         </WrapPaper>

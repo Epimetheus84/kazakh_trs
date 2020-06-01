@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import {url} from '../serverUrl';
 
 import {WrapPaper, Details, ListWrap, Button1, DescriptionWrap, DescriptionItems, ButtonDelete, Span} from '../../style/styled_comp/styles';
 
@@ -29,7 +30,7 @@ const CompaniesList = (props) => {
     const handleDeletion = (id) => {
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.delete(`${props.url}/companies/delete/${id}`, {
+        axios.delete(`${url}/companies/delete/${id}`, {
             headers: {
                 Authorization: sessionToken
             }
@@ -88,7 +89,6 @@ const CompaniesList = (props) => {
                 ? <Registration  
                     showRegisterCompany={showRegisterCompany}
                     showCompanies={props.showCompanies}
-                    url={props.url}
                 />
                 : null}
             {showEdit
@@ -96,7 +96,6 @@ const CompaniesList = (props) => {
                     showEditCompany={showEditCompany}
                     companyInfo={company}
                     showCompanies={props.showCompanies}
-                    url={props.url}
                 />
                 : null}
         </WrapPaper>

@@ -9,6 +9,7 @@ import CommonCabinet from "./CommonCabinet";
 import NavbarReact from "./navigation/navigationPanel";
 import Mapper from "./ImageMapping/Mapper";
 import axios from "axios";
+import {url} from './serverUrl';
 
 export default class App extends Component {
 
@@ -21,7 +22,7 @@ export default class App extends Component {
       usersList:[],
       companiesList:[],
       imagesList:[],
-      url:"http://kazakh-trs.kz:8088/api/v1"
+      // url:"http://kazakh-trs.kz:8088/api/v1"
     }
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -36,7 +37,7 @@ export default class App extends Component {
     }
     showUsers = async() => {
       const sessionToken = "token "+ sessionStorage.tokenData;
-      let res = await axios.get(`${this.state.url}/users/list`, {
+      let res = await axios.get(`${url}/users/list`, {
           headers: {
               Authorization: sessionToken
           }
@@ -47,7 +48,7 @@ export default class App extends Component {
   
     showCompanies = async() => {
         const sessionToken = "token "+ sessionStorage.tokenData;
-        let res = await axios.get(`${this.state.url}/companies/list`, {
+        let res = await axios.get(`${url}/companies/list`, {
             headers: {
                 Authorization: sessionToken
             }
@@ -58,7 +59,7 @@ export default class App extends Component {
 
     showImages = async() => {
       const sessionToken = "token "+ sessionStorage.tokenData;
-      let res = await axios.get(`${this.state.url}/images/list`, {
+      let res = await axios.get(`${url}/images/list`, {
           headers: {
               Authorization: sessionToken
           }
@@ -157,7 +158,6 @@ export default class App extends Component {
                     handleLogout= {this.handleLogout} 
                     handleLoggin= {this.handleLoggin} 
                     loggedInStatus={this.state.loggedInStatus} 
-                    url = {this.state.url}
                   />
                 )} 
               />
@@ -167,7 +167,6 @@ export default class App extends Component {
                 render={props => (
                   <Users {...props} 
                     loggedInStatus={this.state.loggedInStatus} 
-                    url = {this.state.url}
                   />
                 )} 
               />
@@ -181,7 +180,6 @@ export default class App extends Component {
                     currentUser={this.state.user}
                     images={this.state.imagesList}
                     showImages={this.showImages}
-                    url = {this.state.url}
                     />
                 )} 
               />
@@ -197,7 +195,6 @@ export default class App extends Component {
                     users={this.state.usersList}
                     companies={this.state.companiesList}
                     currentUser={this.state.user}
-                    url = {this.state.url}
                     />
                 )} 
               />
@@ -215,7 +212,6 @@ export default class App extends Component {
                     images={this.state.imagesList}
                     showImages={this.showImages}
                     currentUser={this.state.user}
-                    url = {this.state.url}
                     />
                 )} 
               />
@@ -233,7 +229,6 @@ export default class App extends Component {
                     images={this.state.imagesList}
                     showImages={this.showImages}
                     currentUser={this.state.user}
-                    url = {this.state.url}
                     />
                 )} 
               />

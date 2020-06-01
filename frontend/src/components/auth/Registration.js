@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {WrapPaper, Input, Select, Button} from './styles';
-// import {db} from '../../config';
+import {url} from '../serverUrl';
 
 class Registration extends Component {
     constructor(props){
@@ -87,7 +87,7 @@ class Registration extends Component {
     }
 
     getCurrentUserInfo = async ()=>{
-        fetch(`${this.props.url}/cabinet/me`, {
+        fetch(`${url}/cabinet/me`, {
             headers: {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
@@ -113,7 +113,7 @@ class Registration extends Component {
             company
         } = this.state;
 
-        axios.post(`${this.props.url}/users/create/`, 
+        axios.post(`${url}/users/create/`, 
         {
             login: login,
             email: email,
@@ -156,7 +156,7 @@ class Registration extends Component {
             company
         } = this.state;
 
-        axios.put(`${this.props.url}/users/update/${oldLogin}`, 
+        axios.put(`${url}/users/update/${oldLogin}`, 
         {
             login: login,
             email: email,
@@ -193,7 +193,7 @@ class Registration extends Component {
         } = this.state;
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.post(`${this.props.url}/companies/create/`, 
+        axios.post(`${url}/companies/create/`, 
         {
                 name: companyName,
                 info: info,
@@ -227,7 +227,7 @@ class Registration extends Component {
         } = this.state;
         const sessionToken = `token ${sessionStorage.tokenData}`;
         
-        axios.put(`${this.props.url}/companies/update/${company}`, 
+        axios.put(`${url}/companies/update/${company}`, 
         {
                 name: companyName,
                 info: info,

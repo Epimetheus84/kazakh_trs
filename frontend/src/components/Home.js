@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Login from './auth/Login';
 import {WrapPaper, Button} from './auth/styles';
+import {url} from './serverUrl';
 
 class Home extends Component {
     constructor(props){
@@ -29,7 +30,7 @@ class Home extends Component {
     }
 
     handleSuccesfulAuth = async (token)=>{
-        fetch(`${this.props.url}/cabinet/me`, {
+        fetch(`${url}/cabinet/me`, {
             headers: {
                 Authorization: `token ${token}`
             }
@@ -69,7 +70,7 @@ class Home extends Component {
                     </Button>
                 </WrapPaper>
                 {this.state.showLogin
-                    ? <Login handleSuccesfulAuth={this.handleSuccesfulAuth} saveToken={this.saveToken} url={this.props.url}/>
+                    ? <Login handleSuccesfulAuth={this.handleSuccesfulAuth} saveToken={this.saveToken}/>
                     : null}
             </div>
         );

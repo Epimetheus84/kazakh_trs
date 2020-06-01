@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import styled from 'styled-components';
 import UserProfile from './reusComponents/UserProfile';
 import UsersList from './reusComponents/UsersList';
 import DocumentsList from './reusComponents/Documents';
@@ -18,23 +17,21 @@ const AdminCabinet = (props) => {
                 <h1>Status: {props.loggedInStatus}</h1>
             </div> */}
             <div style={{display: 'flex'}}>
-                <UserProfile  users={props.users} url={props.url} />
+                <UserProfile  users={props.users} />
                 {props.currentUser 
                     && <UsersList  
                         users={props.users} 
                         currentUser={props.currentUser} 
-                        url={props.url}
                         showUsers={props.showUsers}
                         />}
                 {!props.currentUser 
                     && <UsersList  
                         users={props.users} 
-                        url={props.url}
                         showUsers={props.showUsers}
                     />}
                 
             </div>
-            <DocumentsList images={props.images} companies={props.companies} url={props.url}/>
+            <DocumentsList images={props.images} companies={props.companies}/>
             
         </WrapPage>
     )
