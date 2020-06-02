@@ -150,8 +150,8 @@ class RecognitionModel:
 	@staticmethod
 	def recognize(input_file, shape):
 		decoder_type = RecognitionModel.get_decoder_type()
-		print(open(FilePaths.fnCharList, encoding='utf-8').read())
 		model = Model(open(FilePaths.fnCharList, encoding='utf-8').read(), decoder_type, mustRestore=True)
+		print(shape)
 
 		try:
 			text = RecognitionModel.infer(model, input_file, shape)

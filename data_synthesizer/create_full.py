@@ -34,15 +34,15 @@ class DataProvider:
         return self.idx <= 10
 
     def getNext(self):
-        h = 3507
-        w = 2528
+        h = int(3507 / 2)
+        w = int(2528 / 2)
         img = np.zeros((h, w, 3), np.uint8)
         img.fill(255)
         b, g, r, a = random.randrange(0, 100, 1), 0, 0, 0
         text = self.getText()
         self.idx += 1
 
-        font_size = random.randrange(64, 80, 1)
+        font_size = random.randrange(32, 40, 1)
         font = ImageFont.truetype("TTWPGOTT.ttf", font_size, encoding="UTF-8")
         width, height = font.getsize(text)
         img_pil = Image.fromarray(img)
