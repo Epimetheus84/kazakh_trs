@@ -72,6 +72,7 @@ const UsersList = (props) => {
             handleDeletion(login);
         }
     }
+
     return (
         <WrapPaper>
             <Details>

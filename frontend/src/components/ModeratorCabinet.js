@@ -24,7 +24,6 @@ const ModeratorCabinet = (props) => {
         <WrapPage>
             <div>
                 <h1>Moderator Cabinet</h1>
-                <h1>Status: {props.loggedInStatus}</h1>
             </div>
             <div style={{display: 'flex'}}>
                 <ProfileCompany/>

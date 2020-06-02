@@ -21,8 +21,7 @@ export default class App extends Component {
       user: null,
       usersList:[],
       companiesList:[],
-      imagesList:[],
-      // url:"http://kazakh-trs.kz:8088/api/v1"
+      imagesList:[]
     }
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -47,6 +46,7 @@ export default class App extends Component {
     }
   
     showCompanies = async() => {
+        console.log('showCompanies')
         const sessionToken = "token "+ sessionStorage.tokenData;
         let res = await axios.get(`${url}/companies/list`, {
             headers: {
@@ -58,6 +58,7 @@ export default class App extends Component {
     }
 
     showImages = async() => {
+      console.log('showImages')
       const sessionToken = "token "+ sessionStorage.tokenData;
       let res = await axios.get(`${url}/images/list`, {
           headers: {
@@ -135,7 +136,7 @@ export default class App extends Component {
       this.setState({
         loggedInStatus: "NOT_LOGGED_IN",
         user: {}
-      })
+      });
     }
   }
 
@@ -156,8 +157,7 @@ export default class App extends Component {
                 render={props => (
                   <Home {...props} 
                     handleLogout= {this.handleLogout} 
-                    handleLoggin= {this.handleLoggin} 
-                    loggedInStatus={this.state.loggedInStatus} 
+                    handleLoggin= {this.handleLoggin}
                   />
                 )} 
               />
@@ -165,9 +165,7 @@ export default class App extends Component {
                 exact 
                 path={"/users/:first_name/:second_name"} 
                 render={props => (
-                  <Users {...props} 
-                    loggedInStatus={this.state.loggedInStatus} 
-                  />
+                  <Users {...props} />
                 )} 
               />
               <Route 
@@ -176,7 +174,6 @@ export default class App extends Component {
                 render={props => (
                   <CommonCabinet 
                     {...props} 
-                    loggedInStatus={this.state.loggedInStatus}
                     currentUser={this.state.user}
                     images={this.state.imagesList}
                     showImages={this.showImages}
@@ -189,7 +186,6 @@ export default class App extends Component {
                 render={props => (
                   <ModeratorCabinet 
                     {...props} 
-                    loggedInStatus={this.state.loggedInStatus} 
                     showUsers={this.showUsers}
                     showCompanies={this.showCompanies}
                     users={this.state.usersList}
@@ -204,7 +200,6 @@ export default class App extends Component {
                 render={props => (
                   <AdminCabinet 
                     {...props} 
-                    loggedInStatus={this.state.loggedInStatus}
                     showUsers={this.showUsers}
                     showCompanies={this.showCompanies}
                     users={this.state.usersList}
@@ -220,8 +215,7 @@ export default class App extends Component {
                 path={"/cabinetdeveloper"} 
                 render={props => (
                   <DeveloperCabinet 
-                    {...props} 
-                    loggedInStatus={this.state.loggedInStatus} 
+                    {...props}
                     showUsers={this.showUsers}
                     showCompanies={this.showCompanies}
                     users={this.state.usersList}

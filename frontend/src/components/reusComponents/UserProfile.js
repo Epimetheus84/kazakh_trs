@@ -19,7 +19,12 @@ const Profile = (props) => {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
         })
-        .then(res => {return res.json();})
+        .then(res => {
+            if (res.statusText=="UNAUTHORIZED"){
+                window.location.replace("/")
+            }
+            return res.json();
+        })
         .then(
             data => {
                 setShowRole(data.role); 

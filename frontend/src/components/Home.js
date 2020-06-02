@@ -60,7 +60,7 @@ class Home extends Component {
         return (
             <div style={{display:"flex", flexDirection:"column",alignItems:"center", width: "1100px"}}>
                     <br/>
-                <WrapPaper>
+                {/* <WrapPaper>
                     <Button 
                         
                         type='submit'
@@ -71,7 +71,9 @@ class Home extends Component {
                 </WrapPaper>
                 {this.state.showLogin
                     ? <Login handleSuccesfulAuth={this.handleSuccesfulAuth} saveToken={this.saveToken}/>
-                    : null}
+                    : null} */}
+
+                <Login handleSuccesfulAuth={this.handleSuccesfulAuth} saveToken={this.saveToken}/>
             </div>
         );
     }

@@ -80,7 +80,7 @@ class Login extends Component {
                         type='submit'
                         // onMouseOver ={()=>this.onHover()}
                     >
-                        Login
+                        Войти в систему
                     </Button>
                 </form> 
             </WrapPaper>
