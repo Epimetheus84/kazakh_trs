@@ -6,6 +6,7 @@ import axios from 'axios';
 import {
   Button2, Textarea, Span
 } from '../../style/styled_comp/styles';
+import {url} from '../serverUrl';
 
 
 const showWidth = 1200;
@@ -36,10 +37,8 @@ class Mapper extends Component {
     const showHeight = showWidth * (props.height / props.width);
     const resizeRatio = showWidth / props.width;
 
-    const apiUrl = 'http://kazakh-trs.kz:8088/api/v1';
-
     this.state = {
-      imgSrc: apiUrl + props.imgSrc,
+      imgSrc: url + props.imgSrc,
       rectangles: props.coordinates,
       imgName: props.imgName,
       selectedId: null,
@@ -56,8 +55,8 @@ class Mapper extends Component {
   }
 
   recognizeText = (name) => {
-    const url = `http://kazakh-trs.kz:8088/api/v1/images/recognize/${name}`;
-    fetch(url,{
+    const urlRecog = `${url}/images/recognize/${name}`;
+    fetch(urlRecog,{
         headers: {
             Authorization: `token ${sessionStorage.tokenData}`
         }

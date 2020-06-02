@@ -11,11 +11,10 @@ const CommonCabinet = (props) => {
     return (
         <WrapPage>
             <div style={{display: 'flex'}}>
-                <UserProfile url={props.url}/>
+                <UserProfile />
                 <DocumentsList 
                     images={props.images} 
                     style={{marginTop:"10px"}} 
-                    url={props.url}
                     showImages={props.showImages}
                 />
             </div>

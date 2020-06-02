@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import axios, {post} from 'axios';
 import DropAndCrop from '../ImageEdit/DropAndCrop';
 import Mapper from '../ImageMapping/Mapper';
+import { url } from '../serverUrl';
 
 import {
     WrapPaper, 
@@ -42,7 +43,7 @@ const DocumentsList = (props) => {
     const handleDeletion = (name) => {
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.delete(`${props.url}/images/delete/${name}`, {
+        axios.delete(`${url}/images/delete/${name}`, {
             headers: {
                 Authorization: sessionToken
             }
@@ -77,7 +78,7 @@ const DocumentsList = (props) => {
                 Загруженные документы:      
             </Details>
             <ListWrap>
-                <DropAndCrop url={props.url} showImages={props.showImages}/>
+                <DropAndCrop url={url} showImages={props.showImages}/>
                 <hr/>
                 <p style={{color: '#90d2c6', marginTop:"25px"}}>Сохраненные изображения</p>
                 {showMapper && <Mapper 

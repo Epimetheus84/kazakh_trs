@@ -26,21 +26,19 @@ export default class DeveloperCabinet extends Component{
         return (
             <WrapPage>
                 <div style={{display: 'flex'}}>
-                    <UserProfile url={this.props.url}/>
+                    <UserProfile/>
                     <UsersList 
                         users={this.props.users} 
                         companies={this.props.companies} 
                         currentUser={user} 
-                        url={this.props.url}
                         showUsers={this.props.showUsers}
                         />
                     <CompaniesList 
                         companies={this.props.companies} 
-                        url={this.props.url}
                         showCompanies={this.props.showCompanies}
                     />
                 </div>
-                <DocumentsList images={this.props.images} url={this.props.url} showImages={this.props.showImages}/>
+                <DocumentsList images={this.props.images} showImages={this.props.showImages}/>
             </WrapPage>
         )
     }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import Dropzone from 'react-dropzone';
+import {Button2} from '../../style/styled_comp/styles';
 import {
     image64toCanvasRef, 
     base64StringtoFile, 
@@ -192,8 +193,8 @@ function DropAndCrop(props) {
                         style={{color: '#90d2c6'}}
                         >Canvas not supported
                     </canvas>
-                    <button onClick={handleDownloadClick}>Загрузить</button>
-                    <button onClick={handleClearToDefault}>Очистить</button>
+                    <Button2 primary onClick={handleDownloadClick}>Загрузить</Button2>
+                    <Button2 onClick={handleClearToDefault}>Очистить</Button2>
                 </div>  : 
                 <Dropzone 
                     onDrop={(acceptedFiles, rejectedFiles) => handleOnDrop(acceptedFiles, rejectedFiles)} 

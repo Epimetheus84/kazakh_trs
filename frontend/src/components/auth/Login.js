@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {WrapPaper, Input, Button} from './styles';
-// import {db} from '../../config';
+import {url} from '../serverUrl';
 
 class Login extends Component {
     constructor(props){
@@ -28,7 +28,7 @@ class Login extends Component {
             password
         } = this.state;
         
-        axios.post(`${this.props.url}/cabinet/login/`, {
+        axios.post(`${url}/cabinet/login/`, {
             login: login,
             password: password,
         },

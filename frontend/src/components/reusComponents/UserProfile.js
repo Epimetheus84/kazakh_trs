@@ -1,5 +1,6 @@
 import React,{useState , useEffect} from 'react';
 import {WrapPaper, Details} from '../../style/styled_comp/styles';
+import {url} from '../serverUrl';
 
 const Profile = (props) => {
     const [showRole, setShowRole] = useState(0);
@@ -13,7 +14,7 @@ const Profile = (props) => {
     const [showLastModified, setlastModified] = useState(0);
 
     const handleSuccesfulAuth = async ()=>{
-        fetch(`${props.url}/cabinet/me`, {
+        fetch(`${url}/cabinet/me`, {
             headers: {
                 Authorization: `token ${sessionStorage.tokenData}`
             }
