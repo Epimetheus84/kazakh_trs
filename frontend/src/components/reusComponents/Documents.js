@@ -22,11 +22,12 @@ const DocumentsList = (props) => {
     const [imgHeight, setImgHight]=useState(0);
     const [imgName, setImgName]=useState('');
     const [imgText, setImgText]=useState('');
+    const [originName, setOriginName]=useState('');
 
     let imagesList = [];
     imagesList=[...imagesList, ...props.images];
 
-    const handleMapperShow = (coords, url, size, name, text) => {
+    const handleMapperShow = (coords, url, size, name, text, origName) => {
         setCoords(coords);
         setImgSrc(url);
         setImgWidth(size.width);
@@ -34,6 +35,7 @@ const DocumentsList = (props) => {
         setShowMapper(!showMapper);
         setImgName(name);
         setImgText(text);
+        setOriginName(origName)
     }
 
     const closeMapper = () => {
@@ -90,6 +92,7 @@ const DocumentsList = (props) => {
                                     imgText={imgText}
                                     setImgText={setImgText}
                                     closeMapper={closeMapper}
+                                    originName={originName}
                                     />}
                 {
                     imagesList.map((item, index) => {
@@ -108,7 +111,8 @@ const DocumentsList = (props) => {
                                             item.file_url, 
                                             JSON.parse(item.image_size),
                                             item.file_path,
-                                            item.text
+                                            item.text,
+                                            item.original_filename
                                             )
                                         }
                                         >

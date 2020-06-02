@@ -10,6 +10,7 @@ import NavbarReact from "./navigation/navigationPanel";
 import Mapper from "./ImageMapping/Mapper";
 import axios from "axios";
 import {url} from './serverUrl';
+import {txt1} from './data';
 
 export default class App extends Component {
 
@@ -141,6 +142,7 @@ export default class App extends Component {
   }
 
   componentDidMount(){
+    console.log('text', txt1)
     this.checkLoginStatus();
   }
 

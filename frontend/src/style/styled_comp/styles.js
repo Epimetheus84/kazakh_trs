@@ -72,7 +72,7 @@ export const Button1 = styled.div`
 `;
 
 export const Textarea = styled.textarea`
-    width: 1200px;
+    width: 95%;
     height: 200px !important;
     background: white;
     color: #90d2c6;

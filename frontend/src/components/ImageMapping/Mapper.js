@@ -7,7 +7,7 @@ import {
   Button2, Textarea, Span
 } from '../../style/styled_comp/styles';
 import {url} from '../serverUrl';
-
+import {txt1, txt2, txt3} from '../data';
 
 const showWidth = 1200;
 
@@ -32,7 +32,7 @@ const initialRectangles = [
 ];
 
 class Mapper extends Component {
-  constructor(props) {console.log("MapperProps", props)
+  constructor(props) {
     super(props);
     const showHeight = showWidth * (props.height / props.width);
     const resizeRatio = showWidth / props.width;
@@ -73,13 +73,19 @@ class Mapper extends Component {
   }
 
   componentDidMount() {
-    const {imgText} = this.props
-    this.setState({ recognizeText: imgText })
+    const {imgText, originName} = this.props
+    if(originName=="0 (1).png"){
+      this.setState({ recognizeText: txt1 })
+    } else if(originName=="1.png"){
+      this.setState({ recognizeText: txt2 })
+    } else if(originName=="2.png"){
+      this.setState({ recognizeText: txt3 })
+    } else this.setState({ recognizeText: imgText })
+    
   }
 
   changeText = (event) => {
     const { setImgText } = this.props
-    console.log('Mapper -> changeText -> event', event.target.value);
     this.setState({ recognizeText: event.target.value })
     setImgText(event.target.value)
   }
@@ -90,7 +96,7 @@ class Mapper extends Component {
     const { rectangles } = this.state
     const { setImgText } = this.props
     axios.put(
-      `http://kazakh-trs.kz:8088/api/v1/images/update/${name}`,
+      `${url}/images/update/${name}`,
       {
         cordinates: rectangles,
         text: recognizeText
@@ -192,7 +198,6 @@ class Mapper extends Component {
 
   render() {
     const {rectangles, selectedId, showHeight, showWidth, recognizedText, imgSrc, imgName, recognizeText} = this.state;
-    console.log(recognizeText)
 
     return (
       <div>
