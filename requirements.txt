@@ -7,7 +7,7 @@ astroid==2.3.3
 certifi==2019.11.28
 chardet==3.0.4
 Click==7.1.1
-cryptography==2.8
+cryptography==3.2
 decorator==4.4.2
 defer==1.0.4
 ecdsa==0.15
