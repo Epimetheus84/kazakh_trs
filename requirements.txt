@@ -13,7 +13,7 @@ defer==1.0.4
 ecdsa==0.15
 editdistance==0.5.3
 Flask==1.1.1
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 flask-httpauth==3.3.0
 gast==0.3.3
 h5py==2.10.0
