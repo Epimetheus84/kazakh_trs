@@ -131,7 +131,7 @@ class User(Document):
         return json.dumps(self.prepare_to_response())
 
     def has_access_to_see_company(self, company_id):
-        return self.company == company_id
+        return self.company == str(company_id)
 
     def has_access_to_update_company(self, company_id):
         if self.role == ROLE_DEVELOPER:
@@ -140,7 +140,7 @@ class User(Document):
         if self.role != ROLE_ADMIN:
             return False
 
-        return self.company == company_id
+        return self.company == str(company_id)
 
     def has_access_to_create_company(self):
         return self.role == ROLE_DEVELOPER
@@ -152,7 +152,7 @@ class User(Document):
         if self.role != ROLE_ADMIN:
             return False
 
-        return self.company == company_id
+        return self.company == str(company_id)
 
     def get_list_of_users(self, offset, items_per_page):
         if self.role == ROLE_DEVELOPER:

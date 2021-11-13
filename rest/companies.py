@@ -27,6 +27,7 @@ def list_companies():
 @companies.route('/show/<oid>', methods=['GET'])
 @auth.login_required
 def show_company(oid):
+    print(oid)
     company = Company.objects(id=oid)
 
     if not company:

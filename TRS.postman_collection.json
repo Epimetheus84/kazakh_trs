@@ -1,162 +1,594 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "6ac0a2eb-2aed-49c9-99bd-8078e56bdfd7",
 		"name": "TRS",
-		"_postman_id": "d283864a-82c5-aa33-909d-5d9052c05775",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "REST",
-			"description": "",
 			"item": [
 				{
 					"name": "users",
-					"description": "",
 					"item": [
 						{
 							"name": "create user",
 							"request": {
-								"url": "http://127.0.0.1:4444/users/create",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n\t\"login\": \"admin\",\n\t\"email\": \"eduardeliseev.m@gmail.com\",\n\t\"password\": \"admin\",\n\t\"first_name\": \"Eduard\",\n\t\"last_name\": \"Yelisseyev\"\n}"
 								},
-								"description": ""
+								"url": {
+									"raw": "http://127.0.0.1:4444/users/create",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"users",
+										"create"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "list",
 							"request": {
-								"url": "http://127.0.0.1:4444/users/list",
 								"method": "GET",
 								"header": [
 									{
 										"key": "Token",
-										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
-										"description": ""
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF"
 									}
 								],
-								"body": {},
-								"description": ""
+								"url": {
+									"raw": "http://127.0.0.1:4444/users/list",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"users",
+										"list"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "show",
 							"request": {
-								"url": "http://127.0.0.1:4444/users/show/admin2",
 								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
-										"description": ""
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF"
 									}
 								],
-								"body": {},
-								"description": ""
+								"url": {
+									"raw": "http://127.0.0.1:4444/users/show/admin2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"users",
+										"show",
+										"admin2"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "update",
 							"request": {
-								"url": "http://127.0.0.1:4444/users/update/<login>",
 								"method": "PUT",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
-										"description": ""
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF"
 									},
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n\t\"role\": 10,\n\t\"password\": \"admin\"\n}"
 								},
-								"description": ""
+								"url": {
+									"raw": "http://127.0.0.1:4444/users/update/<login>",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"users",
+										"update",
+										"<login>"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "delete",
 							"request": {
-								"url": "http://127.0.0.1:4444/users/delete/<login>",
 								"method": "DELETE",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
-										"description": ""
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF"
 									}
 								],
-								"body": {},
-								"description": ""
+								"url": {
+									"raw": "http://127.0.0.1:4444/users/delete/<login>",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"users",
+										"delete",
+										"<login>"
+									]
+								}
 							},
 							"response": []
 						}
-					],
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "cabinet",
-					"description": "",
 					"item": [
 						{
 							"name": "login",
 							"request": {
-								"url": "http://127.0.0.1:4444/cabinet/login",
 								"method": "POST",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"description": ""
+										"value": "application/json"
 									}
 								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n\t\"login\": \"god3\",\n\t\"password\": \"admin\"\n}"
 								},
-								"description": ""
+								"url": {
+									"raw": "http://127.0.0.1:4444/cabinet/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"cabinet",
+										"login"
+									]
+								}
 							},
 							"response": []
 						},
 						{
 							"name": "me",
 							"request": {
-								"url": "http://127.0.0.1:4444/cabinet/me",
 								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF",
-										"description": ""
+										"value": "Token 6BH6Z2R0D9OVSCVO7ULDEMVNSR8PX4TDYRHDGL32YAIS8ZSZVUWM1K0LFFK9U6RS22N6DF9QYOO795TM98Z0R4QRR7RYZV8J5LTT8PTFH2T5GM2IKLCHLZ180PUCP4AF"
 									}
 								],
-								"body": {},
-								"description": ""
+								"url": {
+									"raw": "http://127.0.0.1:4444/cabinet/me",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"cabinet",
+										"me"
+									]
+								}
 							},
 							"response": []
 						}
-					],
-					"_postman_isSubFolder": true
+					]
+				},
+				{
+					"name": "companies",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:4444/companies/list",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"companies",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:4444/companies/show/6187f78eb1f751c4eab9f205",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"companies",
+										"show",
+										"6187f78eb1f751c4eab9f205"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"6187f78eb1f751c4eab9f205\", \r\n    \"name\": \"creators\", \r\n    \"info\": \"Admin user 2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:4444/companies/update/6187f78eb1f751c4eab9f205",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"companies",
+										"update",
+										"6187f78eb1f751c4eab9f205"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"iitu\", \r\n    \"info\": \"IIT University\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:4444/companies/create",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"companies",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:4444/companies/delete/618fc33378b10df8574a15c8",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"companies",
+										"delete",
+										"618fc33378b10df8574a15c8"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "images",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:4444/images/list",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"images",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/epimetheus/PycharmProjects/kazakh_trs/test.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:4444/images/create",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"images",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n{\r\n    \"text\": \"asd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:4444/images/update/uzj00aqbx9rpbiaz",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"images",
+										"update",
+										"uzj00aqbx9rpbiaz"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "mark image",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:4444/images/mark/uzj00aqbx9rpbiaz",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"images",
+										"mark",
+										"uzj00aqbx9rpbiaz"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "recognize image",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD9",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:4444/images/recognize/uzj00aqbx9rpbiaz",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "4444",
+									"path": [
+										"images",
+										"recognize",
+										"uzj00aqbx9rpbiaz"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "Token 3ZVUL4EDFQ0LZGJV2EYQAW2BMNFNLAX92OZ8643R5SYRXAZ6M0MIKJMHGFZ53URVFWIJ7B26YPBWQUFEHYQ9U248JRV2W517H56N5HYZMIZVMSPANFLSUJ14QZP7VHD",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}
