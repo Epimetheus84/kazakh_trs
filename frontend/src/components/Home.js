@@ -38,18 +38,17 @@ class Home extends Component {
           .then(res => {return res.json();})
           .then(
               data => {
-                    this.props.handleLoggin(data);
-                  if(data.role === 10){
+                this.props.handleLoggin(data);
+                if (data.role === 10){
                     this.props.history.push("/cabinetdeveloper");
-                  } else if(data.role === 0){
+                } else if (data.role === 0){
                     this.props.history.push("/cabinetcommon");
-                  } else if(data.role === 1){
+                } else if (data.role === 1){
                     this.props.history.push("/cabinetmoderator");
-                } else if(data.role === 2){
+                } else if (data.role === 2){
                     this.props.history.push("/cabinetadmin");
-                    }
                 }
-              );
+            });
     }
 
     handleLogoutClick(){

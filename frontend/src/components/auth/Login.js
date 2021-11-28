@@ -32,14 +32,15 @@ class Login extends Component {
             login: login,
             password: password,
         },
-        {withCredentials: true}
+        { withCredentials: true }
         ).then(response => {
             this.props.saveToken(response.data.token);
-            if(response.data.token){
+            if (response.data.token){
                 this.props.handleSuccesfulAuth(response.data.token, response.config.data);
             }
-        }).catch(error=>{
-            if(error.response.status === 401){
+        }).catch(kek => {
+            console.log(kek);
+            if (response.status === 401){
                 alert("Введен неправильный пароль или логин");
             }
             console.log("login error", error.response.status);

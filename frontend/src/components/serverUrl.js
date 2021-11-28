@@ -1,1 +1,1 @@
-export const url = "http://kazakh-trs.kz:8088/api/v1"
+export const url = "http://0.0.0.0:3000/api/v1"

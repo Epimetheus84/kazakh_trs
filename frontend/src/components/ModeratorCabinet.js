@@ -31,7 +31,6 @@ const ModeratorCabinet = (props) => {
                 <UsersList/>
             </div>
             <DocumentsList/>
-            
         </WrapPage>
     )
 }

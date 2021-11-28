@@ -3,8 +3,10 @@ const webpackMerge = require('webpack-merge');
 const webpackCommon = require('./common.config');
 
 const env = require('../env');
+const { devServer, devBackendProxy } = env;
 const proxyRules = require('../proxy/rules');
 
+console.log('devBackendProxy', devBackendProxy);
 // webpack plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
@@ -14,6 +16,7 @@ module.exports = webpackMerge(webpackCommon, {
 
   devtool: 'inline-source-map',
   mode: 'development',
+  target: 'web',
   output: {
   
     path: path.resolve(__dirname, '../static/dist'),
@@ -72,13 +75,14 @@ module.exports = webpackMerge(webpackCommon, {
   ],
 
   devServer: {
+    host: devServer.host || '0.0.0.0',
+    disableHostCheck: true,   // That solved it
+    port: devServer.port || 3000,
     headers: { 
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
     },
-    host: '0.0.0.0',
-    disableHostCheck: true,   // That solved it
-    port: env.devServer.port || 3000,
+    open: true,
     contentBase: path.resolve(__dirname, '../static'),
     watchContentBase: true,
     compress: true,
@@ -93,7 +97,20 @@ module.exports = webpackMerge(webpackCommon, {
       warnings: true,
       errors: true
     },
-    proxy: proxyRules
+    proxy: {
+      ...proxyRules,
+      // proxy to backend
+      '/api/v1': {
+        target: `${devBackendProxy.secure ? 'https' : 'http' }://${devBackendProxy.host}`,
+        secure: devBackendProxy.secure,
+        headers: {
+          'Host': `${devBackendProxy.host}`,
+          'Cookie': '' // send cookie on demand
+        },
+        pathRewrite: function (path) {
+          return path.replace(/^\/api\/v1/, ''); // remove '/api/v1' prefix when requesting
+        }
+      }
+    }
   }
-
 });

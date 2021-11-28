@@ -3,7 +3,7 @@ import {Navbar, Header} from './styles';
 import { Link } from 'react-router-dom';
 import image from '../../images/logo.png';
  
-const NavbarReact = (props) => {
+const NavigationPanel = (props) => {
 
   return (
     <Navbar style={{
@@ -27,4 +27,4 @@ const NavbarReact = (props) => {
     </Navbar>
 ) }
 
-export default NavbarReact;
+export default NavigationPanel;
