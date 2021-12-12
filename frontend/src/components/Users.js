@@ -27,8 +27,6 @@ const Users = (props) => {
             <div style={{display: 'flex'}}>
                 <Profile/>
             </div>
-            
-            
         </WrapUserPage>
     )
 }

@@ -94,7 +94,7 @@ class Registration extends Component {
           })
           .then(res => {return res.json();})
           .then(
-              data => { 
+              data => {
                 this.setState({
                     roleCheck: data.role
                 });
@@ -113,15 +113,15 @@ class Registration extends Component {
             company
         } = this.state;
 
-        axios.post(`${url}/users/create/`, 
+        axios.post(`${url}/users/create/`,
         {
-            login: login,
-            email: email,
-            password: password,
-            role: role,
-            first_name: first_name,
-            last_name: last_name,
-            company: company,
+            login,
+            email,
+            password,
+            role,
+            first_name,
+            last_name,
+            company,
         },{
             headers: {
                 Authorization: `token ${sessionStorage.tokenData}`
@@ -133,14 +133,13 @@ class Registration extends Component {
                 this.props.showRegisterComponent();
             }
         }).catch(error=>{
-            console.log("registration error", error);
             alert("Произошла ошибка!", error.response.status);
             this.props.showRegisterComponent();
         });
         setTimeout(()=>{
             this.props.showUsers();
         },1500)
-        
+
         event.preventDefault();
     }
 
@@ -156,7 +155,7 @@ class Registration extends Component {
             company
         } = this.state;
 
-        axios.put(`${url}/users/update/${oldLogin}`, 
+        axios.put(`${url}/users/update/${oldLogin}`,
         {
             login: login,
             email: email,
@@ -193,7 +192,7 @@ class Registration extends Component {
         } = this.state;
         const sessionToken = `token ${sessionStorage.tokenData}`;
 
-        axios.post(`${url}/companies/create/`, 
+        axios.post(`${url}/companies/create/`,
         {
                 name: companyName,
                 info: info,
@@ -226,8 +225,8 @@ class Registration extends Component {
             company
         } = this.state;
         const sessionToken = `token ${sessionStorage.tokenData}`;
-        
-        axios.put(`${url}/companies/update/${company}`, 
+
+        axios.put(`${url}/companies/update/${company}`,
         {
                 name: companyName,
                 info: info,
@@ -258,42 +257,42 @@ class Registration extends Component {
             [event.target.name]: event.target.value
         });
     }
-    
+
     render() {
         if(this.props.showRegisterComponent){
             return (
                 <WrapPaper style={{position: "absolute"}}>
                     <form onSubmit={this.handleSubmit} className="regForm">
-                        <Input 
-                            type="text" 
-                            name="login" 
-                            placeholder="Login" 
-                            value={this.state.login} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="login"
+                            placeholder="Login"
+                            value={this.state.login}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Input 
-                            type="email" 
-                            name="email" 
-                            placeholder="Email" 
-                            value={this.state.email} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Input 
-                            type="password" 
-                            name="password" 
-                            placeholder="Password" 
-                            value={this.state.password} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={this.state.password}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Select 
-                            type="number" 
-                            name="role" 
-                            placeholder="Role"  
-                            onChange={this.handleChange} 
-                            required 
+                        <Select
+                            type="number"
+                            name="role"
+                            placeholder="Role"
+                            onChange={this.handleChange}
+                            required
                         >
                             <option disabled>Role</option>
                             {
@@ -304,29 +303,29 @@ class Registration extends Component {
                                     })
                             }
                         </Select>
-                        <Input 
-                            type="text" 
-                            name="first_name" 
-                            placeholder="First name" 
-                            value={this.state.first_name} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="first_name"
+                            placeholder="First name"
+                            value={this.state.first_name}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Input 
-                            type="text" 
-                            name="last_name" 
-                            placeholder="Last name" 
-                            value={this.state.last_name} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="last_name"
+                            placeholder="Last name"
+                            value={this.state.last_name}
+                            onChange={this.handleChange}
+                            required
                         />
                         {this.state.roleCheck===10 &&
-                            <Select 
-                                type="text" 
-                                name="company" 
-                                placeholder="Company"  
-                                onChange={this.handleChange} 
-                                required 
+                            <Select
+                                type="text"
+                                name="company"
+                                placeholder="Company"
+                                onChange={this.handleChange}
+                                required
                             >
                                 <option disabled>Company</option>
                                 {
@@ -338,19 +337,19 @@ class Registration extends Component {
                                 }
                             </Select>
                         }
-                        
-    
-                        <Button 
+
+
+                        <Button
                             type='submit'
                         >
                             Register
                         </Button>
-                        <Button 
+                        <Button
                             onClick={this.props.showRegisterComponent}
                         >
                             Close
                         </Button>
-                    </form> 
+                    </form>
                 </WrapPaper>
             );
         }
@@ -358,37 +357,37 @@ class Registration extends Component {
             return (
                 <WrapPaper style={{position: "absolute"}}>
                     <form onSubmit={this.handleSubmitEdit} className="regForm">
-                        <Input 
-                            type="text" 
-                            name="login" 
-                            placeholder="Login" 
-                            value={this.state.login} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="login"
+                            placeholder="Login"
+                            value={this.state.login}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Input 
-                            type="email" 
-                            name="email" 
-                            placeholder="Email" 
-                            value={this.state.email} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Input 
-                            type="password" 
-                            name="password" 
-                            placeholder="Password" 
-                            value={this.state.password} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={this.state.password}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Select 
-                            type="number" 
-                            name="role" 
-                            placeholder="Role"  
-                            onChange={this.handleChange} 
+                        <Select
+                            type="number"
+                            name="role"
+                            placeholder="Role"
+                            onChange={this.handleChange}
                             // defaultValue={ this.state.role }
-                            required 
+                            required
                         >
                             <option >{
                                  (this.state.role===10)?"Developer":
@@ -404,30 +403,30 @@ class Registration extends Component {
                                     })
                             }
                         </Select>
-                        <Input 
-                            type="text" 
-                            name="first_name" 
-                            placeholder="First name" 
-                            value={this.state.first_name} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="first_name"
+                            placeholder="First name"
+                            value={this.state.first_name}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Input 
-                            type="text" 
-                            name="last_name" 
-                            placeholder="Last name" 
-                            value={this.state.last_name} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="last_name"
+                            placeholder="Last name"
+                            value={this.state.last_name}
+                            onChange={this.handleChange}
+                            required
                         />
-                        {this.state.roleCheck===10 && 
-                            <Select 
-                                type="text" 
-                                name="company" 
-                                placeholder="Company"  
-                                onChange={this.handleChange} 
-                                defaultValue={ this.props.userInfo.company.name } 
-                                required 
+                        {this.state.roleCheck===10 &&
+                            <Select
+                                type="text"
+                                name="company"
+                                placeholder="Company"
+                                onChange={this.handleChange}
+                                defaultValue={ this.props.userInfo.company.name }
+                                required
                             >
                                 <option disabled>{this.props.userInfo.company.name}</option>
                                 {
@@ -439,19 +438,19 @@ class Registration extends Component {
                                 }
                             </Select>
                         }
-                        
-    
-                        <Button 
+
+
+                        <Button
                             type='submit'
                         >
                             Save
                         </Button>
-                        <Button 
+                        <Button
                             onClick={this.props.showEditComponent}
                         >
                             Close
                         </Button>
-                    </form> 
+                    </form>
                 </WrapPaper>
             );
         }
@@ -459,33 +458,33 @@ class Registration extends Component {
             return (
                 <WrapPaper style={{position: "absolute"}}>
                     <form onSubmit={this.handleSubmitCom} className="regForm">
-                        <Input 
-                            type="text" 
-                            name="companyName" 
-                            placeholder="Company Name" 
-                            value={this.state.companyName} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="companyName"
+                            placeholder="Company Name"
+                            value={this.state.companyName}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Input 
-                            type="text" 
-                            name="info" 
-                            placeholder="Info" 
-                            value={this.state.info} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="info"
+                            placeholder="Info"
+                            value={this.state.info}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Button 
+                        <Button
                             type='submit'
                         >
                             Register
                         </Button>
-                        <Button 
+                        <Button
                             onClick={this.props.showRegisterCompany}
                         >
                             Close
                         </Button>
-                    </form> 
+                    </form>
                 </WrapPaper>
             );
         }
@@ -493,33 +492,33 @@ class Registration extends Component {
             return (
                 <WrapPaper style={{position: "absolute"}}>
                     <form onSubmit={this.handleSubmitEditCompany} className="regForm">
-                        <Input 
-                            type="text" 
-                            name="companyName" 
-                            placeholder="Company Name" 
-                            value={this.state.companyName} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="companyName"
+                            placeholder="Company Name"
+                            value={this.state.companyName}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Input 
-                            type="text" 
-                            name="info" 
-                            placeholder="Info" 
-                            value={this.state.info} 
-                            onChange={this.handleChange} 
-                            required 
+                        <Input
+                            type="text"
+                            name="info"
+                            placeholder="Info"
+                            value={this.state.info}
+                            onChange={this.handleChange}
+                            required
                         />
-                        <Button 
+                        <Button
                             type='submit'
                         >
                             Save
                         </Button>
-                        <Button 
+                        <Button
                             onClick={this.props.showEditCompany}
                         >
                             Close
                         </Button>
-                    </form> 
+                    </form>
                 </WrapPaper>
             );
         }

@@ -18,8 +18,6 @@ const CommonCabinet = (props) => {
                     showImages={props.showImages}
                 />
             </div>
-            
-            
         </WrapPage>
     )
 }

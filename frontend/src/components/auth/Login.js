@@ -18,16 +18,12 @@ class Login extends Component {
         this.onHover = this.onHover.bind(this);
     }
 
-    onHover(){
-        // console.log("hover",event);
-    }
-
     handleSubmit(event){
         const {
             login,
             password
         } = this.state;
-        
+
         axios.post(`${url}/cabinet/login/`, {
             login: login,
             password: password,
@@ -49,7 +45,7 @@ class Login extends Component {
         console.log("form submitted");
         event.preventDefault();
     }
-    
+
     handleChange(event){
         this.setState({
             [event.target.name]: event.target.value
@@ -60,30 +56,29 @@ class Login extends Component {
         return (
             <WrapPaper>
                 <form onSubmit={this.handleSubmit} className="regForm">
-                    <Input 
-                        type="text" 
-                        name="login" 
-                        placeholder="Login" 
-                        value={this.state.login} 
-                        onChange={this.handleChange} 
-                        required 
+                    <Input
+                        type="text"
+                        name="login"
+                        placeholder="Login"
+                        value={this.state.login}
+                        onChange={this.handleChange}
+                        required
                     />
-                    <Input 
-                        type="password" 
-                        name="password" 
-                        placeholder="Password" 
-                        value={this.state.password} 
-                        onChange={this.handleChange} 
-                        required 
+                    <Input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                        required
                     />
 
-                    <Button 
+                    <Button
                         type='submit'
-                        // onMouseOver ={()=>this.onHover()}
                     >
                         Login
                     </Button>
-                </form> 
+                </form>
             </WrapPaper>
         );
     }
