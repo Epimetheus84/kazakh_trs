@@ -1,4 +1,5 @@
 import React, { useState, useContext, createContext } from "react";
+import AuthorizationService from '../services/AuthorizationService';
 
 const fakeAuth = {
   isAuthenticated: false,
@@ -33,26 +34,37 @@ export const useAuth = () => {
 };
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
-  const [user, setUser] = useState(null);
+  // get user data from localStorage
+  const storeUser = JSON.parse(localStorage.getItem('user'));
+  const [user, setUser] = useState(storeUser);
   // ... to save the user to state.
-  const signin = cb => {
-    return fakeAuth.signin(({ userName }) => {
-      setUser({
-        userName
-      });
-      cb();
+  const loginInSystem = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
+    return userData;
+  };
+
+  const signin = (credentials) => {
+    return (async () => {
+      const { token } = await AuthorizationService.signin(credentials)
+      console.log('token', token);
+      const userData = await AuthorizationService.me();
+      loginInSystem(userData);
+      return userData;
+    })();
+  };
+
+  const signout = () => {
+    return fakeAuth.signout(() => {
+      localStorage.removeItem('user');
+      setUser(null);
     });
   };
 
-  const signout = cb => {
-    return fakeAuth.signout(() => {
-      setUser(null);
-      cb();
-    });
-  };
   const isAuthenticated = () => {
-    return user.userName !== null;
+    return (user?.login || null) !== null;
   };
+
   // Return the user object and auth methods
   return {
     user,
