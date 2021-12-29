@@ -1,13 +1,16 @@
+const apiHost = 'a631-62-217-190-209.ngrok.io';
+
 module.exports = {
   devServer: {
+    port: 3001,
     proxy: {
       "/api": {
         secure: false,
         changeOrigin: true,
         cookieDomainRewrite: "localhost",
-        target: 'http://1ba4-62-217-190-209.ngrok.io',
+        target: `http://${apiHost}`,
         headers: {
-          'Host': '1ba4-62-217-190-209.ngrok.io',
+          'Host': apiHost,
           'Cookie': '' // send cookie on demand
         },
         pathRewrite: function (path) {

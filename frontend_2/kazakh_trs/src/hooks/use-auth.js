@@ -1,20 +1,6 @@
 import React, { useState, useContext, createContext } from "react";
 import AuthorizationService from '../services/AuthorizationService';
 
-const fakeAuth = {
-  isAuthenticated: false,
-  signin(cb) {
-    fakeAuth.isAuthenticated = true;
-    setTimeout(() => cb({
-      userName: 'Eduard Eliseev'
-    }), 100); // fake async
-  },
-  signout(cb) {
-    fakeAuth.isAuthenticated = false;
-    setTimeout(() => cb(), 100);
-  }
-};
-
 
 const authContext = createContext();
 // Provider component that wraps your app and makes auth object ...
@@ -55,10 +41,9 @@ function useProvideAuth() {
   };
 
   const signout = () => {
-    return fakeAuth.signout(() => {
-      localStorage.removeItem('user');
-      setUser(null);
-    });
+    localStorage.removeItem('user');
+    setUser(null);
+    return null;
   };
 
   const isAuthenticated = () => {

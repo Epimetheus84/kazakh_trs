@@ -1,20 +1,41 @@
-import logo from '../logo.svg';
+import { useAuth } from "../hooks/use-auth";
+import { HiUserCircle } from "react-icons/hi";
+import { BsFillArrowLeftCircleFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import {
+  useLocation
+} from "react-router-dom";
+
+function BackButton() {
+  const { pathname } = useLocation();
+
+  return pathname !== '/' && (
+    <Link to="/" className="text-gray-200 hover:text-gray-400">
+        <BsFillArrowLeftCircleFill className="inline-block mr-2" />
+        Назад
+      </Link>
+  );
+}
 
 function Header() {
+  const { user } = useAuth();
+
   return (
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
+    <header className="bg-gray-500">
+      <nav className="container flex items-center justify-between flex-wrap p-1">
+        <HiUserCircle
+          className="text-gray-200 cursor-pointer hover:text-gray-400"
+          style={{
+            height: '25px',
+            width: '25px',
+            color: '#fff'
+          }}
+          onClick={() => {
+            console.log(user);
+          }}
+        />
+        <BackButton />
+      </nav>
     </header>
   );
 }
