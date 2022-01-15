@@ -12,7 +12,9 @@ function BackButton() {
   return pathname !== '/' && (
     <Link to="/" className="text-gray-200 hover:text-gray-400">
         <BsFillArrowLeftCircleFill className="inline-block mr-2" />
-        Назад
+        <span>
+          Назад
+        </span>
       </Link>
   );
 }

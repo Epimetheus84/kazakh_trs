@@ -35,6 +35,7 @@ const Rectangle = ({ shapeProps, isSelected, onSelect, onChange, isDraggable }) 
 
           node.scaleX(1);
           node.scaleY(1);
+
           console.log('node', node.x(), node.y())
           onChange({
             ...shapeProps,

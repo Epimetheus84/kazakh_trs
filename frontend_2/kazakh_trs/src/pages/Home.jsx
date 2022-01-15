@@ -7,25 +7,25 @@ export default function Home () {
 
   return (
     <DefaultLayout>
-      <Link className="text-blue-600 visited:text-purple-600 target:shadow-lg" to="/create-users">
+      <Link className="link" to="/create-users">
         Create Users
       </Link>
       <br />
-      <Link className="text-blue-600 visited:text-purple-600 target:shadow-lg" to="/create-users">
+      <Link className="link" to="/load-documents">
         Загрузка изображений
       </Link>
       <br />
-      <Link className="text-blue-600 visited:text-purple-600 target:shadow-lg" to="/about">
+      <Link className="link" to="/about">
         About
       </Link>
       <br />
-      <Link className="text-blue-600 visited:text-purple-600 target:shadow-lg" to="/login">
+      <Link className="link" to="/login">
         Login
       </Link>
       <br />
       <span
         onClick={auth.signout}
-        className="cursor-pointer text-blue-600 visited:text-purple-600 target:shadow-lg"
+        className="cursor-pointer link"
         to="/logout"
       >
         Logout

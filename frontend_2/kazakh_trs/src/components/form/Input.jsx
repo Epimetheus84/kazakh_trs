@@ -11,10 +11,11 @@ export default function Input({ style, value, onChange = () => {}, placeholder =
       label &&
       <label
         className="block text-gray-700 text-sm font-bold mb-2" htmlFor={name}>
-        {label}
+        { label }
       </label>
       }
       <input
+        {...style}
         className={inputClass}
         id={name}
         type={type}
@@ -25,7 +26,9 @@ export default function Input({ style, value, onChange = () => {}, placeholder =
       />
       {
         error &&
-        <p className="text-red-500 text-xs italic">{error}</p>
+        <p className="text-red-500 text-xs italic">
+          { error }
+        </p>
       }
   </>
 )

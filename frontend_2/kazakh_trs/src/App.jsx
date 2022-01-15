@@ -3,7 +3,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import { Home, About, NotFoundPage, LoginPage } from "./pages";
+import { Home, About, NotFoundPage, LoginPage, LoadDocuments } from "./pages";
 import "./styles/App.scss";
 import { ProvideAuth } from "./hooks/use-auth.js";
 import { PrivateRoute } from "./components";
@@ -20,6 +20,7 @@ const App = () => {
             </PrivateRoute>
           )} />
           <Route path="/about" element={<About />} />
+          <Route path="/load-documents" element={<LoadDocuments />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>

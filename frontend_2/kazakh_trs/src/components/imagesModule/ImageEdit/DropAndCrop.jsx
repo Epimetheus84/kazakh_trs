@@ -1,220 +1,240 @@
-import React, { useState } from 'react';
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
-import Dropzone from 'react-dropzone';
+import React, { useState } from "react";
+import ReactCrop from "react-image-crop";
+import "react-image-crop/dist/ReactCrop.css";
+import Dropzone from "react-dropzone";
 import {
-    image64toCanvasRef,
-    extractImageFileExtensionFromBase64
-} from './ResuableUtils';
-import {post} from 'axios';
+  image64toCanvasRef,
+  extractImageFileExtensionFromBase64,
+} from "./ReusableUtils";
+import { post } from "axios";
 
 const imageMaxSize = 100000000;
-const acceptedFileTypes = 'image/x-png, image/png, image/jpg, image/jpeg, image/gif'
-const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {return item.trim()})
+const acceptedFileTypes =
+  "image/x-png, image/png, image/jpg, image/jpeg, image/gif";
+const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {
+  return item.trim();
+});
 
 function DropAndCrop(props) {
-    const [files, setFiles]=useState([]);
-    const [imgSrc, setImgSrc]=useState(null);
-    const [imgSrcExt, setImgSrcExt]=useState(null);
-    // const [crop, setCrop]=useState({aspect:1/1});
-    const [crop, setCrop]=useState({});
-    const imagePreviewCanvasRef = React.createRef();
-    const [file, setFile]=useState(null);
+  const [files, setFiles] = useState([]);
+  const [imgSrc, setImgSrc] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [imgSrcExt, setImgSrcExt] = useState(null);
+  const [crop, setCrop] = useState({});
+  const imagePreviewCanvasRef = React.createRef();
+  const [file, setFile] = useState(null);
 
-    const verifyFile = (file)=>{
-        if(file && file.length > 0){
-            const currentFile = file[0];
-            const currentFileType = currentFile.type;
-            const currentFileSize = currentFile.size;
-            if(currentFileSize > imageMaxSize){
-                alert("Image file is not allowed. " + currentFileSize + " bytes is too large")
-                return false;
-            }
-            if (!acceptedFileTypesArray.includes(currentFileType)){
-                alert("This file is not allowed. Only images are allowed.")
-                return false
-            }
-            return true
-        }
-    }
-
-    const handleOnDrop = (acceptedFiles, rejectedFiles) =>{
-        acceptedFiles.map(file =>(
-            setFiles(
-                <li key={file.path}>
-                    {file.path} - {parseInt(file.size)/1000000} Мегабайт
-                </li>)
-            )
+  const verifyFile = (file) => {
+    if (file && file.length > 0) {
+      const currentFile = file[0];
+      const currentFileType = currentFile.type;
+      const currentFileSize = currentFile.size;
+      if (currentFileSize > imageMaxSize) {
+        alert(
+          "Image file is not allowed. " +
+            currentFileSize +
+            " bytes is too large"
         );
-        if(rejectedFiles && rejectedFiles.length > 0){
-            verifyFile(rejectedFiles);
-        }
-        if(acceptedFiles && acceptedFiles.length > 0){
-            const isVerified = verifyFile(acceptedFiles);
-                if (isVerified){
-                    // imageBase64Data
-                    const currentFile = acceptedFiles[0];
-                    setFile(acceptedFiles[0]);
-                    const myFileItemReader = new FileReader()
-                    myFileItemReader.addEventListener("load", ()=>{
-                        const myResult = myFileItemReader.result
-                        setImgSrc(myResult);
-                        setImgSrcExt(extractImageFileExtensionFromBase64(myResult))
-                    }, false)
-
-                    myFileItemReader.readAsDataURL(currentFile)
-                }
-            }
+        return false;
+      }
+      if (!acceptedFileTypesArray.includes(currentFileType)) {
+        alert("This file is not allowed. Only images are allowed.");
+        return false;
+      }
+      return true;
     }
+  };
 
-    const timerStatus = (name) => {
-        setInterval(() => checkImage(name), 10000);
-        console.log("Check status")
+  const handleOnDrop = (acceptedFiles, rejectedFiles) => {
+    acceptedFiles.map((file) =>
+      setFiles(
+        <li key={file.path}>
+          {file.path} - {parseInt(file.size) / 1000000} Мегабайт
+        </li>
+      )
+    );
+    if (rejectedFiles && rejectedFiles.length > 0) {
+      verifyFile(rejectedFiles);
     }
-    const onFormSubmit = () => {
-        if(file){
-            fileUpload(file).then((response)=>{
-                alert("Файл загружен!");
-                findCoords(response.data.file_path);
-                handleClearToDefault();
-                props.showImages();
-                timerStatus(response.data.file_path);
-            })
-        } else
-            alert("Выберите файл для загрузки !")
-
-    }
-
-    const findCoords = (name) => {
-        const url = `${props.url}/images/mark/${name}`;
-        fetch(url,{
-            headers: {
-                Authorization: `token ${sessionStorage.tokenData}`
-            }
-        })
-        .then(res => {return res.json();})
-        .then(
-            data => {
-                console.log('data',data);
-            }
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      const isVerified = verifyFile(acceptedFiles);
+      if (isVerified) {
+        // imageBase64Data
+        const currentFile = acceptedFiles[0];
+        setFile(acceptedFiles[0]);
+        const myFileItemReader = new FileReader();
+        myFileItemReader.addEventListener(
+          "load",
+          () => {
+            const myResult = myFileItemReader.result;
+            setImgSrc(myResult);
+            setImgSrcExt(extractImageFileExtensionFromBase64(myResult));
+          },
+          false
         );
-    }
 
-    const checkImage = (name, status) => {
-        const url = `${props.url}/images/show/${name}`;
-        fetch(url,{
-            headers: {
-                Authorization: `token ${sessionStorage.tokenData}`
-            }
-        })
-        .then(res => {return res.json();})
-        .then(
-            data => {
-                if(data.status === 1){
-                    clearInterval(timerStatus);
-                    props.showImages();
-                }
-            }
-        );
+        myFileItemReader.readAsDataURL(currentFile);
+      }
     }
+  };
 
-    const fileUpload = (file) => {
-        const url = `${props.url}/images/create/`;
-        const formData = new FormData();
-        formData.append('file',file)
-        const config = {
-            headers: {
-                Authorization: `token ${sessionStorage.tokenData}`,
-                'content-type': 'multipart/form-data'
-            }
+  const timerStatus = (name) => {
+    setInterval(() => checkImage(name), 10000);
+    console.log("Check status");
+  };
+  const onFormSubmit = () => {
+    if (file) {
+      fileUpload(file).then((response) => {
+        alert("Файл загружен!");
+        findCoords(response.data.file_path);
+        handleClearToDefault();
+        props.showImages();
+        timerStatus(response.data.file_path);
+      });
+    } else alert("Выберите файл для загрузки !");
+  };
+
+  const findCoords = (name) => {
+    const url = `${props.url}/images/mark/${name}`;
+    fetch(url, {
+      headers: {
+        Authorization: `token ${sessionStorage.tokenData}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log("data", data);
+      });
+  };
+
+  const checkImage = (name, status) => {
+    const url = `${props.url}/images/show/${name}`;
+    fetch(url, {
+      headers: {
+        Authorization: `token ${sessionStorage.tokenData}`,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        if (data.status === 1) {
+          clearInterval(timerStatus);
+          props.showImages();
         }
-        return  post(url, formData,config)
-    }
+      });
+  };
 
-    const handleImageLoaded = (image) => {
-        console.log("Image Is Loaded!!!")
-        // console.log(image)
-    }
+  const fileUpload = (file) => {
+    const url = `${props.url}/images/create/`;
+    const formData = new FormData();
+    formData.append("file", file);
+    const config = {
+      headers: {
+        Authorization: `token ${sessionStorage.tokenData}`,
+        "content-type": "multipart/form-data",
+      },
+    };
+    return post(url, formData, config);
+  };
 
-    const handleOnCropChange = (crop) => {
-        setCrop(crop);
-    }
+  const handleImageLoaded = (image) => {
+    console.log("Image Is Loaded!!!");
+  };
 
-    const handleOnCropComplete = (crop, pixelCrop) =>{
-        const canvasRef = imagePreviewCanvasRef.current
-        const curImgSrc  = imgSrc
-        image64toCanvasRef(canvasRef, curImgSrc, crop)
-    }
+  const handleOnCropChange = (crop) => {
+    setCrop(crop);
+  };
 
-    const handleDownloadClick = (event) => {
-        event.preventDefault();
-        onFormSubmit();
-    }
+  const handleOnCropComplete = (crop, pixelCrop) => {
+    const canvasRef = imagePreviewCanvasRef.current;
+    const curImgSrc = imgSrc;
+    image64toCanvasRef(canvasRef, curImgSrc, crop);
+  };
 
-    const handleClearToDefault = event =>{
-        if (event) event.preventDefault()
-        const canvas = imagePreviewCanvasRef.current
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
+  const handleDownloadClick = (event) => {
+    event.preventDefault();
+    onFormSubmit();
+  };
 
-        setImgSrc(null);
-        setImgSrcExt(null);
-        setCrop({});
-    }
+  const handleClearToDefault = (event) => {
+    if (event) event.preventDefault();
+    const canvas = imagePreviewCanvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    //////////////////////////////////////////////////////////////////////////////////
+    setImgSrc(null);
+    setImgSrcExt(null);
+    setCrop({});
+  };
 
-    return (
+  //////////////////////////////////////////////////////////////////////////////////
+
+  return (
+    <div>
+      <h1 style={{ color: "#90d2c6", marginBottom: "10px" }}>
+        Загрузка изображения
+      </h1>
+      {imgSrc !== null ? (
         <div>
-            <h1 style={{color: '#90d2c6', marginBottom:'10px'}}>Загрузка изображения</h1>
-            {imgSrc !== null ?
-                <div>
-                    <ReactCrop
-                        src={imgSrc}
-                        crop={crop}
-                        onImageLoaded={handleImageLoaded}
-                        onComplete = {handleOnCropComplete}
-                        onChange={handleOnCropChange}
-                    />
-                    <br/>
-                    <p style={{color: '#90d2c6'}}>Выделенная часть</p>
-                    <canvas
-                        height='300'
-                        ref={imagePreviewCanvasRef}
-                        style={{color: '#90d2c6'}}
-                        >Canvas not supported
-                    </canvas>
-                    <button primary onClick={handleDownloadClick}>Загрузить</button>
-                    <button onClick={handleClearToDefault}>Очистить</button>
-                </div>  :
-                <Dropzone
-                    onDrop={(acceptedFiles, rejectedFiles) => handleOnDrop(acceptedFiles, rejectedFiles)}
-                    maxSize={imageMaxSize}
-                    multiple={false}
-                    accept={acceptedFileTypes}
-                    >
-                    {({getRootProps, getInputProps}) => (
-                        <section className="container">
-                        <div {...getRootProps({className: 'dropzone'})}>
-                            <input {...getInputProps()} />
-                            <p style={{
-                                color: '#90d2c6',
-                                border: '1px dashed #90d2c6',
-                                textAlign:'center',
-                                padding: '35px 0',
-                                borderRadius: '5px'
-                                }}>Перетащите файл сюда или нажмите для загрузки</p>
-                        </div>
-                        </section>
-                    )}
-                </Dropzone>
-            }
-            <aside>
-                <h4 style={{color: '#90d2c6'}}>Файл</h4>
-                <ul>{files}</ul>
-            </aside>
+          <ReactCrop
+            src={imgSrc}
+            crop={crop}
+            onImageLoaded={handleImageLoaded}
+            onComplete={handleOnCropComplete}
+            onChange={handleOnCropChange}
+          />
+          <br />
+          <p style={{ color: "#90d2c6" }}>Выделенная часть</p>
+          <canvas
+            height="300"
+            ref={imagePreviewCanvasRef}
+            style={{ color: "#90d2c6" }}
+          >
+            Canvas not supported
+          </canvas>
+          <button primary onClick={handleDownloadClick}>
+            Загрузить
+          </button>
+          <button onClick={handleClearToDefault}>Очистить</button>
         </div>
-    )
+      ) : (
+        <Dropzone
+          onDrop={(acceptedFiles, rejectedFiles) =>
+            handleOnDrop(acceptedFiles, rejectedFiles)
+          }
+          maxSize={imageMaxSize}
+          multiple={false}
+          accept={acceptedFileTypes}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <section className="container">
+              <div {...getRootProps({ className: "dropzone" })}>
+                <input {...getInputProps()} />
+                <p
+                  style={{
+                    color: "#90d2c6",
+                    border: "1px dashed #90d2c6",
+                    textAlign: "center",
+                    padding: "35px 0",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Перетащите файл сюда или нажмите для загрузки
+                </p>
+              </div>
+            </section>
+          )}
+        </Dropzone>
+      )}
+      <aside>
+        <h4 style={{ color: "#90d2c6" }}>Файл</h4>
+        <ul>{files}</ul>
+      </aside>
+    </div>
+  );
 }
 
 export default DropAndCrop;
