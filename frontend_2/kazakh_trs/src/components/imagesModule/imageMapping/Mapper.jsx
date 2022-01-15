@@ -6,6 +6,9 @@ import { url } from "../serverUrl";
 import { FaTrashAlt } from "react-icons/fa";
 import { IoMdAddCircle } from "react-icons/io";
 import RecognitionService from "../../../services/RecognitionService";
+import { Button } from "../../form";
+// eslint-disable-next-line no-unused-vars
+const process = require('process');
 
 const showWidth = 1200;
 
@@ -168,14 +171,14 @@ class Mapper extends Component {
     return (
       <div>
         <button
-          className="svg__button svg__button--add"
+          className="svg__button svg__button--add p-1"
           onClick={this.addNewShape}
         >
           <IoMdAddCircle />
         </button>
         {selectedId !== null ? (
           <button
-            className="svg__button svg__button--remove"
+            className="svg__button svg__button--remove p-1"
             onClick={this.removeSelectedShape}
           >
             <FaTrashAlt />
@@ -221,12 +224,12 @@ class Mapper extends Component {
           </Layer>
         </Stage>
         <div>
-          <button
-            className="bg-blue-200 rounded p-2 mr-2"
+          <Button
+            className="mr-2"
             onClick={() => this.recognizeText(imgName)}
           >
             Распознать текст
-          </button>
+          </Button>
           <button
             className="bg-green-200 rounded p-2"
             onClick={() => this.saveRectangles(imgName)}
