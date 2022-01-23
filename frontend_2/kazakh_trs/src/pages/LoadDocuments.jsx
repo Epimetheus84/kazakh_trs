@@ -5,6 +5,7 @@ import ImageService from "../services/ImageService";
 
 export default function LoadDocuments() {
   const [imagesList, setImagesList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const filters = {
     byDate: (a, b) => {
@@ -16,6 +17,7 @@ export default function LoadDocuments() {
   };
 
   const showImages = async () => {
+    setLoading(true);
     try {
       const imagesData = await ImageService.getImagesList();
       console.log("imagesData", imagesData);
@@ -24,6 +26,7 @@ export default function LoadDocuments() {
     } catch {
       console.log("fetch images list error");
     }
+    setLoading(false);
   };
 
   const deleteImageHandler = async (imageName) => {
@@ -47,6 +50,7 @@ export default function LoadDocuments() {
         images={imagesList}
         showImages={showImages}
         deleteImage={deleteImageHandler}
+        loading={loading}
       />
     </DefaultLayout>
   );

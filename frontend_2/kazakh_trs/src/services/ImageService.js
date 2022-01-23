@@ -17,6 +17,28 @@ class ImageService extends BaseService {
       return data;
     }
 
+    async uploadImage(image) {
+      let formData = new FormData();
+      formData.append("file", image);
+
+      const { data } = await this.axios.post('/images/create/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      return data;
+    }
+
+    async findCoordinates(imageName) {
+      const { data } = await this.axios.get(`/images/mark/${imageName}`);
+      return data;
+    }
+
+    async checkImage(imageName) {
+      const { data } = await this.axios.get(`/images/show/${imageName}`);
+      return data;
+    }
 }
 
 export default new ImageService();

@@ -1,4 +1,4 @@
-const apiHost = '3797-62-217-190-209.ngrok.io';
+const apiHost = '379d-62-217-190-209.ngrok.io';
 
 module.exports = {
   devServer: {
@@ -17,7 +17,6 @@ module.exports = {
           return path.replace(/^\/api/, ''); // remove '/api' prefix when requesting
         }
       },
-
     },
   },
   style: {

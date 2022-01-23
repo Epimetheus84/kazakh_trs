@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import Dropzone from "react-dropzone";
+import { FaUpload, FaTrashAlt } from "react-icons/fa";
+import { AiFillInfoCircle } from "react-icons/ai";
 import {
   image64toCanvasRef,
   extractImageFileExtensionFromBase64,
 } from "./ReusableUtils";
-import { post } from "axios";
+import ImageService from "../../../services/ImageService";
+import { Button } from "../../form";
+import { fileSizeToHuman } from "../../../utils/helpers";
 
 const imageMaxSize = 100000000;
 const acceptedFileTypes =
@@ -18,8 +22,7 @@ const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {
 function DropAndCrop(props) {
   const [files, setFiles] = useState([]);
   const [imgSrc, setImgSrc] = useState(null);
-  // eslint-disable-next-line no-unused-vars
-  const [imgSrcExt, setImgSrcExt] = useState(null);
+  const [, setImgSrcExt] = useState(null);
   const [crop, setCrop] = useState({});
   const imagePreviewCanvasRef = React.createRef();
   const [file, setFile] = useState(null);
@@ -49,7 +52,7 @@ function DropAndCrop(props) {
     acceptedFiles.map((file) =>
       setFiles(
         <li key={file.path}>
-          {file.path} - {parseInt(file.size) / 1000000} Мегабайт
+          <span>{file.path}</span> - <span>{fileSizeToHuman(file.size)}</span>
         </li>
       )
     );
@@ -82,81 +85,56 @@ function DropAndCrop(props) {
     setInterval(() => checkImage(name), 10000);
     console.log("Check status");
   };
-  const onFormSubmit = () => {
+  const handleDownloadClick = async (event) => {
+    event.preventDefault();
     if (file) {
-      fileUpload(file).then((response) => {
-        alert("Файл загружен!");
-        findCoords(response.data.file_path);
+      try {
+        const data = await ImageService.uploadImage(file);
+        console.log("result", data);
+
+        findCoords(data.file_path);
         handleClearToDefault();
         props.showImages();
-        timerStatus(response.data.file_path);
-      });
+        timerStatus(data.file_path);
+
+        alert("Файл загружен!");
+      } catch (error) {
+        console.log("error", error);
+      }
     } else alert("Выберите файл для загрузки !");
   };
 
-  const findCoords = (name) => {
-    const url = `${props.url}/images/mark/${name}`;
-    fetch(url, {
-      headers: {
-        Authorization: `token ${sessionStorage.tokenData}`,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log("data", data);
-      });
+  const findCoords = async (name) => {
+    try {
+      const data = await ImageService.findCoords(name);
+      console.log("findCoords: result", data);
+    } catch (error) {
+      console.log("findCoords: error", error);
+    }
   };
 
-  const checkImage = (name, status) => {
-    const url = `${props.url}/images/show/${name}`;
-    fetch(url, {
-      headers: {
-        Authorization: `token ${sessionStorage.tokenData}`,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        if (data.status === 1) {
-          clearInterval(timerStatus);
-          props.showImages();
-        }
-      });
-  };
-
-  const fileUpload = (file) => {
-    const url = `${props.url}/images/create/`;
-    const formData = new FormData();
-    formData.append("file", file);
-    const config = {
-      headers: {
-        Authorization: `token ${sessionStorage.tokenData}`,
-        "content-type": "multipart/form-data",
-      },
-    };
-    return post(url, formData, config);
-  };
-
-  const handleImageLoaded = (image) => {
-    console.log("Image Is Loaded!!!");
+  const checkImage = async (name) => {
+    try {
+      const data = await ImageService.checkImage(name);
+      console.log("checkImage: result", data);
+      if (data.status === 1) {
+        props.showImages();
+        clearInterval(timerStatus);
+      }
+    } catch (error) {
+      console.log("checkImage: error", error);
+    }
   };
 
   const handleOnCropChange = (crop) => {
     setCrop(crop);
+    console.log("crop", crop);
   };
 
   const handleOnCropComplete = (crop, pixelCrop) => {
     const canvasRef = imagePreviewCanvasRef.current;
     const curImgSrc = imgSrc;
     image64toCanvasRef(canvasRef, curImgSrc, crop);
-  };
-
-  const handleDownloadClick = (event) => {
-    event.preventDefault();
-    onFormSubmit();
   };
 
   const handleClearToDefault = (event) => {
@@ -173,32 +151,58 @@ function DropAndCrop(props) {
   //////////////////////////////////////////////////////////////////////////////////
 
   return (
-    <div>
-      <h1 style={{ color: "#90d2c6", marginBottom: "10px" }}>
+    <div className="bg-white shadow-md rounded-lg px-5 pt-6 pb-8 mb-4 flex flex-col mx-1.5 md:mx-0">
+      <p className="mb-6 text-gray-900 text-2xl font-bold">
         Загрузка изображения
-      </h1>
+      </p>
       {imgSrc !== null ? (
         <div>
           <ReactCrop
             src={imgSrc}
             crop={crop}
-            onImageLoaded={handleImageLoaded}
+            onImageLoaded={(image) => console.log("Image Is Loaded!!!", image)}
             onComplete={handleOnCropComplete}
             onChange={handleOnCropChange}
           />
           <br />
-          <p style={{ color: "#90d2c6" }}>Выделенная часть</p>
-          <canvas
-            height="300"
-            ref={imagePreviewCanvasRef}
-            style={{ color: "#90d2c6" }}
-          >
-            Canvas not supported
-          </canvas>
-          <button primary onClick={handleDownloadClick}>
-            Загрузить
-          </button>
-          <button onClick={handleClearToDefault}>Очистить</button>
+          {imagePreviewCanvasRef && (
+            <div className="flex flex-col flex-wrap items-center py-1">
+              <p
+                style={{
+                  color: "#374151",
+                  fontWeight: 600,
+                }}
+                className="py-1.5"
+              >
+                {crop.width ? (
+                  <span>Выделенная часть</span>
+                ) : (
+                  <span>
+                    <AiFillInfoCircle style={{ display: "inline-block" }} />
+                    &nbsp; Вы можете выбрать область на изображении для обрезки
+                  </span>
+                )}
+              </p>
+              <canvas
+                height="300"
+                ref={imagePreviewCanvasRef}
+                className="bg-gray-400"
+              >
+                Canvas not supported
+              </canvas>
+              <div className="mt-2">
+                {crop.width ? (
+                  <span className="bg-gray-100 py-0.5 px-1.5 rounded font-semibold">
+                    {Number(crop.width).toFixed(2)}
+                    {crop.unit} X {Number(crop.height).toFixed(2)}
+                    {crop.unit}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <Dropzone
@@ -215,23 +219,40 @@ function DropAndCrop(props) {
                 <input {...getInputProps()} />
                 <p
                   style={{
-                    color: "#90d2c6",
-                    border: "1px dashed #90d2c6",
+                    color: "#374151",
+                    border: "1px dashed #374151",
                     textAlign: "center",
                     padding: "35px 0",
                     borderRadius: "5px",
                   }}
                 >
-                  Перетащите файл сюда или нажмите для загрузки
+                  <FaUpload style={{ display: "inline-block" }} />
+                  &nbsp; Перетащите файл сюда или нажмите для загрузки
                 </p>
               </div>
             </section>
           )}
         </Dropzone>
       )}
-      <aside>
-        <h4 style={{ color: "#90d2c6" }}>Файл</h4>
-        <ul>{files}</ul>
+      <aside className="mt-3">
+        {imgSrc !== null ? (
+          <div className="flex flex-wrap items-center py-5">
+            <div>
+              <ul>{files}</ul>
+            </div>
+            <div className="flex pl-3 justify-items-start	items-center	">
+              <Button onClick={handleDownloadClick}>Загрузить</Button>
+              <button
+                className="svg__button svg__button--remove p-1 pl-2"
+                onClick={handleClearToDefault}
+              >
+                <FaTrashAlt />
+              </button>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </aside>
     </div>
   );
