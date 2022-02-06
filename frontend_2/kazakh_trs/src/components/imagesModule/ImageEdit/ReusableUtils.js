@@ -29,25 +29,61 @@ export function extractImageFileExtensionFromBase64 (base64Data) {
   return base64Data.substring('data:image/'.length, base64Data.indexOf(';base64'))
 }
 
-// Base64 Image to Canvas with a Crop
-export function image64toCanvasRef (canvasRef, image64, pixelCrop) {
-  const canvas = canvasRef // document.createElement('canvas');
-  canvas.width = pixelCrop.width
-  canvas.height = pixelCrop.height
-  const ctx = canvas.getContext('2d')
-  const image = new Image()
-  image.src = image64
-  image.onload = function () {
-    ctx.drawImage(
-      image,
-      pixelCrop.x,
-      pixelCrop.y,
-      pixelCrop.width,
-      pixelCrop.height,
-      0,
-      0,
-      pixelCrop.width,
-      pixelCrop.height
-    )
-  }
+/**
+ * HTML5 Image Resizer
+ * @param {HTMLElement} image tag
+ * @param {Object} crop object with pixel values
+ * @param {String} fileName
+ * @param {String} oldFileUrl
+*/
+export function getCroppedImg (image, crop, fileName, oldFileUrl) {
+  const canvas = document.createElement('canvas');
+  const pixelRatio = window.devicePixelRatio;
+  const scaleX = image.naturalWidth / image.width;
+  const scaleY = image.naturalHeight / image.height;
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = crop.width * pixelRatio * scaleX;
+  canvas.height = crop.height * pixelRatio * scaleY;
+
+  ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+  ctx.imageSmoothingQuality = 'high';
+
+  ctx.drawImage(
+    image,
+    crop.x * scaleX,
+    crop.y * scaleY,
+    crop.width * scaleX,
+    crop.height * scaleY,
+    0,
+    0,
+    crop.width * scaleX,
+    crop.height * scaleY
+  );
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          //reject(new Error('Canvas is empty'));
+          console.error('Canvas is empty');
+          return;
+        }
+        blob.name = fileName;
+        window.URL.revokeObjectURL(oldFileUrl);
+        let newFileUrl = window.URL.createObjectURL(blob);
+        resolve(newFileUrl);
+      },
+      'image/jpeg',
+      1
+    );
+  });
+}
+
+export async function getFileFromUrl(url, name, defaultType = 'image/jpeg'){
+  const response = await fetch(url);
+  const data = await response.blob();
+  return new File([data], name, {
+    type: data.type || defaultType,
+  });
 }

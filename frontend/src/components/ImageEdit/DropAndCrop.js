@@ -4,8 +4,8 @@ import 'react-image-crop/dist/ReactCrop.css';
 import Dropzone from 'react-dropzone';
 import {Button2} from '../../style/styled_comp/styles';
 import {
-    image64toCanvasRef, 
-    base64StringtoFile, 
+    image64toCanvasRef,
+    base64StringtoFile,
     downloadBase64File,
     extractImageFileExtensionFromBase64
 } from './ResuableUtils';
@@ -55,7 +55,7 @@ function DropAndCrop(props) {
         if(acceptedFiles && acceptedFiles.length > 0){
             const isVerified = verifyFile(acceptedFiles);
                 if (isVerified){
-                    // imageBase64Data 
+                    // imageBase64Data
                     const currentFile = acceptedFiles[0];
                     setFile(acceptedFiles[0]);
                     const myFileItemReader = new FileReader()
@@ -83,11 +83,11 @@ function DropAndCrop(props) {
                 // setFiles([]);
                 props.showImages();
                 timerStatus(response.data.file_path);
-                
+
             })
-        } else 
+        } else
             alert("Выберите файл для загрузки !")
-        
+
     }
 
     const findCoords = (name) => {
@@ -140,7 +140,7 @@ function DropAndCrop(props) {
         console.log("Image Is Loaded!!!")
         // console.log(image)
     }
-    
+
     const handleOnCropChange = (crop) => {
         setCrop(crop);
     }
@@ -176,11 +176,11 @@ function DropAndCrop(props) {
     return (
         <div>
             <h1 style={{color: '#90d2c6', marginBottom:'10px'}}>Загрузка изображения</h1>
-            {imgSrc !== null ? 
+            {imgSrc !== null ?
                 <div>
-                    <ReactCrop 
-                        src={imgSrc} 
-                        crop={crop} 
+                    <ReactCrop
+                        src={imgSrc}
+                        crop={crop}
                         onImageLoaded={handleImageLoaded}
                         onComplete = {handleOnCropComplete}
                         onChange={handleOnCropChange}
@@ -195,9 +195,9 @@ function DropAndCrop(props) {
                     </canvas>
                     <Button2 primary onClick={handleDownloadClick}>Загрузить</Button2>
                     <Button2 onClick={handleClearToDefault}>Очистить</Button2>
-                </div>  : 
-                <Dropzone 
-                    onDrop={(acceptedFiles, rejectedFiles) => handleOnDrop(acceptedFiles, rejectedFiles)} 
+                </div>  :
+                <Dropzone
+                    onDrop={(acceptedFiles, rejectedFiles) => handleOnDrop(acceptedFiles, rejectedFiles)}
                     maxSize={imageMaxSize}
                     multiple={false}
                     accept={acceptedFileTypes}
@@ -208,8 +208,8 @@ function DropAndCrop(props) {
                             <input {...getInputProps()} />
                             <p style={{
                                 color: '#90d2c6',
-                                border: '1px dashed #90d2c6', 
-                                textAlign:'center', 
+                                border: '1px dashed #90d2c6',
+                                textAlign:'center',
                                 padding: '35px 0',
                                 borderRadius: '5px'
                                 }}>Перетащите файл сюда или нажмите для загрузки</p>

@@ -1,4 +1,4 @@
-const apiHost = '379d-62-217-190-209.ngrok.io';
+const apiHost = 'a22c-62-217-190-134.ngrok.io';
 
 module.exports = {
   devServer: {

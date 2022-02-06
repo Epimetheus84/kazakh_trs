@@ -4,6 +4,7 @@ import Mapper from "./ImageMapping/Mapper";
 import FileInfo from "./FileInfo";
 import { compose } from "../../utils/functional";
 import { Button } from "../form";
+import ImageService from '../../services/ImageService';
 
 const ImageBlock = ({ item, onDelete = () => {}, externalSetMapperShow = () => {} }) => {
   const [showMapper, setShowMapper] = useState(false);
@@ -48,6 +49,10 @@ const ImageBlock = ({ item, onDelete = () => {}, externalSetMapperShow = () => {
     externalSetMapperShow(false);
   };
 
+  const findCoords = async () => {
+    await ImageService.findCoordinates(item.file_path)
+  };
+
   return (
     <div
       className="
@@ -60,9 +65,14 @@ const ImageBlock = ({ item, onDelete = () => {}, externalSetMapperShow = () => {
         <div className="flex mt-3 md:mt-0 items-end">
           {item.coordinates && (
             <Button onClick={() => handleMapperShow(item)}>
-                            {showMapper ? "скрыть" : (
+              {showMapper ? "скрыть" : (
                 item.status === 3 ? "тект определён" : "показать координаты"
               )}
+            </ Button>
+          )}
+          {!item.coordinates && (
+            <Button onClick={findCoords}>
+              определить координаты
             </ Button>
           )}
           <button

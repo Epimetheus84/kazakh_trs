@@ -5,8 +5,9 @@ import Dropzone from "react-dropzone";
 import { FaUpload, FaTrashAlt } from "react-icons/fa";
 import { AiFillInfoCircle } from "react-icons/ai";
 import {
-  image64toCanvasRef,
   extractImageFileExtensionFromBase64,
+  getCroppedImg,
+  getFileFromUrl,
 } from "./ReusableUtils";
 import ImageService from "../../../services/ImageService";
 import { Button } from "../../form";
@@ -22,10 +23,12 @@ const acceptedFileTypesArray = acceptedFileTypes.split(",").map((item) => {
 function DropAndCrop(props) {
   const [files, setFiles] = useState([]);
   const [imgSrc, setImgSrc] = useState(null);
+  const [imageRef, setImageRef] = useState(null);
+  const [croppedImageUrl, setCroppedImageUrl] = useState(null);
   const [, setImgSrcExt] = useState(null);
   const [crop, setCrop] = useState({});
-  const imagePreviewCanvasRef = React.createRef();
   const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState("");
 
   const verifyFile = (file) => {
     if (file && file.length > 0) {
@@ -48,14 +51,33 @@ function DropAndCrop(props) {
     }
   };
 
-  const handleOnDrop = (acceptedFiles, rejectedFiles) => {
-    acceptedFiles.map((file) =>
-      setFiles(
-        <li key={file.path}>
-          <span>{file.path}</span> - <span>{fileSizeToHuman(file.size)}</span>
-        </li>
-      )
+  const getFileHtmlTemplate = (file) => (
+    <li key={file.name}>
+      <span>{file.name}</span> - <span>{fileSizeToHuman(file.size)}</span>
+    </li>
+  );
+
+  const readFile = (file) => {
+    setFile(file);
+    const myFileItemReader = new FileReader();
+    myFileItemReader.addEventListener(
+      "load",
+      () => {
+        const myResult = myFileItemReader.result;
+        setImgSrc(myResult);
+        setImgSrcExt(extractImageFileExtensionFromBase64(myResult));
+      },
+      false
     );
+
+    myFileItemReader.readAsDataURL(file);
+  };
+
+  const handleOnDrop = (acceptedFiles, rejectedFiles) => {
+    acceptedFiles.forEach((file) => {
+      setFileName(file.path);
+      setFiles(getFileHtmlTemplate(file));
+    });
     if (rejectedFiles && rejectedFiles.length > 0) {
       verifyFile(rejectedFiles);
     }
@@ -64,19 +86,7 @@ function DropAndCrop(props) {
       if (isVerified) {
         // imageBase64Data
         const currentFile = acceptedFiles[0];
-        setFile(acceptedFiles[0]);
-        const myFileItemReader = new FileReader();
-        myFileItemReader.addEventListener(
-          "load",
-          () => {
-            const myResult = myFileItemReader.result;
-            setImgSrc(myResult);
-            setImgSrcExt(extractImageFileExtensionFromBase64(myResult));
-          },
-          false
-        );
-
-        myFileItemReader.readAsDataURL(currentFile);
+        readFile(currentFile);
       }
     }
   };
@@ -90,7 +100,6 @@ function DropAndCrop(props) {
     if (file) {
       try {
         const data = await ImageService.uploadImage(file);
-        console.log("result", data);
 
         findCoords(data.file_path);
         handleClearToDefault();
@@ -128,26 +137,45 @@ function DropAndCrop(props) {
 
   const handleOnCropChange = (crop) => {
     setCrop(crop);
-    console.log("crop", crop);
   };
 
-  const handleOnCropComplete = (crop, pixelCrop) => {
-    const canvasRef = imagePreviewCanvasRef.current;
-    const curImgSrc = imgSrc;
-    image64toCanvasRef(canvasRef, curImgSrc, crop);
+  const onImageLoaded = (image) => {
+    console.log('imageLoaded', image);
+    setImageRef(image);
+  };
+
+  const handleOnCropComplete = async (crop) => {
+    console.log('on crop complete(crop, percentCrop):', crop);
+    if (imageRef && crop.width && crop.height) {
+      const croppedUrl = await getCroppedImg(
+        imageRef,
+        crop,
+        'newfile.jpg',
+        croppedImageUrl
+      );
+      setCroppedImageUrl(croppedUrl);
+    }
   };
 
   const handleClearToDefault = (event) => {
     if (event) event.preventDefault();
-    const canvas = imagePreviewCanvasRef.current;
-    const ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     setImgSrc(null);
     setImgSrcExt(null);
     setCrop({});
   };
 
+  const handleCroppedImageClick = async (event) => {
+    event.preventDefault();
+
+    const file = await getFileFromUrl(croppedImageUrl, fileName);
+    setFile(file);
+    setFiles(getFileHtmlTemplate(file));
+    readFile(file);
+    window.URL.revokeObjectURL(croppedImageUrl);
+    setCroppedImageUrl(null);
+    setCrop({});
+  };
   //////////////////////////////////////////////////////////////////////////////////
 
   return (
@@ -158,50 +186,50 @@ function DropAndCrop(props) {
       {imgSrc !== null ? (
         <div>
           <ReactCrop
+            name="image-crop"
             src={imgSrc}
             crop={crop}
-            onImageLoaded={(image) => console.log("Image Is Loaded!!!", image)}
+            onImageLoaded={onImageLoaded}
             onComplete={handleOnCropComplete}
             onChange={handleOnCropChange}
           />
           <br />
-          {imagePreviewCanvasRef && (
+          {croppedImageUrl && (
             <div className="flex flex-col flex-wrap items-center py-1">
-              <p
-                style={{
-                  color: "#374151",
-                  fontWeight: 600,
-                }}
-                className="py-1.5"
-              >
-                {crop.width ? (
-                  <span>Выделенная часть</span>
-                ) : (
-                  <span>
-                    <AiFillInfoCircle style={{ display: "inline-block" }} />
-                    &nbsp; Вы можете выбрать область на изображении для обрезки
-                  </span>
-                )}
-              </p>
-              <canvas
-                height="300"
-                ref={imagePreviewCanvasRef}
-                className="bg-gray-400"
-              >
-                Canvas not supported
-              </canvas>
-              <div className="mt-2">
-                {crop.width ? (
-                  <span className="bg-gray-100 py-0.5 px-1.5 rounded font-semibold">
-                    {Number(crop.width).toFixed(2)}
-                    {crop.unit} X {Number(crop.height).toFixed(2)}
-                    {crop.unit}
-                  </span>
-                ) : (
-                  ""
-                )}
-              </div>
+            <p
+              style={{
+                color: "#374151",
+                fontWeight: 600,
+              }}
+              className="py-1.5"
+            >
+              {crop.width ? (
+                <span>Выделенная часть</span>
+              ) : (
+                <span>
+                  <AiFillInfoCircle style={{ display: "inline-block" }} />
+                  &nbsp; Вы можете выбрать область на изображении для обрезки
+                </span>
+              )}
+            </p>
+            <img alt="Crop" style={{ maxWidth: '100%' }} src={croppedImageUrl} />
+            <div className="mt-2">
+              {crop.width ? (
+                <div>
+                <span className="bg-gray-100 py-0.5 px-1.5 rounded font-semibold">
+                  {Number(crop.width).toFixed(2)}
+                  {crop.unit} X {Number(crop.height).toFixed(2)}
+                  {crop.unit}
+                </span>
+                <Button onClick={handleCroppedImageClick}>
+                  обрезать
+                </Button>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
+          </div>
           )}
         </div>
       ) : (
