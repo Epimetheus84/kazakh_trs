@@ -1,0 +1,13 @@
+.link {
+  @apply text-blue-600;
+
+  &:target {
+    @apply shadow-lg;
+  }
+  &:visited {
+    @apply text-purple-600;
+  }
+  &:hover {
+    @apply text-purple-700;
+  }
+}
