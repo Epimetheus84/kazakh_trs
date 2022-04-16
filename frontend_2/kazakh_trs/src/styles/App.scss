@@ -1,0 +1,10 @@
+@import-normalize;
+@import 'components';
+
+.container {
+  margin: 0 auto;
+}
+
+body {
+  @apply bg-gray-100;
+}

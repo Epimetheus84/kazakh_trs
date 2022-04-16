@@ -1,0 +1,15 @@
+.svg__button {
+  font-size: 28px;
+  &--add {
+    color: #06b6d4;
+    &:hover {
+      color: #155f75;
+    }
+  }
+  &--remove {
+    color: #f44336;
+    &:hover {
+      color: #b71c1c;
+    }
+  }
+}

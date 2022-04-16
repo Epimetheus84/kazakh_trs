@@ -1,0 +1,72 @@
+{
+    "name": "kazakh_trs",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@craco/craco": "^6.4.3",
+        "@testing-library/jest-dom": "^5.16.1",
+        "@testing-library/react": "^11.2.7",
+        "@testing-library/user-event": "^12.8.3",
+        "axios": "^0.24.0",
+        "classnames": "^2.3.1",
+        "husky": "^7.0.4",
+        "konva": "^8.3.2",
+        "lint-staged": "^12.1.2",
+        "prettier": "^2.5.1",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-dropzone": "^11.5.1",
+        "react-icons": "^4.3.1",
+        "react-image-crop": "^9.0.5",
+        "react-konva": "^17.0.2-5",
+        "react-redux": "^7.2.6",
+        "react-router-dom": "^6.1.1",
+        "react-scripts": "4.0.3",
+        "redux": "^4.1.2",
+        "redux-devtools-extension": "^2.13.9",
+        "redux-logger": "^3.0.6",
+        "redux-thunk": "^2.4.1",
+        "use-image": "^1.0.8",
+        "web-vitals": "^1.1.2"
+    },
+    "lint-staged": {
+        "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+            "prettier --write"
+        ]
+    },
+    "scripts": {
+        "start": "craco start",
+        "build": "craco build",
+        "test": "craco test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "devDependencies": {
+        "autoprefixer": "^9.8.8",
+        "postcss": "^7.0.39",
+        "sass": "^1.45.0",
+        "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
+    }
+}
