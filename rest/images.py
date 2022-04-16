@@ -41,7 +41,7 @@ def show_image(file_path):
 
     image = image.get()
 
-    return image.to_json()
+    return jsonify(image.to_json())
 
 
 @images.route('/update/<file_path>', methods=['PUT'])
@@ -60,7 +60,7 @@ def update_image(file_path):
     image.update_data(data)
     image.save()
 
-    return image.to_json()
+    return jsonify(image.to_json())
 
 
 @images.route('/create/', methods=['POST'])
@@ -94,7 +94,7 @@ def create_image():
 
     image.save()
 
-    return image.to_json()
+    return jsonify(image.to_json())
 
 
 @images.route('/delete/<file_path>', methods=['DELETE'])
@@ -116,7 +116,7 @@ def delete_image(file_path):
 
 @images.route('/uploads/<path:path>')
 def serve_images(path):
-    return send_from_directory(os.path.join('..', 'data', 'production', 'images'), filename=path)
+    return send_from_directory(os.path.join('..', 'data', 'production', 'images'), path)
 
 
 @images.route('/mark/<file_path>', methods=['GET'])

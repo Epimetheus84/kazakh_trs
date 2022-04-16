@@ -1,0 +1,38 @@
+# python crnn/export.py --config configs\ksd.yml --weight data\10_1.0735_0.9208.h5 --pre rescale --post greedy --output saved_model
+dataset_builder: &ds_builder
+    table_path: 'C:\Users\epimetheus\PycharmProjects\kazakh_trs\data_synthesizer\letters_en.csv'
+    # If change image height(32), change the net.
+    # If image width is not null, the image will be distorted.
+    img_shape: [32, null, 3]
+    # The image that width greater than max img_width will be dropped.
+    # Only work with image width is null.
+    max_img_width: 300
+    ignore_case: true
+
+train:
+    dataset_builder:
+        <<: *ds_builder
+    train_ann_paths:
+        - 'C:\Users\epimetheus\PycharmProjects\kazakh_trs\data\development\english\word\train_ksd_annotation.txt'
+        - 'C:\Users\epimetheus\PycharmProjects\kazakh_trs\data\development\english\word\test_ksd_annotation.txt'
+    val_ann_paths:
+        - 'C:\Users\epimetheus\PycharmProjects\kazakh_trs\data\development\english\word\test_ksd_annotation.txt'
+    batch_size_per_replica: 32
+    # Number of epochs to train.
+    epochs: 10
+    lr_schedule:
+        initial_learning_rate: 0.0001
+        decay_steps: 600000
+        alpha: 0.01
+    # TensorBoard Arguments
+    # https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/TensorBoard#arguments_1
+    tensorboard:
+        histogram_freq: 1
+        profile_batch: 0
+
+eval:
+    dataset_builder:
+        <<: *ds_builder
+    ann_paths:
+        - 'C:\Users\epimetheus\PycharmProjects\kazakh_trs\data\development\english\word\eval_ksd_annotation.txt'
+    batch_size: 32

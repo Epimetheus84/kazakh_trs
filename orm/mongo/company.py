@@ -41,7 +41,7 @@ class Company(Document):
         }
 
     def to_json(self):
-        return json.dumps(self.prepare_to_response())
+        return self.prepare_to_response()
 
     def delete_with_relations(self):
         employees = usr.User.objects(company=str(self.id))

@@ -41,7 +41,7 @@ class Model:
 		self.setupRNN()
 		self.setupCTC()
 
-		# setup optimizer to train NN
+		# setup optimizer to training NN
 		self.batchesTrained = 0
 		self.learningRate = tf.placeholder(tf.float32, shape=[])
 		self.update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
@@ -209,7 +209,7 @@ class Model:
 
 
 	def trainBatch(self, batch):
-		"feed a batch into the NN to train it"
+		"feed a batch into the NN to training it"
 		numBatchElements = len(batch.imgs)
 		sparse = self.toSparse(batch.gtTexts)
 		rate = 0.01 if self.batchesTrained < 10 else (0.001 if self.batchesTrained < 10000 else 0.0001) # decay learning rate

@@ -83,8 +83,7 @@ class Image(Document):
         }
 
     def to_json(self):
-        print(self.prepare_to_response())
-        return json.dumps(self.prepare_to_response())
+        return self.prepare_to_response()
 
     def get_uploaded_file_ext(self):
         return '.' in self.original_filename and self.original_filename.rsplit('.', 1)[1].lower()

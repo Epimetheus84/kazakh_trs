@@ -23,10 +23,12 @@ def login():
 def verify_token(token):
     print('token', token)
     g.current_user = AuthHelper.verify_auth_token(token)
-    return g.current_user
+    if not g.current_user:
+        return False
+    return jsonify(g.current_user.to_json())
 
 
 @cabinet.route('/me/')
 @auth.login_required
 def me():
-    return g.current_user.to_json()
+    return jsonify(g.current_user.to_json())

@@ -49,8 +49,8 @@ class RecognitionModel:
 
 		dumps = ''
 
-		# train or validate on IAM dataset
-		if context == 'train' or context == 'validate':
+		# training or validate on IAM dataset
+		if context == 'training' or context == 'validate':
 			# load training data, create TF model
 			loader = DataLoader(FilePaths.fnTrain, Model.batchSize, Model.imgSize, Model.maxTextLen)
 
@@ -61,7 +61,7 @@ class RecognitionModel:
 			open(FilePaths.fnCorpus, 'w', encoding='utf-8').write(str(' ').join(loader.trainWords + loader.validationWords))
 
 			# execute training or validation
-			if context == 'train':
+			if context == 'training':
 				model = Model(loader.charList, decoderType)
 				RecognitionModel.train(model, loader)
 			elif context == 'validate':
@@ -76,7 +76,7 @@ class RecognitionModel:
 
 	@staticmethod
 	def train(model, loader):
-		"""train NN"""
+		"""training NN"""
 		epoch = 0 # number of training epochs since start
 		bestCharErrorRate = float('inf') # best valdiation character error rate
 		noImprovementSince = 0 # number of epochs no improvement of character error rate occured
@@ -85,7 +85,7 @@ class RecognitionModel:
 			epoch += 1
 			print('Epoch:', epoch)
 
-			# train
+			# training
 			print('Train NN')
 			loader.trainSet()
 			while loader.hasNext():

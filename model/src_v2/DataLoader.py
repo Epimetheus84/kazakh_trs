@@ -69,7 +69,7 @@ class DataLoader:
 		# number of randomly chosen samples per epoch for training 
 		self.numTrainSamplesPerEpoch = 25000 
 		
-		# start with train set
+		# start with training set
 		self.trainSet()
 
 		# list of all chars in dataset

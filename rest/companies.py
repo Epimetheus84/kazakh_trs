@@ -37,7 +37,7 @@ def show_company(oid):
     if not g.current_user.has_access_to_see_company(company.id):
         abort(403)
 
-    return company.to_json()
+    return jsonify(company.to_json())
 
 
 @companies.route('/update/<oid>', methods=['PUT'])
@@ -56,7 +56,7 @@ def update_company(oid):
     company.update_data(data)
     company.save()
 
-    return company.to_json()
+    return jsonify(company.to_json())
 
 
 @companies.route('/create/', methods=['POST'])
@@ -71,7 +71,7 @@ def create_company():
     company.insert_data(data)
     company.save()
 
-    return company.to_json()
+    return jsonify(company.to_json())
 
 
 @companies.route('/delete/<oid>', methods=['DELETE'])

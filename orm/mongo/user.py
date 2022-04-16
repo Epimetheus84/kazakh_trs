@@ -128,7 +128,7 @@ class User(Document):
         }
 
     def to_json(self):
-        return json.dumps(self.prepare_to_response())
+        return self.prepare_to_response()
 
     def has_access_to_see_company(self, company_id):
         return self.company == str(company_id)

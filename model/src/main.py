@@ -35,7 +35,7 @@ class RecognitionModel:
 		"main function"
 		# optional command line args
 		parser = argparse.ArgumentParser()
-		parser.add_argument('--train', help='train the NN', action='store_true')
+		parser.add_argument('--training', help='training the NN', action='store_true')
 		parser.add_argument('--validate', help='validate the NN', action='store_true')
 		parser.add_argument('--beamsearch', help='use beam search instead of best path decoding', action='store_true')
 		parser.add_argument('--wordbeamsearch', help='use word beam search instead of best path decoding', action='store_true')
@@ -49,7 +49,7 @@ class RecognitionModel:
 		elif args.wordbeamsearch:
 			decoderType = DecoderType.WordBeamSearch
 
-		# train or validate on IAM dataset
+		# training or validate on IAM dataset
 		if args.train or args.validate:
 			# load training data, create TF model
 			loader = DataLoader(FilePaths.fnTrain, Model.batchSize, Model.imgSize, Model.maxTextLen)
@@ -77,7 +77,7 @@ class RecognitionModel:
 
 
 def train(model, loader):
-	"train NN"
+	"training NN"
 	epoch = 0 # number of training epochs since start
 	bestCharErrorRate = float('inf') # best valdiation character error rate
 	noImprovementSince = 0 # number of epochs no improvement of character error rate occured
@@ -86,7 +86,7 @@ def train(model, loader):
 		epoch += 1
 		print('Epoch:', epoch)
 
-		# train
+		# training
 		print('Train NN')
 		loader.trainSet()
 		while loader.hasNext():

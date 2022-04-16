@@ -63,7 +63,7 @@ class DataProvider:
         img = salt(img)
         img = cv2.GaussianBlur(img, (5, 5), random.randrange(0, 2, 1))
 
-        return (text, img)
+        return text, img
 
 
 def salt(image):
@@ -84,17 +84,17 @@ def salt(image):
 
 
 def create_dataset(data_provider):
-    if not os.path.exists('../data/development/kazakh'):
-        os.makedirs('../data/development/kazakh')
+    if not os.path.exists('../data/development/english'):
+        os.makedirs('../data/development/english')
 
-    if not os.path.exists('../data/development/kazakh/examples'):
-        os.makedirs('../data/development/kazakh/examples')
+    if not os.path.exists('../data/development/english/examples'):
+        os.makedirs('../data/development/english/examples')
 
     ctr = 0
     while data_provider.hasNext():
         sample = data_provider.getNext()
 
-        cv2.imwrite('../data/development/kazakh/examples/%d.png' % ctr, sample[1])
+        cv2.imwrite('../data/development/english/examples/%d.png' % ctr, sample[1])
 
         line = '%d' % ctr + ' ' + sample[0] + '\n'
 
@@ -103,7 +103,7 @@ def create_dataset(data_provider):
 
 if __name__ == '__main__':
     words = []
-    with open("words.csv", encoding='utf8') as csvfile:
+    with open("words_en.csv", encoding='utf8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             words.append(row[0])
