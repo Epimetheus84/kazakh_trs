@@ -1,4 +1,4 @@
-const apiHost = 'a22c-62-217-190-134.ngrok.io';
+const { apiHost } = require('./.env.js');
 
 module.exports = {
   devServer: {

@@ -223,7 +223,7 @@ class Mapper extends Component {
             })}
           </Layer>
         </Stage>
-        <div>
+        <div className="mt-2">
           <Button
             className="mr-2"
             onClick={() => this.recognizeText(imgName)}
@@ -236,6 +236,8 @@ class Mapper extends Component {
           >
             Сохранить
           </button>
+        </div>
+        <div className="mt-1">
           <textarea value={recognizedText} onChange={this.changeText} />
         </div>
       </div>
