@@ -238,7 +238,7 @@ class Mapper extends Component {
           </button>
         </div>
         <div className="mt-1">
-          <textarea value={recognizedText} onChange={this.changeText} />
+          <textarea className="appearance-none border rounded-lg w-full py-2 px-3 leading-tight focus:outline-none focus:ring focus:border-blue-300" value={recognizedText} onChange={this.changeText} />
         </div>
       </div>
     );

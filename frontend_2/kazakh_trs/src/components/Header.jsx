@@ -8,9 +8,10 @@ import {
 
 function BackButton() {
   const { pathname } = useLocation();
+  const classes = `text-gray-200 hover:text-gray-400 ${ pathname === '/' ? 'opacity-0 cursor-default' : '' }`;
 
-  return pathname !== '/' && (
-    <Link to="/" className="text-gray-200 hover:text-gray-400">
+  return (
+    <Link to="/" className={classes}>
         <BsFillArrowLeftCircleFill className="inline-block mr-2" />
         <span>
           Назад
@@ -20,7 +21,7 @@ function BackButton() {
 }
 
 function Header() {
-  const { user } = useAuth();
+  const { user, signout } = useAuth();
 
   return (
     <header className="bg-gray-500">
@@ -36,6 +37,37 @@ function Header() {
             console.log(user);
           }}
         />
+        <div className="flex items-center">
+          {user.role === 10 && (
+            <div>
+              <Link className="text-gray-200 hover:text-gray-400 px-2" to="/users-list">
+                Управление пользователями
+              </Link>
+              <br />
+            </div>
+          )}
+          <Link className="text-gray-200 hover:text-gray-400 px-2" to="/load-documents">
+            Загрузка изображений
+          </Link>
+          <br />
+          {
+            (typeof user === 'undefined') && (
+              <div>
+                <Link className="text-gray-200 hover:text-gray-400 px-2" to="/login">
+                  Вход
+                </Link>
+                <br />
+              </div>
+            )
+          }
+          <span
+            onClick={signout}
+            className="cursor-pointer text-gray-200 hover:text-gray-400 px-2"
+            to="/logout"
+          >
+            Выход
+          </span>
+        </div>
         <BackButton />
       </nav>
     </header>

@@ -242,7 +242,7 @@ function DropAndCrop(props) {
           accept={acceptedFileTypes}
         >
           {({ getRootProps, getInputProps }) => (
-            <section className="container">
+            <section>
               <div {...getRootProps({ className: "dropzone" })}>
                 <input {...getInputProps()} />
                 <p

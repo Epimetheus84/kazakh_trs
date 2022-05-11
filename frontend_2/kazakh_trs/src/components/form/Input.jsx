@@ -1,8 +1,9 @@
 const classNames = require('classnames');
 
-export default function Input({ style, value, onChange = () => {}, placeholder = '', type = 'text', name, label, error, ...rest }){
+export default function Input({ style, className, value, onChange = () => {}, placeholder = '', type = 'text', name, label, error, ...rest }){
   const inputClass = classNames(
-    'shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', {
+    'shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300' + (className ? ' ' + className : ''),
+  {
     'border-red-500': error,
   });
 

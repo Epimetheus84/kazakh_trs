@@ -10,11 +10,6 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-// костыль https://flutterq.com/solved-uncaught-referenceerror-process-is-not-defined/
-// eslint-disable-next-line no-unused-vars
-const { ENV1 } = process.env;
-// eslint-disable-next-line no-unused-vars
-const { ENV2 } = process.env;
 
 const middleware = [ thunk ]
 if (process.env.NODE_ENV !== 'production') {
