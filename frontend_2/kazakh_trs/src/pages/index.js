@@ -1,13 +1,15 @@
 import Home from './Home';
-import About from './About';
 import NotFoundPage from './NotFoundPage';
 import LoginPage from './LoginPage';
 import LoadDocuments from './LoadDocuments';
+import AdminUsersList from './AdminUsersList';
+import AdminUserCreate from './AdminUserCreate';
 
 export {
   Home,
-  About,
   NotFoundPage,
   LoginPage,
   LoadDocuments,
+  AdminUsersList,
+  AdminUserCreate,
 };

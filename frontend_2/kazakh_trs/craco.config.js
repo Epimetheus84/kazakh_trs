@@ -1,6 +1,21 @@
-const apiHost = 'a22c-62-217-190-134.ngrok.io';
+const webpack = require('webpack');
+const { apiHost } = require('./.env.js');
+
+console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 
 module.exports = {
+  webpack: {
+    plugins: {
+      add: [
+        new webpack.DefinePlugin({
+          process: { env: {
+            API_HOST: JSON.stringify(apiHost),
+            NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+          }}
+        })
+      ]
+    }
+  },
   devServer: {
     port: 3001,
     proxy: {

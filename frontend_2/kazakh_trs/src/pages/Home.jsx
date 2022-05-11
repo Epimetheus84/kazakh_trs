@@ -7,28 +7,34 @@ export default function Home () {
 
   return (
     <DefaultLayout>
-      <Link className="link" to="/create-users">
-        Create Users
-      </Link>
-      <br />
+      {auth.user.role === 10 && (
+        <div>
+          <Link className="link" to="/users-list">
+            Управление пользователями
+          </Link>
+          <br />
+        </div>
+      )}
       <Link className="link" to="/load-documents">
         Загрузка изображений
       </Link>
       <br />
-      <Link className="link" to="/about">
-        About
-      </Link>
-      <br />
-      <Link className="link" to="/login">
-        Login
-      </Link>
-      <br />
+      {
+        (typeof auth.user === 'undefined') && (
+          <div>
+            <Link className="link" to="/login">
+              Вход
+            </Link>
+            <br />
+          </div>
+        )
+      }
       <span
         onClick={auth.signout}
         className="cursor-pointer link"
         to="/logout"
       >
-        Logout
+        Выход
       </span>
     </DefaultLayout>
   )
